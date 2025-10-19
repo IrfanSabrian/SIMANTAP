@@ -750,13 +750,14 @@
                   <div>
                     <label
                       class="block text-sm text-gray-600 dark:text-gray-300"
-                      >Email <span class="text-red-500">*</span></label
+                      >Email</label
                     >
                     <input
                       type="email"
                       v-model="aduanForm.email"
-                      class="mt-1 w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="email@contoh.com"
+                      :disabled="aduanForm.anonim"
+                      class="mt-1 w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="email@contoh.com (opsional)"
                     />
                   </div>
                 </div>
@@ -999,12 +1000,13 @@ const aduanForm = reactive({
   files: [],
 });
 
-// Watch for anonim changes to clear name field
+// Watch for anonim changes to clear name and email fields
 watch(
   () => aduanForm.anonimString,
   (newValue) => {
     if (newValue === "true") {
       aduanForm.namaPelapor = "";
+      aduanForm.email = "";
     }
   }
 );
@@ -2509,10 +2511,7 @@ const submitAduan = async () => {
     toast.warning("Nomor ruas wajib diisi");
     return;
   }
-  if (!aduanForm.email?.trim()) {
-    toast.warning("Email wajib diisi");
-    return;
-  }
+  // Email validation removed - now optional
 
   console.log("Starting aduan submission...");
   submitLoading.value = true;

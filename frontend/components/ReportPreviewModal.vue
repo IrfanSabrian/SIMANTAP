@@ -213,6 +213,7 @@ const downloadPDF = async () => {
   try {
     await downloadReport(props.reportData, "pdf");
     emit("download-pdf");
+    toast.success("PDF berhasil didownload!");
   } catch (error) {
     console.error("Error downloading PDF:", error);
     toast.error("Gagal mendownload PDF");
