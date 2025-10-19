@@ -2043,21 +2043,26 @@ export const useReportGenerator = () => {
     try {
       let file, filename;
 
+      // Generate filename with new format: Laporan_Jalan_Lingkungan - (kabupaten) - (desa) - (tanggal)
+      const generateFilename = (extension) => {
+        const reportType = reportData.reportInfo.label.replace(/\s+/g, "_");
+        const kabupaten =
+          reportData.reportInfo.location?.kecamatan || "Unknown";
+        const desa = reportData.reportInfo.location?.desa || "Unknown";
+        const tanggal = new Date().toISOString().split("T")[0];
+
+        return `Laporan_${reportType}_-_${kabupaten}_-_${desa}_-_${tanggal}.${extension}`;
+      };
+
       switch (format) {
         case "pdf":
           await generatePDF(reportData);
-          filename = `Laporan_${reportData.reportInfo.label.replace(
-            /\s+/g,
-            "_"
-          )}_${new Date().toISOString().split("T")[0]}.pdf`;
+          filename = generateFilename("pdf");
           break;
 
         case "xlsx":
           file = await generateExcel(reportData);
-          filename = `Laporan_${reportData.reportInfo.label.replace(
-            /\s+/g,
-            "_"
-          )}_${new Date().toISOString().split("T")[0]}.xlsx`;
+          filename = generateFilename("xlsx");
           const XLSX = await import("xlsx");
           XLSX.writeFile(file, filename);
           break;

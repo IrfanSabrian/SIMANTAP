@@ -261,7 +261,7 @@
                 d="M288 114.96L69.47 307.71c-1.62 1.46-3.69 2.14-5.47 3.35V496c0 8.84 7.16 16 16 16h149.23L192 439.19l104.11-64-60.16-119.22L384 392.75l-104.11 64L319.81 512H496c8.84 0 16-7.16 16-16V311.1c-1.7-1.16-3.72-1.82-5.26-3.2L288 114.96zm282.69 121.32L512 184.45V48c0-8.84-7.16-16-16-16h-64c-8.84 0-16 7.16-16 16v51.69L314.75 10.31C307.12 3.45 297.56.01 288 0s-19.1 3.41-26.7 10.27L5.31 236.28c-6.57 5.91-7.12 16.02-1.21 22.6l21.4 23.82c5.9 6.57 16.02 7.12 22.6 1.21L277.42 81.63c6.05-5.33 15.12-5.33 21.17 0L527.91 283.9c6.57 5.9 16.69 5.36 22.6-1.21l21.4-23.82c5.9-6.57 5.36-16.69-1.22-22.59z"
               />
             </svg>
-            <span class="font-medium">Rumah Layak Tidak Hunian</span>
+            <span class="font-medium">Rumah Tidak Layak Huni</span>
           </button>
 
           <!-- Menu Laporan & Analisis -->
@@ -391,17 +391,6 @@
                   Anda login sebagai
                   <span class="font-bold">{{ user?.role || "USER" }}</span>
                 </p>
-              </div>
-              <div class="hidden lg:block">
-                <svg
-                  class="w-24 h-24 opacity-20"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"
-                  />
-                </svg>
               </div>
             </div>
           </div>
@@ -1300,7 +1289,7 @@
               </div>
             </div>
 
-            <!-- Rumah Layak Tidak Hunian Section -->
+            <!-- Rumah Tidak Layak Huni Section -->
             <div v-show="activeTab === 'rumah'" class="space-y-6">
               <div
                 class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center"
@@ -1322,11 +1311,11 @@
                   <h3
                     class="text-2xl font-bold text-gray-900 dark:text-white mb-4"
                   >
-                    Rumah Layak Tidak Hunian
+                    Rumah Tidak Layak Huni
                   </h3>
                   <p class="text-gray-600 dark:text-gray-400 mb-6">
                     Fitur ini akan segera tersedia untuk mengelola data rumah
-                    layak tidak hunian di Kabupaten Kubu Raya.
+                    tidak layak huni di Kabupaten Kubu Raya.
                   </p>
                   <div
                     class="bg-rose-50 dark:bg-rose-900/10 border border-rose-200 dark:border-rose-800 rounded-lg p-4"

@@ -1335,44 +1335,52 @@ const filterAndDisplayBatasKecamatan = async (
     console.log(
       "Available kecamatan in GeoJSON:",
       districtData.features.slice(0, 3).map((f) => ({
-        WADMKC: f.properties.WADMKC,
-        NAMOBJ: f.properties.NAMOBJ,
+        nama_kecamatan: f.properties.nama_kecamatan,
+        Kecamatan: f.properties.Kecamatan,
+        kecamatan: f.properties.kecamatan,
         allProps: Object.keys(f.properties),
       }))
     );
 
-    // Filter features by kecamatan name (same as homepage)
-    const filteredFeatures = districtData.features.filter(
-      (feature) => feature.properties.WADMKC === kecamatanName
-    );
+    // Filter features by kecamatan name using correct GeoJSON field
+    let filteredFeatures = districtData.features.filter((feature) => {
+      const props = feature.properties;
+      const searchName = kecamatanName?.toLowerCase().trim();
+
+      // Check the correct field name from GeoJSON: nama_kecamatan
+      return (
+        props.nama_kecamatan?.toLowerCase().trim() === searchName ||
+        // Also check other possible variations
+        props.Kecamatan?.toLowerCase().trim() === searchName ||
+        props.kecamatan?.toLowerCase().trim() === searchName ||
+        // Partial matches
+        props.nama_kecamatan?.toLowerCase().includes(searchName) ||
+        props.Kecamatan?.toLowerCase().includes(searchName) ||
+        props.kecamatan?.toLowerCase().includes(searchName) ||
+        // Reverse partial matches
+        searchName?.includes(props.nama_kecamatan?.toLowerCase().trim()) ||
+        searchName?.includes(props.Kecamatan?.toLowerCase().trim()) ||
+        searchName?.includes(props.kecamatan?.toLowerCase().trim())
+      );
+    });
 
     if (filteredFeatures.length === 0) {
       console.log(`No boundary found for kecamatan: ${kecamatanName}`);
-      console.log("Trying alternative search methods...");
-
-      // Try alternative search methods
-      const alternativeFeatures = districtData.features.filter(
-        (feature) =>
-          feature.properties.NAMOBJ === kecamatanName ||
-          feature.properties.WADMKC?.toLowerCase() ===
-            kecamatanName?.toLowerCase() ||
-          feature.properties.NAMOBJ?.toLowerCase() ===
-            kecamatanName?.toLowerCase() ||
-          feature.properties.WADMKC?.includes(kecamatanName) ||
-          feature.properties.NAMOBJ?.includes(kecamatanName)
+      console.log(
+        "Available kecamatan names:",
+        districtData.features.map((f) => ({
+          nama_kecamatan: f.properties.nama_kecamatan,
+          Kecamatan: f.properties.Kecamatan,
+          kecamatan: f.properties.kecamatan,
+        }))
       );
-
-      if (alternativeFeatures.length > 0) {
-        console.log(
-          "Found with alternative search:",
-          alternativeFeatures[0].properties
-        );
-        filteredFeatures.push(...alternativeFeatures);
-      } else {
-        console.log("No boundary found with any search method");
-        batasKecamatanLayer.visible = false;
-        return;
-      }
+      batasKecamatanLayer.visible = false;
+      return;
+    } else {
+      console.log(
+        `Found ${filteredFeatures.length} kecamatan boundary(ies) for: ${kecamatanName}`
+      );
+      console.log("Matched properties:", filteredFeatures[0].properties);
     }
 
     // Create graphics from filtered GeoJSON features (same as homepage)
@@ -1455,44 +1463,52 @@ const filterAndDisplayBatasDesa = async (desaName, batasDesaLayer) => {
     console.log(
       "Available desa in GeoJSON:",
       villageData.features.slice(0, 3).map((f) => ({
-        WADMKD: f.properties.WADMKD,
-        NAMOBJ: f.properties.NAMOBJ,
+        nama_desa: f.properties.nama_desa,
+        Desa: f.properties.Desa,
+        desa: f.properties.desa,
         allProps: Object.keys(f.properties),
       }))
     );
 
-    // Filter features by desa name (same as homepage)
-    const filteredFeatures = villageData.features.filter(
-      (feature) => feature.properties.WADMKD === desaName
-    );
+    // Filter features by desa name using correct GeoJSON field
+    let filteredFeatures = villageData.features.filter((feature) => {
+      const props = feature.properties;
+      const searchName = desaName?.toLowerCase().trim();
+
+      // Check the correct field name from GeoJSON: nama_desa
+      return (
+        props.nama_desa?.toLowerCase().trim() === searchName ||
+        // Also check other possible variations
+        props.Desa?.toLowerCase().trim() === searchName ||
+        props.desa?.toLowerCase().trim() === searchName ||
+        // Partial matches
+        props.nama_desa?.toLowerCase().includes(searchName) ||
+        props.Desa?.toLowerCase().includes(searchName) ||
+        props.desa?.toLowerCase().includes(searchName) ||
+        // Reverse partial matches
+        searchName?.includes(props.nama_desa?.toLowerCase().trim()) ||
+        searchName?.includes(props.Desa?.toLowerCase().trim()) ||
+        searchName?.includes(props.desa?.toLowerCase().trim())
+      );
+    });
 
     if (filteredFeatures.length === 0) {
       console.log(`No boundary found for desa: ${desaName}`);
-      console.log("Trying alternative search methods...");
-
-      // Try alternative search methods
-      const alternativeFeatures = villageData.features.filter(
-        (feature) =>
-          feature.properties.NAMOBJ === desaName ||
-          feature.properties.WADMKD?.toLowerCase() ===
-            desaName?.toLowerCase() ||
-          feature.properties.NAMOBJ?.toLowerCase() ===
-            desaName?.toLowerCase() ||
-          feature.properties.WADMKD?.includes(desaName) ||
-          feature.properties.NAMOBJ?.includes(desaName)
+      console.log(
+        "Available desa names:",
+        villageData.features.map((f) => ({
+          nama_desa: f.properties.nama_desa,
+          Desa: f.properties.Desa,
+          desa: f.properties.desa,
+        }))
       );
-
-      if (alternativeFeatures.length > 0) {
-        console.log(
-          "Found with alternative search:",
-          alternativeFeatures[0].properties
-        );
-        filteredFeatures.push(...alternativeFeatures);
-      } else {
-        console.log("No boundary found with any search method");
-        batasDesaLayer.visible = false;
-        return;
-      }
+      batasDesaLayer.visible = false;
+      return;
+    } else {
+      console.log(
+        `Found ${filteredFeatures.length} desa boundary(ies) for: ${desaName}`
+      );
+      console.log("Matched properties:", filteredFeatures[0].properties);
     }
 
     // Create graphics from filtered GeoJSON features (same as homepage)
@@ -1574,8 +1590,10 @@ const loadRelevantBoundaries = async (
       batasKabupatenLayer.visible
     );
   } else {
-    console.log("No kecamatan data available, hiding kecamatan layer");
-    batasKecamatanLayer.visible = false;
+    console.log(
+      "No specific kecamatan data available, loading all kecamatan boundaries"
+    );
+    await loadAllKecamatanBoundaries(batasKecamatanLayer);
   }
 
   // Load ONLY the specific desa from the road data
@@ -1583,8 +1601,53 @@ const loadRelevantBoundaries = async (
     console.log("Loading desa boundary for:", roadInfo.value.desa);
     await filterAndDisplayBatasDesa(roadInfo.value.desa, batasDesaLayer);
   } else {
-    console.log("No desa data available, hiding desa layer");
-    batasDesaLayer.visible = false;
+    console.log("No specific desa data available, loading all desa boundaries");
+    await loadAllDesaBoundaries(batasDesaLayer);
+  }
+};
+
+// Load all kecamatan boundaries
+const loadAllKecamatanBoundaries = async (batasKecamatanLayer) => {
+  try {
+    console.log("Loading all kecamatan boundaries...");
+    const districtResponse = await fetch(
+      "/geojson/Batas Kecamatan Kubu Raya.geojson"
+    );
+    const districtData = await districtResponse.json();
+
+    for (const feature of districtData.features) {
+      await addBoundaryToLayer(
+        feature,
+        batasKecamatanLayer,
+        [236, 72, 153, 1], // Pink - kecamatan should be pink
+        1.25
+      );
+    }
+
+    batasKecamatanLayer.visible = true;
+    console.log("All kecamatan boundaries loaded and visible");
+  } catch (error) {
+    console.error("Error loading all kecamatan boundaries:", error);
+  }
+};
+
+// Load all desa boundaries
+const loadAllDesaBoundaries = async (batasDesaLayer) => {
+  try {
+    console.log("Loading all desa boundaries...");
+    const villageResponse = await fetch(
+      "/geojson/Batas Desa Kubu Raya.geojson"
+    );
+    const villageData = await villageResponse.json();
+
+    for (const feature of villageData.features) {
+      await addBoundaryToLayer(feature, batasDesaLayer, [168, 85, 247, 1], 0.9); // Purple - same as homepage
+    }
+
+    batasDesaLayer.visible = true;
+    console.log("All desa boundaries loaded and visible");
+  } catch (error) {
+    console.error("Error loading all desa boundaries:", error);
   }
 };
 

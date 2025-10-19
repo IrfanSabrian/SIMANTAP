@@ -295,9 +295,9 @@ const availableReportTypes = [
   },
   {
     value: "rumah-layak-tidak-hunian",
-    label: "Rumah Layak Tidak Hunian",
+    label: "Rumah Tidak Layak Huni",
     description:
-      "Laporan kondisi dan data rumah layak tidak hunian di wilayah terpilih",
+      "Laporan kondisi dan data rumah tidak layak huni di wilayah terpilih",
   },
 ];
 
@@ -306,7 +306,7 @@ const reportTypeLabels = {
   "jembatan-lingkungan": "Jembatan Lingkungan",
   "drainase-lingkungan": "Drainase Lingkungan",
   "kawasan-permukiman": "Kawasan Permukiman",
-  "rumah-layak-tidak-hunian": "Rumah Layak Tidak Hunian",
+  "rumah-layak-tidak-hunian": "Rumah Tidak Layak Huni",
 };
 
 // Computed properties
