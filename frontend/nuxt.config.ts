@@ -11,6 +11,71 @@ export default defineNuxtConfig({
   tailwindcss: {
     cssPath: "~/assets/css/main.css",
   },
+  // Build optimization for Vercel deployment
+  build: {},
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            // Separate node_modules into chunks based on package
+            if (id.includes("node_modules")) {
+              // Chart.js
+              if (id.includes("chart.js")) {
+                return "vendor-charts";
+              }
+              // Element Plus
+              if (id.includes("element-plus")) {
+                return "vendor-ui";
+              }
+              // FontAwesome
+              if (id.includes("@fortawesome")) {
+                return "vendor-icons";
+              }
+              // PDF/Document libraries
+              if (
+                id.includes("docx") ||
+                id.includes("jspdf") ||
+                id.includes("pdf-lib") ||
+                id.includes("xlsx") ||
+                id.includes("html2canvas") ||
+                id.includes("html2pdf")
+              ) {
+                return "vendor-documents";
+              }
+              // Fancybox
+              if (id.includes("@fancyapps")) {
+                return "vendor-fancybox";
+              }
+              // Other utils
+              if (
+                id.includes("file-saver") ||
+                id.includes("countup") ||
+                id.includes("aos")
+              ) {
+                return "vendor-utils";
+              }
+              // All other node_modules
+              return "vendor";
+            }
+          },
+        },
+      },
+      // Increase chunk size warning limit
+      chunkSizeWarningLimit: 1000,
+      // Enable minification
+      minify: "terser",
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+        },
+      },
+    },
+    optimizeDeps: {
+      include: ["chart.js", "element-plus"],
+    },
+  },
   nitro: {
     devProxy: {
       "/api": {

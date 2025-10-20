@@ -1986,17 +1986,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import {
-  Chart,
-  ArcElement,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Title,
-  Tooltip,
-  Legend,
-  DoughnutController,
-} from "chart.js";
 import AduanList from "~/components/AduanList.vue";
 import RoadDetailModal from "~/components/RoadDetailModal.vue";
 import UserDetailModal from "~/components/UserDetailModal.vue";
@@ -2008,17 +1997,39 @@ import ConfirmationModal from "~/components/ConfirmationModal.vue";
 import { useReportGenerator } from "~/composables/useReportGenerator.js";
 import { useToast } from "~/composables/useToast.js";
 
-// Register Chart.js components
-Chart.register(
-  ArcElement,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Title,
-  Tooltip,
-  Legend,
-  DoughnutController
-);
+// Dynamic import for Chart.js to reduce initial bundle size
+let Chart = null;
+let ChartComponents = null;
+
+const loadChartJS = async () => {
+  if (!Chart) {
+    const chartModule = await import("chart.js");
+    Chart = chartModule.Chart;
+    ChartComponents = {
+      ArcElement: chartModule.ArcElement,
+      BarElement: chartModule.BarElement,
+      CategoryScale: chartModule.CategoryScale,
+      LinearScale: chartModule.LinearScale,
+      Title: chartModule.Title,
+      Tooltip: chartModule.Tooltip,
+      Legend: chartModule.Legend,
+      DoughnutController: chartModule.DoughnutController,
+    };
+
+    // Register Chart.js components
+    Chart.register(
+      ChartComponents.ArcElement,
+      ChartComponents.BarElement,
+      ChartComponents.CategoryScale,
+      ChartComponents.LinearScale,
+      ChartComponents.Title,
+      ChartComponents.Tooltip,
+      ChartComponents.Legend,
+      ChartComponents.DoughnutController
+    );
+  }
+  return { Chart, ChartComponents };
+};
 
 // Set page title
 useHead({
@@ -3116,7 +3127,10 @@ const handleLogout = () => {
   router.push("/login");
 };
 
-const initCharts = () => {
+const initCharts = async () => {
+  // Load Chart.js dynamically
+  await loadChartJS();
+
   // Destroy existing charts
   destroyCharts();
 
