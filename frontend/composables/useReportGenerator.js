@@ -82,12 +82,16 @@ export const useReportGenerator = () => {
               break-inside: avoid;
             }
             
+            /* Allow table internals to break normally so only wrapper is kept intact */
             .data-table {
               width: 100%;
               border-collapse: collapse;
               font-size: 10px;
               margin: 5px 0;
               table-layout: fixed;
+              page-break-inside: auto !important;
+              break-inside: auto !important;
+              -webkit-break-inside: auto !important;
             }
             
             .data-table th {
@@ -135,13 +139,44 @@ export const useReportGenerator = () => {
               padding: 10px !important;
               border: 1px solid #e0e0e0 !important;
               background-color: #fafafa !important;
+              page-break-inside: auto !important;
+              break-inside: auto !important;
+            }
+            
+            /* Wrapper khusus untuk kesatuan header sampai ringkasan */
+            .road-summary-section {
+              display: flex !important;
+              flex-direction: column !important;
+              width: 100% !important;
               page-break-inside: avoid !important;
               break-inside: avoid !important;
               -webkit-break-inside: avoid !important;
-              page-break-before: auto !important;
-              break-before: auto !important;
-              page-break-after: auto !important;
-              break-after: auto !important;
+              -webkit-column-break-inside: avoid !important;
+              -webkit-region-break-inside: avoid !important;
+              orphans: 999 !important;
+              widows: 999 !important;
+              overflow: visible !important;
+              flex-wrap: nowrap !important;
+            }
+            
+            /* Pastikan elemen dalam summary section tidak terpotong */
+            .road-summary-section .road-header,
+            .road-summary-section .road-info {
+              display: block !important;
+              flex-shrink: 0 !important;
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
+              -webkit-break-inside: avoid !important;
+              page-break-before: avoid !important;
+              break-before: avoid !important;
+              page-break-after: avoid !important;
+              break-after: avoid !important;
+            }
+            
+            /* Force summary section to stay together */
+            .road-summary-section {
+              min-height: fit-content !important;
+              max-height: none !important;
             }
             
             .road-group {
@@ -173,6 +208,22 @@ export const useReportGenerator = () => {
               margin-top: 10px;
               font-size: 10px;
               color: #666;
+              page-break-after: avoid;
+              break-after: avoid;
+              -webkit-break-after: avoid;
+            }
+            
+            /* Prevent empty pages at the end */
+            body {
+              page-break-after: avoid;
+              break-after: avoid;
+            }
+            
+            /* Ensure last element doesn't create empty pages */
+            .road-group-wrapper:last-child {
+              page-break-after: avoid;
+              break-after: avoid;
+              margin-bottom: 0;
             }
             
             /* CSS sudah di-inline untuk menghindari MIME type error */
@@ -226,12 +277,14 @@ export const useReportGenerator = () => {
           html += `
             <div class="road-group-wrapper">
               <div class="road-group">
-                <div class="road-header">NO. JALAN: ${roadGroup.noJalan}</div>
-                <div class="road-info">Total Ruas: ${
-                  roadGroup.totalRuas
-                } | Total Panjang: ${formatDistance(
+                <div class="road-summary-section">
+                  <div class="road-header">NO. JALAN: ${roadGroup.noJalan}</div>
+                  <div class="road-info">Total Ruas: ${
+                    roadGroup.totalRuas
+                  } | Total Panjang: ${formatDistance(
             roadGroup.totalPanjang
           )}</div>
+                </div>
                 
                 <table class="data-table">
               <thead>
@@ -307,9 +360,11 @@ export const useReportGenerator = () => {
           html += `
                 </tbody>
               </table>
-              <div class="road-info"><strong>TOTAL PANJANG M: ${formatDistance(
-                roadGroup.totalPanjang
-              )}</strong></div>
+              <div class="road-summary-section">
+                <div class="road-info"><strong>TOTAL PANJANG M: ${formatDistance(
+                  roadGroup.totalPanjang
+                )}</strong></div>
+              </div>
             </div>
           </div>
           `;
@@ -334,15 +389,16 @@ export const useReportGenerator = () => {
     // Generate HTML content
     const htmlContent = createHTMLContent();
 
-    // Create an iframe to completely isolate the PDF generation
+    // Create an iframe for PDF generation with proper CORS handling
     const iframe = document.createElement("iframe");
     iframe.style.position = "absolute";
     iframe.style.left = "-9999px";
     iframe.style.top = "-9999px";
-    iframe.style.width = "210mm";
-    iframe.style.height = "297mm";
+    iframe.style.width = "297mm";
+    iframe.style.height = "auto";
     iframe.style.border = "none";
     iframe.style.visibility = "hidden";
+    iframe.style.overflow = "visible";
     document.body.appendChild(iframe);
 
     // Write HTML content to iframe
@@ -350,6 +406,28 @@ export const useReportGenerator = () => {
     iframeDoc.open();
     iframeDoc.write(htmlContent);
     iframeDoc.close();
+
+    // Wait for iframe to load and resize to fit content
+    await new Promise((resolve) => {
+      iframe.onload = resolve;
+      if (iframe.contentDocument.readyState === "complete") {
+        resolve();
+      }
+    });
+
+    // Resize iframe to fit all content
+    iframe.style.height = iframe.contentDocument.body.scrollHeight + "px";
+
+    // Debug: Log iframe dimensions
+    console.log(
+      "Iframe content height:",
+      iframe.contentDocument.body.scrollHeight
+    );
+    console.log(
+      "Iframe content width:",
+      iframe.contentDocument.body.scrollWidth
+    );
+    console.log("Iframe actual height:", iframe.style.height);
 
     // Configure html2pdf options for A3 landscape
     const options = {
@@ -359,11 +437,12 @@ export const useReportGenerator = () => {
       }.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
-        scale: 2,
+        scale: 1.5, // Reduced scale to avoid zoomed appearance
         useCORS: true,
-        allowTaint: true,
+        allowTaint: false, // Set to false to avoid tainted canvas
         scrollX: 0,
         scrollY: 0,
+        logging: false, // Disable logging for better performance
       },
       jsPDF: {
         unit: "in",
@@ -373,15 +452,58 @@ export const useReportGenerator = () => {
         putOnlyUsedFonts: true,
         floatPrecision: 16,
       },
-      pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+      pagebreak: {
+        mode: ["css"],
+        avoid: [".road-summary-section", ".footer"],
+      },
     };
 
     // Generate PDF from iframe
-    await html2pdf
-      .default()
-      .set(options)
-      .from(iframe.contentDocument.body)
-      .save();
+    console.log("Starting PDF generation...");
+    console.log(
+      "Iframe body content length:",
+      iframe.contentDocument.body.innerHTML.length
+    );
+    console.log(
+      "Iframe body children count:",
+      iframe.contentDocument.body.children.length
+    );
+
+    // Check if content is very large and adjust settings
+    const isLargeContent = iframe.contentDocument.body.scrollHeight > 20000;
+    if (isLargeContent) {
+      console.log("Large content detected, using optimized settings");
+      options.html2canvas.scale = 1; // Reduce scale for large content
+      options.html2canvas.height = Math.min(
+        iframe.contentDocument.body.scrollHeight,
+        50000
+      ); // Limit height
+    }
+
+    try {
+      await html2pdf
+        .default()
+        .set(options)
+        .from(iframe.contentDocument.body)
+        .save();
+      console.log("PDF generation completed successfully");
+    } catch (error) {
+      console.error("PDF generation failed:", error);
+      // Fallback: try with different settings
+      const fallbackOptions = { ...options };
+      fallbackOptions.html2canvas.scale = 0.8;
+      fallbackOptions.html2canvas.allowTaint = true;
+      fallbackOptions.html2canvas.height = Math.min(
+        iframe.contentDocument.body.scrollHeight,
+        30000
+      );
+      await html2pdf
+        .default()
+        .set(fallbackOptions)
+        .from(iframe.contentDocument.body)
+        .save();
+      console.log("PDF generation completed with fallback settings");
+    }
 
     // Clean up the iframe safely
     setTimeout(() => {
@@ -822,12 +944,14 @@ export const useReportGenerator = () => {
           html += `
             <div class="road-group-wrapper">
               <div class="road-group">
-                <div class="road-header">NO. JALAN: ${roadGroup.noJalan}</div>
-                <div class="road-info">Total Ruas: ${
-                  roadGroup.totalRuas
-                } | Total Panjang: ${formatDistance(
+                <div class="road-summary-section">
+                  <div class="road-header">NO. JALAN: ${roadGroup.noJalan}</div>
+                  <div class="road-info">Total Ruas: ${
+                    roadGroup.totalRuas
+                  } | Total Panjang: ${formatDistance(
             roadGroup.totalPanjang
           )}</div>
+                </div>
                 
                 <table class="data-table">
               <thead>
@@ -903,9 +1027,11 @@ export const useReportGenerator = () => {
           html += `
                 </tbody>
               </table>
-              <div class="road-info"><strong>TOTAL PANJANG M: ${formatDistance(
-                roadGroup.totalPanjang
-              )}</strong></div>
+              <div class="road-summary-section">
+                <div class="road-info"><strong>TOTAL PANJANG M: ${formatDistance(
+                  roadGroup.totalPanjang
+                )}</strong></div>
+              </div>
             </div>
           </div>
           `;
@@ -1342,12 +1468,14 @@ export const useReportGenerator = () => {
           html += `
             <div class="road-group-wrapper">
               <div class="road-group">
-                <div class="road-header">NO. JALAN: ${roadGroup.noJalan}</div>
-                <div class="road-info">Total Ruas: ${
-                  roadGroup.totalRuas
-                } | Total Panjang: ${formatDistance(
+                <div class="road-summary-section">
+                  <div class="road-header">NO. JALAN: ${roadGroup.noJalan}</div>
+                  <div class="road-info">Total Ruas: ${
+                    roadGroup.totalRuas
+                  } | Total Panjang: ${formatDistance(
             roadGroup.totalPanjang
           )}</div>
+                </div>
                 
                 <table class="data-table">
               <thead>
@@ -1423,9 +1551,11 @@ export const useReportGenerator = () => {
           html += `
                 </tbody>
               </table>
-              <div class="road-info"><strong>TOTAL PANJANG M: ${formatDistance(
-                roadGroup.totalPanjang
-              )}</strong></div>
+              <div class="road-summary-section">
+                <div class="road-info"><strong>TOTAL PANJANG M: ${formatDistance(
+                  roadGroup.totalPanjang
+                )}</strong></div>
+              </div>
             </div>
           </div>
           `;
@@ -1462,11 +1592,12 @@ export const useReportGenerator = () => {
       }.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
-        scale: 2,
+        scale: 1.5, // Reduced scale to avoid zoomed appearance
         useCORS: true,
-        allowTaint: true,
+        allowTaint: false, // Set to false to avoid tainted canvas
         scrollX: 0,
         scrollY: 0,
+        logging: false, // Disable logging for better performance
       },
       jsPDF: {
         unit: "in",
@@ -1476,7 +1607,10 @@ export const useReportGenerator = () => {
         putOnlyUsedFonts: true,
         floatPrecision: 16,
       },
-      pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+      pagebreak: {
+        mode: ["css"],
+        avoid: [".road-summary-section", ".footer"],
+      },
     };
 
     // Generate PDF first
