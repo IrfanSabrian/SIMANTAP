@@ -29,14 +29,153 @@ export const useReportGenerator = () => {
         <html>
         <head>
           <meta charset="UTF-8">
-          <link rel="stylesheet" href="/assets/css/report-pdf.css">
+          <!-- CSS sudah di-inline untuk menghindari MIME type error -->
           <style>
             /* Additional inline styles for PDF generation */
             @page {
               size: A3 landscape;
               margin: 0.5in 0.5in 1in 0.5in;
             }
-            /* CSS utama sudah di file eksternal report-pdf.css */
+            
+            body {
+              font-family: Arial, sans-serif;
+              font-size: 12px;
+              line-height: 1.4;
+              margin: 0;
+              padding: 0;
+            }
+            
+            .report-header-section {
+              page-break-inside: avoid;
+              break-inside: avoid;
+              -webkit-break-inside: avoid;
+            }
+            
+            .header {
+              text-align: center;
+              margin-bottom: 10px;
+              page-break-inside: avoid;
+              break-inside: avoid;
+              page-break-after: avoid;
+              break-after: avoid;
+            }
+            
+            .title {
+              font-size: 24px;
+              font-weight: bold;
+              margin-bottom: 10px;
+              page-break-inside: avoid;
+              break-inside: avoid;
+            }
+            
+            .subtitle {
+              font-size: 18px;
+              margin-bottom: 5px;
+              page-break-inside: avoid;
+              break-inside: avoid;
+            }
+            
+            .date {
+              font-size: 14px;
+              color: #666;
+              page-break-inside: avoid;
+              break-inside: avoid;
+            }
+            
+            .data-table {
+              width: 100%;
+              border-collapse: collapse;
+              font-size: 10px;
+              margin: 5px 0;
+              table-layout: fixed;
+            }
+            
+            .data-table th {
+              background-color: #f0f0f0;
+              border: 1px solid #ddd;
+              padding: 6px;
+              text-align: center;
+              font-weight: bold;
+              font-size: 9px;
+            }
+            
+            .data-table td {
+              border: 1px solid #ddd;
+              padding: 5px;
+              text-align: left;
+              vertical-align: top;
+              word-wrap: break-word;
+              overflow-wrap: break-word;
+            }
+            
+            .data-table tr:nth-child(even) {
+              background-color: #f9f9f9;
+            }
+            
+            .condition-baik {
+              color: #166534;
+              font-weight: bold;
+            }
+            .condition-sedang {
+              color: #854d0e;
+              font-weight: bold;
+            }
+            .condition-rusak-ringan {
+              color: #9a3412;
+              font-weight: bold;
+            }
+            .condition-rusak-berat {
+              color: #991b1b;
+              font-weight: bold;
+            }
+            
+            .road-group-wrapper {
+              display: block !important;
+              margin-bottom: 20px !important;
+              padding: 10px !important;
+              border: 1px solid #e0e0e0 !important;
+              background-color: #fafafa !important;
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
+              -webkit-break-inside: avoid !important;
+              page-break-before: auto !important;
+              break-before: auto !important;
+              page-break-after: auto !important;
+              break-after: auto !important;
+            }
+            
+            .road-group {
+              margin: 0;
+              padding: 5px !important;
+            }
+            
+            .road-header {
+              font-size: 14px;
+              font-weight: bold;
+              margin-bottom: 5px;
+              color: #1f2937;
+              background-color: #f3f4f6;
+              padding: 8px;
+              border-radius: 4px;
+            }
+            
+            .road-info {
+              font-size: 10px;
+              margin-bottom: 10px;
+              color: #666;
+              background-color: #f9fafb;
+              padding: 5px;
+              border-radius: 3px;
+            }
+            
+            .footer {
+              text-align: center;
+              margin-top: 10px;
+              font-size: 10px;
+              color: #666;
+            }
+            
+            /* CSS sudah di-inline untuk menghindari MIME type error */
           </style>
         </head>
         <body>
