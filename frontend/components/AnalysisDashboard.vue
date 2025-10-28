@@ -1,16 +1,5 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
-    <div
-      class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg p-6 text-white"
-    >
-      <h2 class="text-2xl font-bold mb-2">Analisis Data Jalan Lingkungan</h2>
-      <p class="text-indigo-100">
-        Dashboard analisis komprehensif untuk data infrastruktur jalan di
-        Kabupaten Kubu Raya
-      </p>
-    </div>
-
     <!-- Key Metrics Overview -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
       <!-- Total Panjang Jalan -->

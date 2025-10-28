@@ -56,32 +56,13 @@
             </div>
           </div>
 
-          <!-- User Menu -->
-          <div class="flex items-center space-x-2 sm:space-x-4">
-            <!-- User Info -->
-            <div class="hidden md:block text-right">
-              <p class="text-sm font-semibold text-gray-900 dark:text-white">
-                {{ user?.username || "User" }}
-              </p>
-              <p
-                class="text-xs px-2 py-0.5 rounded-full inline-block"
-                :class="
-                  user?.role === 'ADMIN'
-                    ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
-                    : 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
-                "
-              >
-                {{ user?.role || "USER" }}
-              </p>
-            </div>
-
-            <!-- Logout Button -->
-            <button
-              @click="handleLogout"
-              class="inline-flex items-center px-3 sm:px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+          <!-- User Info Badge -->
+          <div class="flex items-center space-x-2">
+            <div
+              class="hidden sm:flex items-center space-x-2 bg-gray-100 dark:bg-gray-700 px-3 py-1.5 rounded-lg"
             >
               <svg
-                class="w-4 h-4 sm:mr-2"
+                class="w-4 h-4 text-gray-600 dark:text-gray-300"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -90,11 +71,23 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                 />
               </svg>
-              <span class="hidden sm:inline">Logout</span>
-            </button>
+              <span class="text-sm font-medium text-gray-900 dark:text-white">
+                {{ user?.username || "User" }}
+              </span>
+              <span
+                class="text-xs px-2 py-0.5 rounded-full"
+                :class="
+                  user?.role === 'ADMIN'
+                    ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
+                    : 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
+                "
+              >
+                {{ user?.role || "USER" }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -112,11 +105,11 @@
       <!-- Sidebar -->
       <aside
         :class="[
-          'fixed lg:sticky top-16 left-0 w-64 bg-white dark:bg-gray-800 shadow-lg h-[calc(100vh-4rem)] z-40 transition-transform duration-300 ease-in-out',
+          'fixed lg:sticky top-16 left-0 w-64 bg-white dark:bg-gray-800 shadow-lg h-[calc(100vh-4rem)] z-40 transition-transform duration-300 ease-in-out flex flex-col',
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
         ]"
       >
-        <nav class="p-4 space-y-2 overflow-y-auto h-full pb-20">
+        <nav class="p-3 space-y-1 overflow-y-auto flex-1">
           <!-- Menu Dashboard (Top) -->
           <button
             @click="
@@ -124,14 +117,14 @@
               sidebarOpen = false;
             "
             :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200',
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
               activeTab === 'dashboard'
                 ? 'bg-gradient-to-r from-indigo-500 to-indigo-600 text-white shadow-lg'
                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
             ]"
           >
             <svg
-              class="w-5 h-5"
+              class="w-4 h-4 flex-shrink-0"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -146,130 +139,352 @@
             <span class="font-medium">Dashboard</span>
           </button>
 
-          <!-- Menu Data -->
-          <div class="mb-2">
-            <p
-              class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-4 mb-2"
+          <!-- Menu Profil (Accordion) -->
+          <div class="mt-2">
+            <button
+              @click="profilMenuOpen = !profilMenuOpen"
+              class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-left transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              Data
-            </p>
+              <div class="flex items-center space-x-2">
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  />
+                </svg>
+                <span class="text-xs font-semibold uppercase tracking-wider"
+                  >Profil</span
+                >
+              </div>
+              <svg
+                :class="[
+                  'w-4 h-4 transition-transform duration-200',
+                  profilMenuOpen ? 'rotate-180' : '',
+                ]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <!-- Profil Submenu -->
+            <div
+              v-show="profilMenuOpen"
+              class="mt-1 space-y-1 pl-3 overflow-hidden transition-all duration-200"
+            >
+              <button
+                @click="
+                  activeTab = 'profil-berita';
+                  sidebarOpen = false;
+                "
+                :class="[
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
+                  activeTab === 'profil-berita'
+                    ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
+                ]"
+              >
+                <svg
+                  class="w-4 h-4 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                  />
+                </svg>
+                <span>Kelola Berita</span>
+              </button>
+
+              <button
+                @click="
+                  activeTab = 'profil-dokumentasi-kegiatan';
+                  sidebarOpen = false;
+                "
+                :class="[
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
+                  activeTab === 'profil-dokumentasi-kegiatan'
+                    ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white shadow-md'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
+                ]"
+              >
+                <svg
+                  class="w-4 h-4 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                <span>Dokumentasi Kegiatan</span>
+              </button>
+
+              <button
+                @click="
+                  activeTab = 'profil-dokumentasi-infrastruktur';
+                  sidebarOpen = false;
+                "
+                :class="[
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
+                  activeTab === 'profil-dokumentasi-infrastruktur'
+                    ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
+                ]"
+              >
+                <svg
+                  class="w-4 h-4 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+                <span>Dok. Infrastruktur</span>
+              </button>
+
+              <button
+                @click="
+                  activeTab = 'profil-dokumen-ppid';
+                  sidebarOpen = false;
+                "
+                :class="[
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
+                  activeTab === 'profil-dokumen-ppid'
+                    ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
+                ]"
+              >
+                <svg
+                  class="w-4 h-4 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  />
+                </svg>
+                <span>Dokumen PPID</span>
+              </button>
+            </div>
           </div>
-          <button
-            @click="
-              activeTab = 'jalan';
-              sidebarOpen = false;
-            "
-            :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200',
-              activeTab === 'jalan'
-                ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
-            ]"
-          >
-            <svg class="w-5 h-5" viewBox="0 0 256 256" fill="currentColor">
-              <path
-                d="M147.6,141v-0.5l-3.1-41.5c-0.1-1.1-0.6-2.1-1.4-2.9c-0.9-0.8-1.9-1.2-3-1.2h-24.1c-1.1,0-2.1,0.4-3,1.2c-0.9,0.8-1.3,1.8-1.4,2.9l-3.1,41.5v0.5c-0.1,1,0.3,1.9,1,2.6c0.8,0.7,1.7,1,2.7,1h31.6c1,0,1.9-0.3,2.7-1C147.3,142.9,147.7,142,147.6,141L147.6,141z M246,201.5c0,6.3-2,9.5-6,9.5h-91.3c1.1,0,2.1-0.4,2.8-1.2c0.8-0.8,1.1-1.8,1-2.9l-2.6-33.2c-0.1-1.1-0.6-2.1-1.4-2.9c-0.9-0.8-1.9-1.2-3-1.2h-35.3c-1.1,0-2.1,0.4-3,1.2c-0.9,0.8-1.3,1.8-1.4,2.9l-2.6,33.2c-0.1,1.1,0.3,2.1,1,2.9c0.8,0.8,1.7,1.2,2.8,1.2H16c-4,0-6-3.2-6-9.5c0-4.7,1.1-9.7,3.4-15.1L67.4,51.1c0.7-1.6,1.8-3.1,3.4-4.3c1.6-1.2,3.2-1.8,4.9-1.8h43.9c-1.1,0-2.1,0.4-3,1.2c-0.9,0.8-1.3,1.8-1.4,2.9l-1.9,24.9c-0.1,1.2,0.3,2.2,1,3c0.8,0.8,1.7,1.2,2.8,1.2h21.5c1.1,0,2.1-0.4,2.8-1.2c0.8-0.8,1.1-1.8,1-3l-2-24.9c-0.1-1.1-0.6-2.1-1.4-2.9s-1.9-1.2-3-1.2h44c1.7,0,3.4,0.6,4.9,1.8c1.6,1.2,2.7,2.6,3.4,4.3l54.1,135.4C244.9,191.9,246,196.9,246,201.5L246,201.5z"
-              />
-            </svg>
-            <span class="font-medium">Jalan Lingkungan</span>
-          </button>
 
-          <button
-            @click="
-              activeTab = 'jembatan';
-              sidebarOpen = false;
-            "
-            :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200',
-              activeTab === 'jembatan'
-                ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white shadow-lg'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
-            ]"
-          >
-            <svg class="w-5 h-5" viewBox="0 0 256 256" fill="currentColor">
-              <path
-                d="M238.6,201.7c-1,0-5.3,0-7.4,0h-19.9c-12.2-34.4-44.8-59-83.4-59c-38.5,0-71.2,24.7-83.4,59H24.8c-2.1,0-6.4,0-7.4,0c-4.1,0-7.4-3.3-7.4-7.4V187v-73.7c0-8.1,6.6-14.8,14.8-14.8h7.4V69H17.4c-4.1,0-7.4-3.3-7.4-7.4c0-4.1,3.3-7.4,7.4-7.4h221.2c4.1,0,7.4,3.3,7.4,7.4c0,4.1-3.3,7.4-7.4,7.4h-14.7v29.5h7.4c8.1,0,14.8,6.6,14.8,14.8V187v7.4C246,198.4,242.7,201.7,238.6,201.7z M76.4,69H46.9v29.5h29.5V69z M120.6,69H91.1v29.5h29.5V69z M164.9,69h-29.5v29.5h29.5V69z M209.1,69h-29.5v29.5h29.5V69z"
-              />
-            </svg>
-            <span class="font-medium">Jembatan Lingkungan</span>
-          </button>
+          <!-- Menu Data (Accordion) -->
+          <div class="mt-2">
+            <button
+              @click="dataMenuOpen = !dataMenuOpen"
+              class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-left transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <div class="flex items-center space-x-2">
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+                  />
+                </svg>
+                <span class="text-xs font-semibold uppercase tracking-wider"
+                  >Data</span
+                >
+              </div>
+              <svg
+                :class="[
+                  'w-4 h-4 transition-transform duration-200',
+                  dataMenuOpen ? 'rotate-180' : '',
+                ]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
 
-          <button
-            @click="
-              activeTab = 'drainase';
-              sidebarOpen = false;
-            "
-            :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200',
-              activeTab === 'drainase'
-                ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-lg'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
-            ]"
-          >
-            <svg class="w-5 h-5" viewBox="0 0 256 256" fill="currentColor">
-              <path d="M10,210.5h236v16.8H10V210.5L10,210.5z" />
-              <path
-                d="M90.8,28.8H18v9.9h60.1v70.4H18v9.9h72.8L90.8,28.8L90.8,28.8z"
-              />
-              <path
-                d="M106.2,119.1c-0.4,20.8,0,87.4,0,87.4h67c0,0-2.2-76.5-9.5-96.9c-7.3-20.4-28.8-59.7-69.6-65.5v60.4C94.1,104.5,106.9,105.2,106.2,119.1z"
-              />
-            </svg>
-            <span class="font-medium">Drainase Lingkungan</span>
-          </button>
+            <!-- Data Submenu -->
+            <div
+              v-show="dataMenuOpen"
+              class="mt-1 space-y-1 pl-3 overflow-hidden transition-all duration-200"
+            >
+              <button
+                @click="
+                  activeTab = 'jalan';
+                  sidebarOpen = false;
+                "
+                :class="[
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
+                  activeTab === 'jalan'
+                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
+                ]"
+              >
+                <svg
+                  class="w-4 h-4 flex-shrink-0"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M147.6,141v-0.5l-3.1-41.5c-0.1-1.1-0.6-2.1-1.4-2.9c-0.9-0.8-1.9-1.2-3-1.2h-24.1c-1.1,0-2.1,0.4-3,1.2c-0.9,0.8-1.3,1.8-1.4,2.9l-3.1,41.5v0.5c-0.1,1,0.3,1.9,1,2.6c0.8,0.7,1.7,1,2.7,1h31.6c1,0,1.9-0.3,2.7-1C147.3,142.9,147.7,142,147.6,141L147.6,141z M246,201.5c0,6.3-2,9.5-6,9.5h-91.3c1.1,0,2.1-0.4,2.8-1.2c0.8-0.8,1.1-1.8,1-2.9l-2.6-33.2c-0.1-1.1-0.6-2.1-1.4-2.9c-0.9-0.8-1.9-1.2-3-1.2h-35.3c-1.1,0-2.1,0.4-3,1.2c-0.9,0.8-1.3,1.8-1.4,2.9l-2.6,33.2c-0.1,1.1,0.3,2.1,1,2.9c0.8,0.8,1.7,1.2,2.8,1.2H16c-4,0-6-3.2-6-9.5c0-4.7,1.1-9.7,3.4-15.1L67.4,51.1c0.7-1.6,1.8-3.1,3.4-4.3c1.6-1.2,3.2-1.8,4.9-1.8h43.9c-1.1,0-2.1,0.4-3,1.2c-0.9,0.8-1.3,1.8-1.4,2.9l-1.9,24.9c-0.1,1.2,0.3,2.2,1,3c0.8,0.8,1.7,1.2,2.8,1.2h21.5c1.1,0,2.1-0.4,2.8-1.2c0.8-0.8,1.1-1.8,1-3l-2-24.9c-0.1-1.1-0.6-2.1-1.4-2.9s-1.9-1.2-3-1.2h44c1.7,0,3.4,0.6,4.9,1.8c1.6,1.2,2.7,2.6,3.4,4.3l54.1,135.4C244.9,191.9,246,196.9,246,201.5L246,201.5z"
+                  />
+                </svg>
+                <span>Jalan</span>
+              </button>
 
-          <button
-            @click="
-              activeTab = 'kawasan';
-              sidebarOpen = false;
-            "
-            :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200',
-              activeTab === 'kawasan'
-                ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
-            ]"
-          >
-            <svg class="w-5 h-5" viewBox="0 0 256 256" fill="currentColor">
-              <path
-                d="M127,60.7c-1.2,0.5-71.2,53.6-71.2,54c0,0.7,2.2,1,9.5,1h7.3v38.7v38.8l1.2,1.2c1.1,1.1,1.5,1.2,5.5,1.2h4.3v-25.9c0-25.4,0-25.9,1-27.2l1-1.3h16.5c14.1,0,16.6,0.1,17.5,0.8l1.1,0.7v26.5v26.4H151h30.4l1.2-1.2l1.2-1.2v-38.8v-38.7h7.8c4.4,0,8.1-0.2,8.5-0.5c0.9-0.6,1.5-0.1-14.8-12.4l-12.6-9.5l0-14.9c0-11-0.2-15.2-0.6-16.1l-0.6-1.2L160,60.9c-10.1-0.1-11.6,0-12.4,0.7c-0.7,0.7-0.9,1.7-1,6.3l-0.1,5.4l-8.3-6.2C130.2,61,128.5,60.1,127,60.7z M171.7,142.4c1,1.2,1,1.9,1,13v11.7l-1.2,1.2l-1.2,1.2h-16.4c-15.7,0-16.4,0-17.3-1c-0.9-0.9-1-1.6-1-13.4c0-12.4,0-12.5,1.1-13.2c0.9-0.7,3.4-0.8,17.5-0.8h16.5L171.7,142.4z"
-              />
-              <path
-                d="M29.3,106.9C18.7,115,10,121.8,10,122.1s2,0.5,4.4,0.6l4.3,0.1v21.5c0,12.7,0.2,21.8,0.5,22.2c0.4,0.6,3.6,0.7,24.4,0.7h24l0.1-23.7l0.1-23.7H55.1c-10.8,0-12.7-0.1-12.7-0.7c0-0.4,4.8-4.4,10.6-9c5.8-4.6,10.4-8.5,10.3-8.7c-0.7-1.2-12.5-9.5-13.4-9.5C49.3,92.1,40.1,98.7,29.3,106.9z"
-              />
-              <path
-                d="M198.7,96.7c-3.3,2.5-6.1,4.7-6.2,4.8c0,0,4.8,3.9,10.7,8.6c6,4.7,10.8,8.9,10.8,9.2c0,0.6-2,0.7-12.7,0.7h-12.7l0.1,23.7l0.1,23.7l23,0.1c15.3,0,23.3,0,23.9-0.4c0.9-0.5,1-1.2,1-22.4v-21.9h4.5c2.5,0,4.7-0.2,4.8-0.4c0.4-0.6-38.7-30.1-40.1-30.2C205,92.1,203.2,93.2,198.7,96.7z"
-              />
-            </svg>
-            <span class="font-medium">Kawasan Permukiman</span>
-          </button>
+              <button
+                @click="
+                  activeTab = 'jembatan';
+                  sidebarOpen = false;
+                "
+                :class="[
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
+                  activeTab === 'jembatan'
+                    ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white shadow-md'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
+                ]"
+              >
+                <svg
+                  class="w-4 h-4 flex-shrink-0"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M238.6,201.7c-1,0-5.3,0-7.4,0h-19.9c-12.2-34.4-44.8-59-83.4-59c-38.5,0-71.2,24.7-83.4,59H24.8c-2.1,0-6.4,0-7.4,0c-4.1,0-7.4-3.3-7.4-7.4V187v-73.7c0-8.1,6.6-14.8,14.8-14.8h7.4V69H17.4c-4.1,0-7.4-3.3-7.4-7.4c0-4.1,3.3-7.4,7.4-7.4h221.2c4.1,0,7.4,3.3,7.4,7.4c0,4.1-3.3,7.4-7.4,7.4h-14.7v29.5h7.4c8.1,0,14.8,6.6,14.8,14.8V187v7.4C246,198.4,242.7,201.7,238.6,201.7z M76.4,69H46.9v29.5h29.5V69z M120.6,69H91.1v29.5h29.5V69z M164.9,69h-29.5v29.5h29.5V69z M209.1,69h-29.5v29.5h29.5V69z"
+                  />
+                </svg>
+                <span>Jembatan</span>
+              </button>
 
-          <button
-            @click="
-              activeTab = 'rumah';
-              sidebarOpen = false;
-            "
-            :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200',
-              activeTab === 'rumah'
-                ? 'bg-gradient-to-r from-rose-500 to-rose-600 text-white shadow-lg'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
-            ]"
-          >
-            <svg class="w-5 h-5" viewBox="0 -32 576 576" fill="currentColor">
-              <path
-                d="M288 114.96L69.47 307.71c-1.62 1.46-3.69 2.14-5.47 3.35V496c0 8.84 7.16 16 16 16h149.23L192 439.19l104.11-64-60.16-119.22L384 392.75l-104.11 64L319.81 512H496c8.84 0 16-7.16 16-16V311.1c-1.7-1.16-3.72-1.82-5.26-3.2L288 114.96zm282.69 121.32L512 184.45V48c0-8.84-7.16-16-16-16h-64c-8.84 0-16 7.16-16 16v51.69L314.75 10.31C307.12 3.45 297.56.01 288 0s-19.1 3.41-26.7 10.27L5.31 236.28c-6.57 5.91-7.12 16.02-1.21 22.6l21.4 23.82c5.9 6.57 16.02 7.12 22.6 1.21L277.42 81.63c6.05-5.33 15.12-5.33 21.17 0L527.91 283.9c6.57 5.9 16.69 5.36 22.6-1.21l21.4-23.82c5.9-6.57 5.36-16.69-1.22-22.59z"
-              />
-            </svg>
-            <span class="font-medium">Rumah Tidak Layak Huni</span>
-          </button>
+              <button
+                @click="
+                  activeTab = 'drainase';
+                  sidebarOpen = false;
+                "
+                :class="[
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
+                  activeTab === 'drainase'
+                    ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-md'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
+                ]"
+              >
+                <svg
+                  class="w-4 h-4 flex-shrink-0"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                >
+                  <path d="M10,210.5h236v16.8H10V210.5L10,210.5z" />
+                  <path
+                    d="M90.8,28.8H18v9.9h60.1v70.4H18v9.9h72.8L90.8,28.8L90.8,28.8z"
+                  />
+                  <path
+                    d="M106.2,119.1c-0.4,20.8,0,87.4,0,87.4h67c0,0-2.2-76.5-9.5-96.9c-7.3-20.4-28.8-59.7-69.6-65.5v60.4C94.1,104.5,106.9,105.2,106.2,119.1z"
+                  />
+                </svg>
+                <span>Drainase</span>
+              </button>
+
+              <button
+                @click="
+                  activeTab = 'kawasan';
+                  sidebarOpen = false;
+                "
+                :class="[
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
+                  activeTab === 'kawasan'
+                    ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
+                ]"
+              >
+                <svg
+                  class="w-4 h-4 flex-shrink-0"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M127,60.7c-1.2,0.5-71.2,53.6-71.2,54c0,0.7,2.2,1,9.5,1h7.3v38.7v38.8l1.2,1.2c1.1,1.1,1.5,1.2,5.5,1.2h4.3v-25.9c0-25.4,0-25.9,1-27.2l1-1.3h16.5c14.1,0,16.6,0.1,17.5,0.8l1.1,0.7v26.5v26.4H151h30.4l1.2-1.2l1.2-1.2v-38.8v-38.7h7.8c4.4,0,8.1-0.2,8.5-0.5c0.9-0.6,1.5-0.1-14.8-12.4l-12.6-9.5l0-14.9c0-11-0.2-15.2-0.6-16.1l-0.6-1.2L160,60.9c-10.1-0.1-11.6,0-12.4,0.7c-0.7,0.7-0.9,1.7-1,6.3l-0.1,5.4l-8.3-6.2C130.2,61,128.5,60.1,127,60.7z M171.7,142.4c1,1.2,1,1.9,1,13v11.7l-1.2,1.2l-1.2,1.2h-16.4c-15.7,0-16.4,0-17.3-1c-0.9-0.9-1-1.6-1-13.4c0-12.4,0-12.5,1.1-13.2c0.9-0.7,3.4-0.8,17.5-0.8h16.5L171.7,142.4z"
+                  />
+                  <path
+                    d="M29.3,106.9C18.7,115,10,121.8,10,122.1s2,0.5,4.4,0.6l4.3,0.1v21.5c0,12.7,0.2,21.8,0.5,22.2c0.4,0.6,3.6,0.7,24.4,0.7h24l0.1-23.7l0.1-23.7H55.1c-10.8,0-12.7-0.1-12.7-0.7c0-0.4,4.8-4.4,10.6-9c5.8-4.6,10.4-8.5,10.3-8.7c-0.7-1.2-12.5-9.5-13.4-9.5C49.3,92.1,40.1,98.7,29.3,106.9z"
+                  />
+                  <path
+                    d="M198.7,96.7c-3.3,2.5-6.1,4.7-6.2,4.8c0,0,4.8,3.9,10.7,8.6c6,4.7,10.8,8.9,10.8,9.2c0,0.6-2,0.7-12.7,0.7h-12.7l0.1,23.7l0.1,23.7l23,0.1c15.3,0,23.3,0,23.9-0.4c0.9-0.5,1-1.2,1-22.4v-21.9h4.5c2.5,0,4.7-0.2,4.8-0.4c0.4-0.6-38.7-30.1-40.1-30.2C205,92.1,203.2,93.2,198.7,96.7z"
+                  />
+                </svg>
+                <span>Kawasan</span>
+              </button>
+
+              <button
+                @click="
+                  activeTab = 'rumah';
+                  sidebarOpen = false;
+                "
+                :class="[
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
+                  activeTab === 'rumah'
+                    ? 'bg-gradient-to-r from-rose-500 to-rose-600 text-white shadow-md'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
+                ]"
+              >
+                <svg
+                  class="w-4 h-4 flex-shrink-0"
+                  viewBox="0 -32 576 576"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M288 114.96L69.47 307.71c-1.62 1.46-3.69 2.14-5.47 3.35V496c0 8.84 7.16 16 16 16h149.23L192 439.19l104.11-64-60.16-119.22L384 392.75l-104.11 64L319.81 512H496c8.84 0 16-7.16 16-16V311.1c-1.7-1.16-3.72-1.82-5.26-3.2L288 114.96zm282.69 121.32L512 184.45V48c0-8.84-7.16-16-16-16h-64c-8.84 0-16 7.16-16 16v51.69L314.75 10.31C307.12 3.45 297.56.01 288 0s-19.1 3.41-26.7 10.27L5.31 236.28c-6.57 5.91-7.12 16.02-1.21 22.6l21.4 23.82c5.9 6.57 16.02 7.12 22.6 1.21L277.42 81.63c6.05-5.33 15.12-5.33 21.17 0L527.91 283.9c6.57 5.9 16.69 5.36 22.6-1.21l21.4-23.82c5.9-6.57 5.36-16.69-1.22-22.59z"
+                  />
+                </svg>
+                <span>RTLH</span>
+              </button>
+            </div>
+          </div>
 
           <!-- Menu Laporan & Analisis -->
           <div
-            class="pt-4 mt-2 mb-2 border-t border-gray-200 dark:border-gray-700"
+            class="pt-2 mt-2 mb-1 border-t border-gray-200 dark:border-gray-700"
           >
             <p
-              class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-4 mb-2"
+              class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 mb-1"
             >
               Laporan & Analisis
             </p>
@@ -280,14 +495,14 @@
               sidebarOpen = false;
             "
             :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200',
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
               activeTab === 'laporan'
-                ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg'
+                ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md'
                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
             ]"
           >
             <svg
-              class="w-5 h-5"
+              class="w-4 h-4 flex-shrink-0"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -308,14 +523,14 @@
               sidebarOpen = false;
             "
             :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200',
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
               activeTab === 'analisis'
-                ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg'
+                ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md'
                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
             ]"
           >
             <svg
-              class="w-5 h-5"
+              class="w-4 h-4 flex-shrink-0"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -333,10 +548,10 @@
           <!-- Menu Admin -->
           <div
             v-if="user?.role === 'ADMIN'"
-            class="pt-4 mt-2 mb-2 border-t border-gray-200 dark:border-gray-700"
+            class="pt-2 mt-2 mb-1 border-t border-gray-200 dark:border-gray-700"
           >
             <p
-              class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-4 mb-2"
+              class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 mb-1"
             >
               Admin
             </p>
@@ -348,14 +563,14 @@
               sidebarOpen = false;
             "
             :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200',
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
               activeTab === 'users'
-                ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg'
+                ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md'
                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
             ]"
           >
             <svg
-              class="w-5 h-5"
+              class="w-4 h-4 flex-shrink-0"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -370,6 +585,31 @@
             <span class="font-medium">Manajemen User</span>
           </button>
         </nav>
+
+        <!-- Logout Button (Fixed Bottom) -->
+        <div
+          class="flex-shrink-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-3"
+        >
+          <button
+            @click="handleLogout"
+            class="w-full flex items-center justify-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-lg transition-all duration-200 shadow-md hover:shadow-lg font-medium text-sm"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+            <span>Logout</span>
+          </button>
+        </div>
       </aside>
 
       <!-- Main Content Area -->
@@ -518,8 +758,105 @@
               <AduanList />
             </div>
 
+            <!-- Profil - Kelola Berita Section -->
+            <div v-show="activeTab === 'profil-berita'" class="space-y-6">
+              <!-- Header Banner -->
+              <div
+                class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-purple-500"
+              >
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Kelola Berita
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Manajemen berita dan artikel untuk website profil Kabupaten
+                  Kubu Raya
+                </p>
+              </div>
+              <BeritaManagement />
+            </div>
+
+            <!-- Profil - Dokumentasi Kegiatan Section -->
+            <div
+              v-show="activeTab === 'profil-dokumentasi-kegiatan'"
+              class="space-y-6"
+            >
+              <!-- Header Banner -->
+              <div
+                class="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-pink-500"
+              >
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Dokumentasi Kegiatan
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Kelola dokumentasi foto dan informasi kegiatan dinas di
+                  Kabupaten Kubu Raya
+                </p>
+              </div>
+              <DokumentasiKegiatanManagement />
+            </div>
+
+            <!-- Profil - Dokumentasi Infrastruktur Section -->
+            <div
+              v-show="activeTab === 'profil-dokumentasi-infrastruktur'"
+              class="space-y-6"
+            >
+              <!-- Header Banner -->
+              <div
+                class="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-orange-500"
+              >
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Dokumentasi Infrastruktur
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Manajemen dokumentasi pembangunan dan pemeliharaan
+                  infrastruktur di Kabupaten Kubu Raya
+                </p>
+              </div>
+              <DokumentasiInfrastrukturManagement />
+            </div>
+
+            <!-- Profil - Dokumen PPID Section -->
+            <div v-show="activeTab === 'profil-dokumen-ppid'" class="space-y-6">
+              <!-- Header Banner -->
+              <div
+                class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-green-500"
+              >
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Dokumen PPID
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Kelola dokumen informasi publik (PPID) untuk transparansi
+                  pemerintahan Kabupaten Kubu Raya
+                </p>
+              </div>
+              <DokumenPpidManagement />
+            </div>
+
             <!-- Jalan Lingkungan Section -->
             <div v-show="activeTab === 'jalan'" class="space-y-6">
+              <!-- Header Banner -->
+              <div
+                class="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-blue-500"
+              >
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Data Jalan Lingkungan
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Kelola dan monitor data infrastruktur jalan lingkungan di
+                  Kabupaten Kubu Raya
+                </p>
+              </div>
+
               <div
                 class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6"
               >
@@ -1153,6 +1490,21 @@
 
             <!-- Jembatan Lingkungan Section -->
             <div v-show="activeTab === 'jembatan'" class="space-y-6">
+              <!-- Header Banner -->
+              <div
+                class="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-cyan-500"
+              >
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Data Jembatan Lingkungan
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Kelola dan monitor data infrastruktur jembatan lingkungan di
+                  Kabupaten Kubu Raya
+                </p>
+              </div>
+
               <div
                 class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center"
               >
@@ -1195,6 +1547,21 @@
 
             <!-- Drainase Lingkungan Section -->
             <div v-show="activeTab === 'drainase'" class="space-y-6">
+              <!-- Header Banner -->
+              <div
+                class="bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-teal-500"
+              >
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Data Drainase Lingkungan
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Kelola dan monitor data sistem drainase lingkungan di
+                  Kabupaten Kubu Raya
+                </p>
+              </div>
+
               <div
                 class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center"
               >
@@ -1242,6 +1609,21 @@
 
             <!-- Kawasan Permukiman Section -->
             <div v-show="activeTab === 'kawasan'" class="space-y-6">
+              <!-- Header Banner -->
+              <div
+                class="bg-gradient-to-r from-emerald-50 to-green-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-emerald-500"
+              >
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Data Kawasan Permukiman
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Kelola dan monitor data kawasan permukiman di Kabupaten Kubu
+                  Raya
+                </p>
+              </div>
+
               <div
                 class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center"
               >
@@ -1291,6 +1673,21 @@
 
             <!-- Rumah Tidak Layak Huni Section -->
             <div v-show="activeTab === 'rumah'" class="space-y-6">
+              <!-- Header Banner -->
+              <div
+                class="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-rose-500"
+              >
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Data Rumah Tidak Layak Huni
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Kelola dan monitor data rumah tidak layak huni di Kabupaten
+                  Kubu Raya
+                </p>
+              </div>
+
               <div
                 class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center"
               >
@@ -1334,6 +1731,21 @@
 
             <!-- Laporan Section -->
             <div v-show="activeTab === 'laporan'" class="space-y-6">
+              <!-- Header Banner -->
+              <div
+                class="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-purple-500"
+              >
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Generator Laporan
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Buat dan download laporan komprehensif data infrastruktur
+                  Kabupaten Kubu Raya
+                </p>
+              </div>
+
               <!-- Report Generator -->
               <ReportGenerator
                 :stats="stats"
@@ -1346,6 +1758,21 @@
 
             <!-- Users Management Section -->
             <div v-show="activeTab === 'users'" class="space-y-6">
+              <!-- Header Banner -->
+              <div
+                class="bg-gradient-to-r from-purple-50 to-violet-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-purple-500"
+              >
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Manajemen User
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Kelola pengguna dan hak akses sistem SIJALI Kabupaten Kubu
+                  Raya
+                </p>
+              </div>
+
               <div
                 class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
               >
@@ -1654,6 +2081,21 @@
 
             <!-- Analisis Section -->
             <div v-show="activeTab === 'analisis'" class="space-y-6">
+              <!-- Header Banner -->
+              <div
+                class="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-orange-500"
+              >
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+                >
+                  Analisis Data Jalan Lingkungan
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Dashboard analisis komprehensif untuk data infrastruktur jalan
+                  di Kabupaten Kubu Raya
+                </p>
+              </div>
+
               <AnalysisDashboard
                 :stats="stats"
                 :condition-stats="conditionStats"
@@ -1992,6 +2434,10 @@ import UserDetailModal from "~/components/UserDetailModal.vue";
 import GeoJSONImportModal from "~/components/GeoJSONImportModal.vue";
 import AnalysisDashboard from "~/components/AnalysisDashboard.vue";
 import ReportGenerator from "~/components/ReportGenerator.vue";
+import BeritaManagement from "~/components/BeritaManagement.vue";
+import DokumentasiKegiatanManagement from "~/components/DokumentasiKegiatanManagement.vue";
+import DokumentasiInfrastrukturManagement from "~/components/DokumentasiInfrastrukturManagement.vue";
+import DokumenPpidManagement from "~/components/DokumenPpidManagement.vue";
 import Toast from "~/components/Toast.vue";
 import ConfirmationModal from "~/components/ConfirmationModal.vue";
 import { useReportGenerator } from "~/composables/useReportGenerator.js";
@@ -2060,6 +2506,8 @@ const token = ref(null);
 // UI State
 const activeTab = ref("dashboard");
 const sidebarOpen = ref(false);
+const profilMenuOpen = ref(false); // Accordion state for Profil menu - default closed
+const dataMenuOpen = ref(false); // Accordion state for Data menu - default closed
 const loading = ref(true);
 const loadingRoads = ref(true);
 const loadingUsers = ref(false);
