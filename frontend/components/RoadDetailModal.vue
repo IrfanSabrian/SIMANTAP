@@ -1270,6 +1270,10 @@ const emit = defineEmits(["close", "save", "update"]);
 const { fetchRoads } = useApiService();
 const toast = useToast();
 
+// Web Profil API URL from config
+const config = useRuntimeConfig();
+const WEB_PROFIL_API = config.public.webProfilApiUrl;
+
 // YouTube URL helper functions
 const getYouTubeEmbedUrl = (url) => {
   if (!url) return "";
@@ -1432,7 +1436,6 @@ const fetchDokumentasiByRuas = async (noRuas) => {
 
   loadingDokumentasi.value = true;
   try {
-    const WEB_PROFIL_API = "http://localhost:3003/api";
     const response = await fetch(
       `${WEB_PROFIL_API}/dokumentasi-infrastruktur/by-ruas/${noRuas}`
     );

@@ -638,7 +638,7 @@ import Toast from "./Toast.vue";
 import { useToast } from "~/composables/useToast";
 
 const config = useRuntimeConfig();
-const WEB_PROFIL_API = "http://localhost:3003/api";
+const WEB_PROFIL_API = config.public.webProfilApiUrl;
 const { success: showSuccess, error: showError } = useToast();
 
 // Data

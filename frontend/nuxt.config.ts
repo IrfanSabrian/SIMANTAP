@@ -112,12 +112,17 @@ export default defineNuxtConfig({
     public: {
       arcgisApiKey:
         process.env.NUXT_PUBLIC_ARCGIS_API_KEY || "your-api-key-here",
+      // SIJALI Backend API
       apiBaseUrl:
         process.env.NUXT_PUBLIC_API_BASE_URL ||
         "https://sijali-production.up.railway.app",
       apiUrl:
         process.env.NUXT_PUBLIC_API_URL ||
         "https://sijali-production.up.railway.app/api",
+      // Web Profil Backend API
+      webProfilApiUrl:
+        process.env.NUXT_PUBLIC_WEB_PROFIL_API_URL ||
+        "http://localhost:3003/api",
       appName: process.env.NUXT_PUBLIC_APP_NAME || "SIJALI",
       appVersion: process.env.NUXT_PUBLIC_APP_VERSION || "1.0.0",
       appDescription:
