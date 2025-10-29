@@ -213,30 +213,6 @@
                   </div>
                 </div>
 
-                <!-- Dokumentasi Section -->
-                <div>
-                  <h4
-                    class="text-lg font-semibold text-gray-900 dark:text-white mb-4"
-                  >
-                    Dokumentasi
-                  </h4>
-                  <div class="grid grid-cols-1 gap-4">
-                    <div>
-                      <label
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                      >
-                        Link YouTube
-                      </label>
-                      <input
-                        v-model="editForm.dokumentasi"
-                        type="url"
-                        placeholder="https://www.youtube.com/watch?v=..."
-                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-                      />
-                    </div>
-                  </div>
-                </div>
-
                 <!-- UTM Coordinates Section (Read Only) -->
                 <div>
                   <h4
@@ -642,75 +618,97 @@
                   </div>
                 </div>
 
-                <!-- Dokumentasi Section -->
-                <div>
+                <!-- Dokumentasi Video Section -->
+                <div v-if="loadingDokumentasi || dokumentasi">
                   <h4
                     class="text-lg font-semibold text-gray-900 dark:text-white mb-4"
                   >
-                    Dokumentasi
+                    Dokumentasi Video
                   </h4>
                   <div class="grid grid-cols-1 gap-4">
-                    <div>
-                      <label
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                      >
-                        Video Dokumentasi
-                      </label>
-                      <div v-if="road.dokumentasi" class="mt-2">
-                        <a
-                          :href="getYouTubeEmbedUrl(road.dokumentasi)"
-                          :data-fancybox="`youtube-${road.id || 'video'}`"
-                          :data-caption="`Video Dokumentasi - ${
-                            road.namaJalan || road.nama || 'Jalan'
-                          }`"
-                          class="block w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden cursor-pointer"
-                          @click.prevent="openYouTubeFancybox(road.dokumentasi)"
+                    <div v-if="loadingDokumentasi" class="mt-2">
+                      <div class="flex items-center justify-center py-8">
+                        <svg
+                          class="animate-spin h-8 w-8 text-blue-600"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
                         >
-                          <div class="relative">
-                            <img
-                              :src="getYouTubeThumbnail(road.dokumentasi)"
-                              :alt="'Thumbnail untuk ' + road.dokumentasi"
-                              class="w-full h-48 object-cover"
-                              @error="
-                                $event.target.src =
-                                  '/images/placeholder-video.jpg'
-                              "
-                            />
+                          <circle
+                            class="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            stroke-width="4"
+                          ></circle>
+                          <path
+                            class="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        <span class="ml-2 text-gray-600 dark:text-gray-400">
+                          Memuat dokumentasi...
+                        </span>
+                      </div>
+                    </div>
+                    <div v-else-if="dokumentasi?.linkYoutube" class="mt-2">
+                      <a
+                        :href="getYouTubeEmbedUrl(dokumentasi.linkYoutube)"
+                        :data-fancybox="`youtube-${road.id || 'video'}`"
+                        :data-caption="`Video Dokumentasi - ${
+                          road.namaJalan || road.nama || 'Jalan'
+                        }`"
+                        class="block w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden cursor-pointer"
+                        @click.prevent="
+                          openYouTubeFancybox(dokumentasi.linkYoutube)
+                        "
+                      >
+                        <div class="relative">
+                          <img
+                            :src="getYouTubeThumbnail(dokumentasi.linkYoutube)"
+                            :alt="'Thumbnail untuk ' + dokumentasi.linkYoutube"
+                            class="w-full h-48 object-cover"
+                            @error="
+                              $event.target.src =
+                                '/images/placeholder-video.jpg'
+                            "
+                          />
+                          <div
+                            class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 hover:bg-opacity-50 transition-all duration-200"
+                          >
                             <div
-                              class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 hover:bg-opacity-50 transition-all duration-200"
+                              class="bg-red-600 rounded-full p-4 hover:bg-red-700 transition-colors duration-200"
                             >
-                              <div
-                                class="bg-red-600 rounded-full p-4 hover:bg-red-700 transition-colors duration-200"
+                              <svg
+                                class="w-8 h-8 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
                               >
-                                <svg
-                                  class="w-8 h-8 text-white"
-                                  fill="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path d="M8 5v14l11-7z" />
-                                </svg>
-                              </div>
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
                             </div>
                           </div>
-                        </a>
-                        <div class="mt-2">
-                          <p class="text-sm text-gray-600 dark:text-gray-400">
-                            <strong>Link YouTube:</strong>
-                            <a
-                              :href="road.dokumentasi"
-                              target="_blank"
-                              class="text-blue-600 dark:text-blue-400 hover:underline break-all"
-                            >
-                              {{ road.dokumentasi }}
-                            </a>
-                          </p>
                         </div>
-                      </div>
-                      <div v-else class="mt-2">
-                        <p class="text-gray-500 dark:text-gray-400">
-                          Dokumentasi belum tersedia
+                      </a>
+                      <div class="mt-2">
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                          <strong>Link YouTube:</strong>
+                          <a
+                            :href="dokumentasi.linkYoutube"
+                            target="_blank"
+                            class="text-blue-600 dark:text-blue-400 hover:underline break-all"
+                          >
+                            {{ dokumentasi.linkYoutube }}
+                          </a>
                         </p>
                       </div>
+                    </div>
+                    <div v-else class="mt-2">
+                      <p class="text-gray-500 dark:text-gray-400">
+                        Dokumentasi video belum tersedia
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -973,22 +971,6 @@
                       </label>
                       <p class="text-gray-900 dark:text-white">
                         {{ road.Pngnl_Akhi || road.pngnlAkhi || "-" }}
-                      </p>
-                    </div>
-                    <div v-if="road.dokumentasi" class="md:col-span-2">
-                      <label
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                      >
-                        Dokumentasi
-                      </label>
-                      <p class="text-gray-900 dark:text-white">
-                        <a
-                          :href="road.dokumentasi"
-                          target="_blank"
-                          class="text-blue-600 dark:text-blue-400 hover:underline break-all"
-                        >
-                          {{ road.dokumentasi }}
-                        </a>
                       </p>
                     </div>
                   </div>
@@ -1352,6 +1334,8 @@ const mapLoading = ref(false);
 const legendVisible = ref(true);
 const currentBasemap = ref("topo");
 const showBasemapSelector = ref(false);
+const dokumentasi = ref(null);
+const loadingDokumentasi = ref(false);
 
 // Edit mode state
 const isEditMode = ref(false);
@@ -1365,7 +1349,6 @@ const editForm = ref({
   lebarM: "",
   kondisi: "",
   keterangan: "",
-  dokumentasi: "",
   noJalan: "",
   tahun: "",
   nilai: "",
@@ -1443,6 +1426,33 @@ const closeModal = () => {
   emit("close");
 };
 
+// Fetch dokumentasi berdasarkan no_ruas
+const fetchDokumentasiByRuas = async (noRuas) => {
+  if (!noRuas) return;
+
+  loadingDokumentasi.value = true;
+  try {
+    const WEB_PROFIL_API = "http://localhost:3003/api";
+    const response = await fetch(
+      `${WEB_PROFIL_API}/dokumentasi-infrastruktur/by-ruas/${noRuas}`
+    );
+    const data = await response.json();
+
+    if (data.success && data.data) {
+      dokumentasi.value = data.data;
+      console.log("✅ Dokumentasi loaded:", dokumentasi.value);
+    } else {
+      dokumentasi.value = null;
+      console.log("ℹ️ No dokumentasi found for ruas:", noRuas);
+    }
+  } catch (error) {
+    console.error("Error fetching dokumentasi:", error);
+    dokumentasi.value = null;
+  } finally {
+    loadingDokumentasi.value = false;
+  }
+};
+
 // Fetch options from API
 const fetchKondisiOptions = async () => {
   try {
@@ -1502,7 +1512,6 @@ const populateEditForm = () => {
     lebarM: props.road.Lebar_m_ || props.road.lebarM || "",
     kondisi: props.road.Kondisi || props.road.kondisi || "",
     keterangan: props.road.Keterangan || props.road.keterangan || "",
-    dokumentasi: props.road.dokumentasi || "",
     noJalan: props.road.No_Jalan || props.road.noJalan || "",
     tahun: props.road.Tahun || props.road.tahun || "",
     nilai: props.road.Nilai || props.road.nilai || "",
@@ -1530,7 +1539,6 @@ const cancelEdit = () => {
     namaJalan: "",
     kecamatan: "",
     desa: "",
-    dokumentasi: "",
     panjangM: "",
     lebarM: "",
     kondisi: "",
@@ -2626,8 +2634,14 @@ watch(
       // Fetch options when modal opens
       fetchKondisiOptions();
       fetchKeteranganOptions();
+      // Fetch dokumentasi by no_ruas
+      if (props.road?.noRuas || props.road?.No_Ruas) {
+        const noRuas = props.road.noRuas || props.road.No_Ruas;
+        fetchDokumentasiByRuas(noRuas);
+      }
     } else {
       destroyMap();
+      dokumentasi.value = null;
     }
   }
 );
@@ -2638,6 +2652,11 @@ watch(
     if (newVal && props.visible) {
       await nextTick();
       initMap();
+      // Fetch dokumentasi when road changes
+      if (newVal.noRuas || newVal.No_Ruas) {
+        const noRuas = newVal.noRuas || newVal.No_Ruas;
+        fetchDokumentasiByRuas(noRuas);
+      }
     }
   }
 );

@@ -104,7 +104,6 @@ router.get("/", async (req, res) => {
           nilai: true,
           bobot: true,
           keterangan: true,
-          dokumentasi: true,
           kecamatan: true,
           desa: true,
           utmXAwal: true,
@@ -186,7 +185,7 @@ router.get("/geojson", async (req, res) => {
       SELECT 
         id, fid, no_ruas, nama, nama_jalan,
         panjang_m, lebar_m_, tahun, kondisi,
-        nilai, bobot, keterangan, dokumentasi, kecamatan, desa,
+        nilai, bobot, keterangan, kecamatan, desa,
         ST_AsText(geom) as geom_wkt
       FROM jalan_lingkungan_kubu_raya
       ${whereClause}
@@ -237,7 +236,6 @@ router.get("/geojson", async (req, res) => {
               nilai: road.nilai,
               bobot: road.bobot,
               keterangan: road.keterangan,
-              dokumentasi: road.dokumentasi,
               kecamatan: road.kecamatan,
               desa: road.desa,
             },
@@ -952,7 +950,6 @@ router.get("/report", async (req, res) => {
         nilai: true,
         bobot: true,
         keterangan: true,
-        dokumentasi: true,
         kecamatan: true,
         desa: true,
         utmXAwal: true,
@@ -1049,7 +1046,6 @@ router.get("/:id", async (req, res) => {
         nilai: true,
         bobot: true,
         keterangan: true,
-        dokumentasi: true,
         kecamatan: true,
         desa: true,
         utmXAwal: true,

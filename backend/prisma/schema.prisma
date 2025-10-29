@@ -29,7 +29,6 @@ model JalanLingkunganKubuRaya {
   nilai       Float?
   bobot       Int?
   keterangan  String?
-  dokumentasi String?
   kecamatan   String?
   desa        String?
   utmXAwal    Float?   @map("utm_x_awal")

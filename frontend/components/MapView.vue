@@ -622,16 +622,48 @@
 
               <div class="pb-2">
                 <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">
-                  Dokumentasi
+                  Dokumentasi Video
                 </p>
                 <div
+                  v-if="loadingDokumentasi"
+                  class="flex items-center justify-center py-8"
+                >
+                  <svg
+                    class="animate-spin h-6 w-6 text-blue-600"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  <span class="ml-2 text-xs text-gray-600 dark:text-gray-400">
+                    Memuat...
+                  </span>
+                </div>
+                <div
+                  v-else-if="dokumentasiInfrastruktur?.linkYoutube"
                   @click="openVideoPopup"
                   class="relative cursor-pointer group rounded-lg overflow-hidden border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 transition-all"
                 >
                   <img
-                    src="https://img.youtube.com/vi/1cxs89NrDJo/maxresdefault.jpg"
+                    :src="
+                      getYouTubeThumbnail(dokumentasiInfrastruktur.linkYoutube)
+                    "
                     alt="Video Dokumentasi"
                     class="w-full h-32 object-cover"
+                    @error="$event.target.src = '/images/placeholder-video.jpg'"
                   />
                   <div
                     class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-50 flex items-center justify-center transition-all"
@@ -648,6 +680,11 @@
                       </svg>
                     </div>
                   </div>
+                </div>
+                <div v-else class="text-center py-4">
+                  <p class="text-xs text-gray-400">
+                    Tidak ada dokumentasi video
+                  </p>
                 </div>
               </div>
 
@@ -671,7 +708,7 @@
         <!-- Video Popup Modal -->
         <transition name="fade">
           <div
-            v-if="videoPopupVisible"
+            v-if="videoPopupVisible && dokumentasiInfrastruktur?.linkYoutube"
             @click="closeVideoPopup"
             class="fixed inset-0 bg-black bg-opacity-75 z-[9999] flex items-center justify-center p-4"
           >
@@ -679,12 +716,37 @@
               @click.stop
               class="relative w-full max-w-4xl bg-black rounded-lg overflow-hidden shadow-2xl"
             >
+              <!-- Close Button -->
+              <button
+                @click="closeVideoPopup"
+                class="absolute top-4 right-4 z-10 text-white hover:text-gray-300 transition-colors bg-black bg-opacity-50 rounded-full p-2"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
               <!-- YouTube Video Embed -->
               <div class="relative" style="padding-bottom: 56.25%">
                 <iframe
-                  v-if="videoPopupVisible"
+                  v-if="
+                    videoPopupVisible && dokumentasiInfrastruktur?.linkYoutube
+                  "
                   class="absolute top-0 left-0 w-full h-full"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0"
+                  :src="
+                    getYouTubeEmbedUrl(dokumentasiInfrastruktur.linkYoutube) +
+                    '?autoplay=1&rel=0'
+                  "
                   title="Video Dokumentasi Jalan"
                   frameborder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -979,6 +1041,10 @@ let searchDebounceTimeout = null;
 const roadInfoVisible = ref(false);
 const selectedRoadInfo = ref(null);
 
+// Dokumentasi infrastruktur state
+const dokumentasiInfrastruktur = ref(null);
+const loadingDokumentasi = ref(false);
+
 // Legend state
 const legendVisible = ref(false);
 
@@ -998,6 +1064,37 @@ const aduanForm = reactive({
   keterangan: "",
   email: "",
   files: [],
+});
+
+// Helper functions for YouTube URL parsing
+const extractYouTubeVideoId = (url) => {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : null;
+};
+
+const getYouTubeEmbedUrl = (url) => {
+  if (!url) return "";
+  const videoId = extractYouTubeVideoId(url);
+  if (!videoId) return "";
+  return `https://www.youtube.com/embed/${videoId}`;
+};
+
+const getYouTubeThumbnail = (url) => {
+  const videoId = extractYouTubeVideoId(url);
+  return videoId
+    ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+    : null;
+};
+
+// Watch for selectedRoadInfo to fetch dokumentasi
+watch(selectedRoadInfo, (newValue) => {
+  if (newValue?.nomorRuas) {
+    fetchDokumentasiByRuas(newValue.nomorRuas);
+  } else {
+    dokumentasiInfrastruktur.value = null;
+  }
 });
 
 // Watch for anonim changes to clear name and email fields
@@ -2473,10 +2570,45 @@ const selectSearchResult = async (result) => {
   }
 };
 
+// Fetch dokumentasi infrastruktur berdasarkan no_ruas
+const fetchDokumentasiByRuas = async (noRuas) => {
+  if (!noRuas) {
+    dokumentasiInfrastruktur.value = null;
+    return;
+  }
+
+  loadingDokumentasi.value = true;
+  try {
+    const WEB_PROFIL_API = "http://localhost:3003/api";
+    const response = await fetch(
+      `${WEB_PROFIL_API}/dokumentasi-infrastruktur/by-ruas/${noRuas}`
+    );
+    const data = await response.json();
+
+    if (data.success && data.data) {
+      dokumentasiInfrastruktur.value = data.data;
+      console.log(
+        "✅ Dokumentasi loaded for ruas:",
+        noRuas,
+        dokumentasiInfrastruktur.value
+      );
+    } else {
+      dokumentasiInfrastruktur.value = null;
+      console.log("ℹ️ No dokumentasi found for ruas:", noRuas);
+    }
+  } catch (error) {
+    console.error("Error fetching dokumentasi:", error);
+    dokumentasiInfrastruktur.value = null;
+  } finally {
+    loadingDokumentasi.value = false;
+  }
+};
+
 // Close road info box and clear highlight
 const closeRoadInfo = async () => {
   roadInfoVisible.value = false;
   selectedRoadInfo.value = null;
+  dokumentasiInfrastruktur.value = null;
   // Clear cyan outline when info box is closed
   await clearRoadHighlight();
 };
