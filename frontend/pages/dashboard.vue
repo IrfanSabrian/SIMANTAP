@@ -48,10 +48,10 @@
               <h1
                 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
               >
-                Dashboard SIJALI
+                Dashboard SIMANTAP
               </h1>
               <p class="text-xs text-gray-500 dark:text-gray-400">
-                Sistem Informasi Jalan Lingkungan
+                Sistem Informasi Manajemen Tata Permukiman
               </p>
             </div>
           </div>
