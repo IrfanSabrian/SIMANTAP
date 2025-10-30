@@ -131,11 +131,12 @@
           @change="loadDokumentasi"
         >
           <option value="">Semua Kategori</option>
-          <option value="Jalan Lingkungan">Jalan Lingkungan</option>
-          <option value="Jembatan Lingkungan">Jembatan Lingkungan</option>
-          <option value="Drainase Lingkungan">Drainase Lingkungan</option>
-          <option value="Kawasan Permukiman">Kawasan Permukiman</option>
-          <option value="Rumah Tidak Layak Huni">Rumah Tidak Layak Huni</option>
+          <option value="Rapat Koordinasi">Rapat Koordinasi</option>
+          <option value="Kunjungan Lapangan">Kunjungan Lapangan</option>
+          <option value="Monitoring & Evaluasi (Monev)">Monitoring & Evaluasi (Monev)</option>
+          <option value="Sosialisasi Program">Sosialisasi Program</option>
+          <option value="Pelatihan Teknis">Pelatihan Teknis</option>
+          <option value="Serah Terima / Peresmian">Serah Terima / Peresmian</option>
         </select>
       </div>
     </div>
@@ -419,19 +420,12 @@
                       v-model="formData.kategori"
                       class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white"
                     >
-                      <option value="Jalan Lingkungan">Jalan Lingkungan</option>
-                      <option value="Jembatan Lingkungan">
-                        Jembatan Lingkungan
-                      </option>
-                      <option value="Drainase Lingkungan">
-                        Drainase Lingkungan
-                      </option>
-                      <option value="Kawasan Permukiman">
-                        Kawasan Permukiman
-                      </option>
-                      <option value="Rumah Tidak Layak Huni">
-                        Rumah Tidak Layak Huni
-                      </option>
+                      <option value="Rapat Koordinasi">Rapat Koordinasi</option>
+                      <option value="Kunjungan Lapangan">Kunjungan Lapangan</option>
+                      <option value="Monitoring & Evaluasi (Monev)">Monitoring & Evaluasi (Monev)</option>
+                      <option value="Sosialisasi Program">Sosialisasi Program</option>
+                      <option value="Pelatihan Teknis">Pelatihan Teknis</option>
+                      <option value="Serah Terima / Peresmian">Serah Terima / Peresmian</option>
                     </select>
                   </div>
 
@@ -638,7 +632,7 @@ const formData = reactive({
   judul: "",
   deskripsi: "",
   konten: "",
-  kategori: "Jalan Lingkungan",
+  kategori: "Rapat Koordinasi",
   tanggal: "",
   thumbnail: "",
   gambarLainnya: [],
@@ -727,7 +721,7 @@ const resetForm = () => {
     judul: "",
     deskripsi: "",
     konten: "",
-    kategori: "Jalan Lingkungan",
+    kategori: "Rapat Koordinasi",
     tanggal: "",
     thumbnail: "",
     gambarLainnya: [],

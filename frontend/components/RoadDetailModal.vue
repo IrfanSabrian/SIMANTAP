@@ -1578,14 +1578,67 @@ const saveRoad = async () => {
         toast.error(
           'Format GeoJSON tidak valid. Pastikan format: {"type": "LineString", "coordinates": [[lng, lat], [lng, lat]]}'
         );
+        saving.value = false;
         return;
       }
     }
 
+    // Create roadData without geoJSON field and convert to backend format
+    const { geoJSON, ...formDataWithoutGeoJSON } = editForm.value;
+
+    // Map to Prisma field names (camelCase) with proper type conversion
     const roadData = {
-      ...editForm.value,
-      geometry: geometry,
+      noRuas: formDataWithoutGeoJSON.noRuas || undefined,
+      namaJalan: formDataWithoutGeoJSON.namaJalan || undefined,
+      kecamatan: formDataWithoutGeoJSON.kecamatan || undefined,
+      desa: formDataWithoutGeoJSON.desa || undefined,
+      panjangM: formDataWithoutGeoJSON.panjangM
+        ? parseFloat(formDataWithoutGeoJSON.panjangM)
+        : undefined,
+      lebarM: formDataWithoutGeoJSON.lebarM
+        ? parseFloat(formDataWithoutGeoJSON.lebarM)
+        : undefined,
+      kondisi: formDataWithoutGeoJSON.kondisi || undefined,
+      keterangan: formDataWithoutGeoJSON.keterangan || undefined,
+      noJalan: formDataWithoutGeoJSON.noJalan || undefined,
+      tahun: formDataWithoutGeoJSON.tahun || undefined, // Keep as string!
+      nilai: formDataWithoutGeoJSON.nilai
+        ? parseFloat(formDataWithoutGeoJSON.nilai)
+        : undefined,
+      bobot: formDataWithoutGeoJSON.bobot
+        ? parseInt(formDataWithoutGeoJSON.bobot)
+        : undefined, // bobot is Int in schema
+      noProv: formDataWithoutGeoJSON.noProv
+        ? parseInt(formDataWithoutGeoJSON.noProv)
+        : undefined,
+      noKab: formDataWithoutGeoJSON.noKab
+        ? parseInt(formDataWithoutGeoJSON.noKab)
+        : undefined,
+      noKec: formDataWithoutGeoJSON.noKec
+        ? parseInt(formDataWithoutGeoJSON.noKec)
+        : undefined,
+      noDesa: formDataWithoutGeoJSON.noDesa
+        ? parseInt(formDataWithoutGeoJSON.noDesa)
+        : undefined,
+      fid: formDataWithoutGeoJSON.fid
+        ? parseInt(formDataWithoutGeoJSON.fid)
+        : undefined,
+      shapeLeng: formDataWithoutGeoJSON.shapeLeng
+        ? parseFloat(formDataWithoutGeoJSON.shapeLeng)
+        : undefined,
+      pngnlAwal: formDataWithoutGeoJSON.pngnlAwal || undefined,
+      pngnlAkhi: formDataWithoutGeoJSON.pngnlAkhi || undefined,
+      geom: geometry ? JSON.stringify(geometry) : undefined, // Store as text
     };
+
+    // Remove undefined values
+    Object.keys(roadData).forEach((key) => {
+      if (roadData[key] === undefined) {
+        delete roadData[key];
+      }
+    });
+
+    console.log("Sending road data to backend:", roadData);
 
     emit("save", roadData);
     isEditMode.value = false;

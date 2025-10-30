@@ -1088,19 +1088,68 @@ router.post("/", async (req, res) => {
   try {
     const roadData = req.body;
 
+    console.log("=== CREATE ROAD REQUEST ===");
+    console.log("Road Data:", JSON.stringify(roadData, null, 2));
+    console.log("===========================");
+
+    // Create road and exclude geom field from response (PostGIS geometry causes issues)
     const newRoad = await prisma.jalanLingkunganKubuRaya.create({
       data: roadData,
+      select: {
+        id: true,
+        fid: true,
+        noRuas: true,
+        noProv: true,
+        noKab: true,
+        noKec: true,
+        noDesa: true,
+        noJalan: true,
+        nama: true,
+        namaJalan: true,
+        panjangM: true,
+        lebarM: true,
+        tahun: true,
+        kondisi: true,
+        nilai: true,
+        bobot: true,
+        keterangan: true,
+        kecamatan: true,
+        desa: true,
+        utmXAwal: true,
+        utmYAwal: true,
+        pngnlAwal: true,
+        utmXAkhi: true,
+        utmYAkhi: true,
+        pngnlAkhi: true,
+        shapeLeng: true,
+        shapeLe1: true,
+        shapeLe2: true,
+        shapeLe3: true,
+        shapeLe4: true,
+        shapeLe5: true,
+        // Exclude geom to avoid PostGIS deserialization issues
+      },
     });
+
+    console.log("Road created successfully:", newRoad.id);
 
     res.status(201).json({
       success: true,
       data: newRoad,
     });
   } catch (error) {
-    console.error("Error creating road:", error);
+    console.error("=== ERROR CREATING ROAD ===");
+    console.error("Error type:", error.constructor.name);
+    console.error("Error message:", error.message);
+    console.error("Error code:", error.code);
+    console.error("Full error:", error);
+    console.error("===========================");
+    
     res.status(500).json({
       success: false,
       error: "Failed to create road",
+      details: error.message,
+      code: error.code,
     });
   }
 });
@@ -1111,22 +1160,73 @@ router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
 
+    console.log("=== UPDATE ROAD REQUEST ===");
+    console.log("Road ID:", id);
+    console.log("Update Data:", JSON.stringify(updateData, null, 2));
+    console.log("===========================");
+
+    // Update road and exclude geom field from response (PostGIS geometry causes issues)
     const updatedRoad = await prisma.jalanLingkunganKubuRaya.update({
       where: {
         id: parseInt(id),
       },
       data: updateData,
+      select: {
+        id: true,
+        fid: true,
+        noRuas: true,
+        noProv: true,
+        noKab: true,
+        noKec: true,
+        noDesa: true,
+        noJalan: true,
+        nama: true,
+        namaJalan: true,
+        panjangM: true,
+        lebarM: true,
+        tahun: true,
+        kondisi: true,
+        nilai: true,
+        bobot: true,
+        keterangan: true,
+        kecamatan: true,
+        desa: true,
+        utmXAwal: true,
+        utmYAwal: true,
+        pngnlAwal: true,
+        utmXAkhi: true,
+        utmYAkhi: true,
+        pngnlAkhi: true,
+        shapeLeng: true,
+        shapeLe1: true,
+        shapeLe2: true,
+        shapeLe3: true,
+        shapeLe4: true,
+        shapeLe5: true,
+        // Exclude geom to avoid PostGIS deserialization issues
+      },
     });
+
+    console.log("Road updated successfully:", updatedRoad.id);
 
     res.json({
       success: true,
       data: updatedRoad,
     });
   } catch (error) {
-    console.error("Error updating road:", error);
+    console.error("=== ERROR UPDATING ROAD ===");
+    console.error("Error type:", error.constructor.name);
+    console.error("Error message:", error.message);
+    console.error("Error code:", error.code);
+    console.error("Full error:", error);
+    console.error("Stack trace:", error.stack);
+    console.error("===========================");
+    
     res.status(500).json({
       success: false,
       error: "Failed to update road",
+      details: error.message,
+      code: error.code,
     });
   }
 });
@@ -1136,21 +1236,35 @@ router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
+    console.log("=== DELETE ROAD REQUEST ===");
+    console.log("Road ID:", id);
+    console.log("===========================");
+
     await prisma.jalanLingkunganKubuRaya.delete({
       where: {
         id: parseInt(id),
       },
     });
 
+    console.log("Road deleted successfully:", id);
+
     res.json({
       success: true,
       message: "Road deleted successfully",
     });
   } catch (error) {
-    console.error("Error deleting road:", error);
+    console.error("=== ERROR DELETING ROAD ===");
+    console.error("Error type:", error.constructor.name);
+    console.error("Error message:", error.message);
+    console.error("Error code:", error.code);
+    console.error("Full error:", error);
+    console.error("===========================");
+    
     res.status(500).json({
       success: false,
       error: "Failed to delete road",
+      details: error.message,
+      code: error.code,
     });
   }
 });

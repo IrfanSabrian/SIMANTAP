@@ -480,13 +480,14 @@
                     <label
                       class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                     >
-                      Waktu Baca
+                      Waktu Baca (menit)
                     </label>
                     <input
-                      v-model="formData.waktuBaca"
-                      type="text"
+                      v-model.number="formData.waktuBaca"
+                      type="number"
+                      min="1"
                       class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
-                      placeholder="5 menit"
+                      placeholder="5"
                     />
                   </div>
 
@@ -742,6 +743,11 @@ const changePage = (page) => {
 
 const openFormModal = (item = null) => {
   if (item) {
+    // Strip " menit" dari waktuBaca jika ada
+    const waktuBacaValue = item.waktuBaca 
+      ? parseInt(item.waktuBaca.replace(/\s*menit\s*$/i, '')) || ""
+      : "";
+    
     Object.assign(formData, {
       id: item.id,
       judul: item.judul,
@@ -750,7 +756,7 @@ const openFormModal = (item = null) => {
       thumbnail: item.thumbnail || "",
       kategori: item.kategori || "",
       penulis: item.penulis || "Admin",
-      waktuBaca: item.waktuBaca || "",
+      waktuBaca: waktuBacaValue,
       status: item.status,
     });
   } else {
@@ -834,9 +840,15 @@ const submitForm = async () => {
     console.log("Submitting form data:", formData);
     console.log("Thumbnail value:", formData.thumbnail);
 
+    // Format waktuBaca: tambahkan " menit" jika ada nilai
+    const dataToSubmit = {
+      ...formData,
+      waktuBaca: formData.waktuBaca ? `${formData.waktuBaca} menit` : ""
+    };
+
     const response = await $fetch(url, {
       method,
-      body: JSON.stringify(formData),
+      body: JSON.stringify(dataToSubmit),
       headers: {
         "Content-Type": "application/json",
       },

@@ -3277,6 +3277,10 @@ const handleUserSave = async (userData) => {
 
 const handleRoadSave = async (roadData) => {
   try {
+    console.log("Received road data from modal:", roadData);
+    console.log("Updating road ID:", selectedRoad.value.id);
+    console.log("Request body:", JSON.stringify(roadData, null, 2));
+
     const response = await fetch(
       `${API_BASE}/api/jalan/${selectedRoad.value.id}`,
       {
@@ -3289,6 +3293,15 @@ const handleRoadSave = async (roadData) => {
       }
     );
 
+    // Check if response is ok
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Server error response:", errorText);
+      console.error("Response status:", response.status);
+      console.error("Response headers:", response.headers);
+      throw new Error(`Server error: ${response.status} - ${errorText}`);
+    }
+
     const data = await response.json();
 
     if (data.success) {
@@ -3297,11 +3310,15 @@ const handleRoadSave = async (roadData) => {
       await fetchRoads();
       await fetchStats();
     } else {
-      toast.error("Gagal menyimpan data jalan: " + data.message);
+      toast.error(
+        "Gagal menyimpan data jalan: " + (data.message || "Unknown error")
+      );
     }
   } catch (error) {
     console.error("Error saving road:", error);
-    toast.error("Terjadi kesalahan saat menyimpan data jalan");
+    toast.error(
+      "Terjadi kesalahan saat menyimpan data jalan: " + error.message
+    );
   }
 };
 
