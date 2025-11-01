@@ -76,36 +76,27 @@
       <!-- Map Container - Full Width -->
       <div class="w-full h-full relative">
         <!-- Loading Indicator -->
-        <div
+        <LoadingSpinner
           v-if="loading"
-          class="absolute inset-0 flex items-center justify-center bg-white/90 dark:bg-gray-800/90 z-50"
-        >
-          <div class="text-center">
-            <div
-              class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"
-            ></div>
-            <p class="text-gray-600 dark:text-gray-400">
-              Memuat peta dan data batas wilayah...
-            </p>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
-              Mohon tunggu sebentar
-            </p>
-          </div>
-        </div>
+          message="Memuat peta dan data batas wilayah..."
+          sub-message="Mohon tunggu sebentar"
+          size="md"
+          color="primary"
+          :full-screen="true"
+          :overlay="true"
+        />
 
         <!-- Roads Loading Indicator -->
         <div
           v-if="roadsLoading"
-          class="absolute top-4 left-4 z-[9999] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 px-3 py-2"
+          class="absolute top-4 left-4 z-[9999] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 px-3 py-2 flex items-center"
         >
-          <div class="flex items-center">
-            <div
-              class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"
-            ></div>
-            <span class="text-sm text-gray-600 dark:text-gray-400"
-              >Memuat data jalan...</span
-            >
-          </div>
+          <div
+            class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"
+          ></div>
+          <span class="text-sm text-gray-600 dark:text-gray-400"
+            >Memuat data jalan...</span
+          >
         </div>
 
         <!-- Roads Error Indicator -->
@@ -945,9 +936,9 @@ import { useToast } from "~/composables/useToast";
 const { fetchRoadsGeoJSON } = useApiService();
 const toast = useToast();
 
-// Web Profil API URL from config
+// SIJALI API URL from config
 const config = useRuntimeConfig();
-const WEB_PROFIL_API = config.public.webProfilApiUrl;
+const API_BASE = config.public.apiBaseUrl || "";
 
 // Function to calculate optimal bounds for Kubu Raya district
 const calculateAllDataBounds = () => {
@@ -2584,7 +2575,7 @@ const fetchDokumentasiByRuas = async (noRuas) => {
   loadingDokumentasi.value = true;
   try {
     const response = await fetch(
-      `${WEB_PROFIL_API}/dokumentasi-infrastruktur/by-ruas/${noRuas}`
+      `${API_BASE}/api/dokumentasi-infrastruktur/by-ruas/${noRuas}`
     );
     const data = await response.json();
 

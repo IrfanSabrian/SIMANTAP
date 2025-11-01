@@ -1,8 +1,14 @@
 export const useApiService = () => {
   const config = useRuntimeConfig();
 
-  const apiBaseUrl = config.public.apiBaseUrl || "http://localhost:3001";
-  const apiUrl = config.public.apiUrl || "http://localhost:3001/api";
+  if (!config.public.apiBaseUrl && !config.public.apiUrl) {
+    console.error(
+      "⚠️ NUXT_PUBLIC_API_BASE_URL or NUXT_PUBLIC_API_URL is not set in environment variables!"
+    );
+  }
+
+  const apiBaseUrl = config.public.apiBaseUrl;
+  const apiUrl = config.public.apiUrl || (config.public.apiBaseUrl ? `${config.public.apiBaseUrl}/api` : "");
 
   // Fetch roads data from backend API
   const fetchRoads = async (params = {}) => {

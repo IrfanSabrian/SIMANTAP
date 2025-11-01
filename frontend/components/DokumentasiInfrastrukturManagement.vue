@@ -520,7 +520,7 @@ import Toast from "./Toast.vue";
 import { useToast } from "~/composables/useToast";
 
 const config = useRuntimeConfig();
-const WEB_PROFIL_API = config.public.webProfilApiUrl;
+const API_BASE = config.public.apiBaseUrl || "";
 const { success: showSuccess, error: showError } = useToast();
 
 // Data
@@ -576,7 +576,7 @@ const loadDokumentasi = async () => {
     if (filters.search) params.append("search", filters.search);
 
     const response = await $fetch(
-      `${WEB_PROFIL_API}/dokumentasi-infrastruktur/admin/all?${params}`
+      `${API_BASE}/api/dokumentasi-infrastruktur/admin/all?${params}`
     );
 
     if (response.success) {
@@ -639,8 +639,8 @@ const submitForm = async () => {
   submitting.value = true;
   try {
     const url = formData.id
-      ? `${WEB_PROFIL_API}/dokumentasi-infrastruktur/admin/${formData.id}`
-      : `${WEB_PROFIL_API}/dokumentasi-infrastruktur/admin`;
+      ? `${API_BASE}/api/dokumentasi-infrastruktur/admin/${formData.id}`
+      : `${API_BASE}/api/dokumentasi-infrastruktur/admin`;
 
     const method = formData.id ? "PUT" : "POST";
 
@@ -674,7 +674,7 @@ const deleteDokumentasi = async () => {
     if (itemToDelete.value?.isMultiple) {
       // Delete multiple items
       const deletePromises = Array.from(selectedItems.value).map((id) =>
-        $fetch(`${WEB_PROFIL_API}/dokumentasi-infrastruktur/admin/${id}`, {
+        $fetch(`${API_BASE}/api/dokumentasi-infrastruktur/admin/${id}`, {
           method: "DELETE",
         })
       );
@@ -686,7 +686,7 @@ const deleteDokumentasi = async () => {
     } else {
       // Delete single item
       const response = await $fetch(
-        `${WEB_PROFIL_API}/dokumentasi-infrastruktur/admin/${itemToDelete.value.id}`,
+        `${API_BASE}/api/dokumentasi-infrastruktur/admin/${itemToDelete.value.id}`,
         {
           method: "DELETE",
         }

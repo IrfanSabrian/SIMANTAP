@@ -300,6 +300,11 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
+// Use blank layout (no navbar, no footer)
+definePageMeta({
+  layout: "blank",
+});
+
 // Set page title
 useHead({
   title: "Login - SIJALI",
@@ -365,6 +370,12 @@ const handleLogin = async () => {
 
 // Check if user is already logged in
 onMounted(() => {
+  // Ensure language is Indonesian for login page (no translate feature)
+  if (typeof window !== "undefined") {
+    document.cookie = "googtrans=/id/id; path=/; max-age=31536000";
+    localStorage.setItem("preferredLanguage", "id");
+  }
+
   const token = localStorage.getItem("sijali_token");
   if (token) {
     // Redirect to dashboard if already logged in

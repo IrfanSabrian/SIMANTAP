@@ -588,7 +588,11 @@ const loadRoadInfo = async () => {
 
   try {
     const config = useRuntimeConfig();
-    const API_BASE = config.public.apiBaseUrl || "http://localhost:3001";
+    if (!config.public.apiBaseUrl) {
+      console.error("⚠️ NUXT_PUBLIC_API_BASE_URL is not set!");
+      return;
+    }
+    const API_BASE = config.public.apiBaseUrl;
 
     console.log("🔍 Loading road info for nomor_ruas:", props.aduan.nomor_ruas);
 
@@ -798,7 +802,11 @@ const loadAllMapData = async (
 
     // Load roads data
     const config = useRuntimeConfig();
-    const API_BASE = config.public.apiBaseUrl || "http://localhost:3001";
+    if (!config.public.apiBaseUrl) {
+      console.error("⚠️ NUXT_PUBLIC_API_BASE_URL is not set!");
+      return;
+    }
+    const API_BASE = config.public.apiBaseUrl;
 
     const response = await fetch(`${API_BASE}/api/jalan/geojson`);
     const data = await response.json();

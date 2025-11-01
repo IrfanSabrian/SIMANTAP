@@ -84,3 +84,104 @@ enum Role {
   ADMIN
   USER
 }
+
+enum JenisInfrastruktur {
+  Jalan_Lingkungan          @map("Jalan Lingkungan")
+  Jembatan_Lingkungan       @map("Jembatan Lingkungan")
+  Drainase_Lingkungan      @map("Drainase Lingkungan")
+  Kawasan_Permukiman        @map("Kawasan Permukiman")
+  Rumah_Tidak_Layak_Huni    @map("Rumah Tidak Layak Huni")
+}
+
+// ============================================
+// BERITA (News)
+// ============================================
+
+model Berita {
+  id               Int       @id @default(autoincrement())
+  judul            String    @db.VarChar(255)
+  slug             String    @unique @db.VarChar(255)
+  ringkasan        String?   @db.Text
+  konten           String    @db.Text
+  thumbnail        String?   @db.VarChar(500)
+  kategori         String?   @db.VarChar(100)
+  penulis          String?   @default("Admin") @db.VarChar(100)
+  waktuBaca        String?   @map("waktu_baca") @db.VarChar(20)
+  status           String    @default("published") @db.VarChar(20)
+  tanggalPublikasi DateTime? @map("tanggal_publikasi")
+  dibuatPada       DateTime  @default(now()) @map("dibuat_pada")
+  diperbaruiPada   DateTime  @updatedAt @map("diperbarui_pada")
+
+  @@index([slug])
+  @@index([status])
+  @@index([kategori])
+  @@index([tanggalPublikasi])
+  @@map("berita")
+}
+
+// ============================================
+// DOKUMENTASI KEGIATAN
+// ============================================
+
+model DokumentasiKegiatan {
+  id             Int      @id @default(autoincrement())
+  judul          String   @db.VarChar(255)
+  slug           String   @unique @db.VarChar(255)
+  deskripsi      String?  @db.Text
+  konten         String?  @db.Text
+  kategori       String?  @db.VarChar(100)
+  tanggal        DateTime @db.Date
+  thumbnail      String?  @db.VarChar(500)
+  gambarLainnya  String[] @default([]) @map("gambar_lainnya")
+  dibuatPada     DateTime @default(now()) @map("dibuat_pada")
+  diperbaruiPada DateTime @updatedAt @map("diperbarui_pada")
+
+  @@index([slug])
+  @@index([tanggal])
+  @@index([kategori])
+  @@map("dokumentasi_kegiatan")
+}
+
+// ============================================
+// DOKUMENTASI INFRASTRUKTUR
+// ============================================
+
+model DokumentasiInfrastruktur {
+  id                  Int                          @id @default(autoincrement())
+  jenisInfrastruktur  JenisInfrastruktur           @map("jenis_infrastruktur")
+  linkYoutube         String                       @map("link_youtube") @db.VarChar(500)
+  noRuas              String                       @map("no_ruas") @db.VarChar(100)
+  dibuatPada          DateTime                     @default(now()) @map("dibuat_pada")
+  diperbaruiPada      DateTime                     @updatedAt @map("diperbarui_pada")
+
+  @@index([jenisInfrastruktur])
+  @@index([noRuas])
+  @@map("dokumentasi_infrastruktur")
+}
+
+// ============================================
+// DOKUMEN PPID (Informasi Publik)
+// ============================================
+
+model DokumenPpid {
+  id               Int       @id @default(autoincrement())
+  judul            String    @db.VarChar(255)
+  slug             String    @unique @db.VarChar(255)
+  deskripsi        String?   @db.Text
+  kategori         String?   @db.VarChar(100)
+  urlFile          String    @map("url_file") @db.VarChar(500)
+  namaFile         String    @map("nama_file") @db.VarChar(255)
+  tahun            String?   @db.VarChar(4)
+  nomorDokumen     String?   @map("nomor_dokumen") @db.VarChar(100)
+  jumlahUnduhan    Int       @default(0) @map("jumlah_unduhan")
+  status           String    @default("published") @db.VarChar(20)
+  tanggalPublikasi DateTime? @map("tanggal_publikasi")
+  dibuatPada       DateTime  @default(now()) @map("dibuat_pada")
+  diperbaruiPada   DateTime  @updatedAt @map("diperbarui_pada")
+
+  @@index([slug])
+  @@index([kategori])
+  @@index([status])
+  @@index([tahun])
+  @@map("dokumen_ppid")
+}

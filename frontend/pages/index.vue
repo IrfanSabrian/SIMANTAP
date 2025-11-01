@@ -1,256 +1,387 @@
 <template>
-  <div class="app">
-    <Navbar @toggle-sidebar="handleToggleSidebar" />
-
+  <div>
     <!-- Hero Section -->
-    <section id="hero" class="hero-section">
-      <!-- Background Elements -->
-      <div class="hero-bg-elements">
-        <div class="hero-bg-circle hero-bg-circle-1"></div>
-        <div class="hero-bg-circle hero-bg-circle-2"></div>
-        <div class="hero-bg-circle hero-bg-circle-3"></div>
-        <div class="hero-grid"></div>
-      </div>
-
-      <div class="hero-content">
-        <div class="hero-text">
-          <h1 class="hero-title">
-            <span
-              class="title-line-1"
-              data-aos="fade-right"
-              data-aos-delay="100"
-              >Sistem Informasi</span
-            >
-            <span
-              class="title-line-2"
-              data-aos="fade-right"
-              data-aos-delay="200"
-              >Jalan Lingkungan</span
-            >
-            <span
-              class="title-highlight"
-              data-aos="fade-right"
-              data-aos-delay="300"
-              >Kabupaten Kubu Raya</span
-            >
-          </h1>
-
-          <p class="hero-description" data-aos="fade-up" data-aos-delay="400">
-            Platform WebGIS untuk pengelolaan data jalan lingkungan di Kabupaten
-            Kubu Raya. Menyajikan informasi kondisi jalan, material perkerasan,
-            dan analisis kerusakan untuk mendukung pengambilan keputusan dalam
-            pemeliharaan infrastruktur.
-          </p>
-
-          <div class="hero-buttons" data-aos="fade-up" data-aos-delay="500">
-            <button @click="openMap" class="btn-primary">
-              <div class="btn-icon">
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-                  ></path>
-                </svg>
-              </div>
-              <div class="btn-content">
-                <span class="btn-title">Lihat Peta Interaktif</span>
-                <span class="btn-subtitle">Akses peta & data spasial</span>
-              </div>
-            </button>
-
-            <button @click="scrollToSection('analisis')" class="btn-secondary">
-              <div class="btn-icon">
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  ></path>
-                </svg>
-              </div>
-              <div class="btn-content">
-                <span class="btn-title">Analisis Data</span>
-                <span class="btn-subtitle">Visualisasi & statistik</span>
-              </div>
-            </button>
-          </div>
-        </div>
-
+    <section
+      id="home"
+      class="relative min-h-screen flex items-center justify-center overflow-hidden py-16 md:py-0"
+    >
+      <!-- Background -->
+      <div class="absolute inset-0">
         <div
-          class="hero-visual hidden md:block"
-          data-aos="fade-left"
-          data-aos-delay="600"
+          class="w-full h-full bg-cover bg-center bg-no-repeat"
+          style="background-image: url('/bg.png')"
         >
-          <WeatherWidget />
+          <div class="absolute inset-0 bg-black/50"></div>
         </div>
       </div>
 
-      <!-- Stats Cards -->
-      <div class="hero-stats">
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      <!-- Content -->
+      <div class="relative z-10 w-full px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto pt-8 sm:pt-12 lg:pt-16">
+          <!-- Text Content -->
+          <div class="text-left mb-16 sm:mb-20 lg:mb-24">
+            <h1
+              class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 sm:mb-6 tracking-wide hero-title-animation"
+              style="color: #18eef7"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-              ></path>
-            </svg>
+              Selamat Datang di Website Resmi
+            </h1>
+            <h2
+              class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight hero-subtitle-animation max-w-6xl"
+            >
+              Bidang Perumahan dan Kawasan Permukiman<br />
+              Dinas PUPRPRKP Kabupaten Kubu Raya
+            </h2>
           </div>
-          <div class="stat-content">
-            <h3 class="stat-number">
-              <span id="roadLengthCounter">0</span> Km
-            </h3>
-            <p class="stat-label">Dipetakan</p>
-          </div>
-        </div>
 
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              ></path>
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              ></path>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <h3 class="stat-number" id="districtsCounter">0</h3>
-            <p class="stat-label">Kecamatan</p>
-          </div>
-        </div>
+          <!-- Stats Cards -->
+          <div class="max-w-4xl">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+              <!-- Stat 1 -->
+              <div
+                class="glass-card rounded-lg p-2 sm:p-3 border border-white/20 shadow-lg hero-card-animation"
+                style="animation-delay: 0.2s"
+              >
+                <div class="flex items-center gap-2 sm:gap-3 mb-2">
+                  <div
+                    class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-blue-500 rounded-lg shadow-md flex-shrink-0"
+                  >
+                    <svg
+                      class="w-5 h-5 sm:w-6 sm:h-6 text-white"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M127,60.7c-1.2,0.5-71.2,53.6-71.2,54c0,0.7,2.2,1,9.5,1h7.3v38.7v38.8l1.2,1.2c1.1,1.1,1.5,1.2,5.5,1.2h4.3v-25.9c0-25.4,0-25.9,1-27.2l1-1.3h16.5c14.1,0,16.6,0.1,17.5,0.8l1.1,0.7v26.5v26.4H151h30.4l1.2-1.2l1.2-1.2v-38.8v-38.7h7.8c4.4,0,8.1-0.2,8.5-0.5c0.9-0.6,1.5-0.1-14.8-12.4l-12.6-9.5l0-14.9c0-11-0.2-15.2-0.6-16.1l-0.6-1.2L160,60.9c-10.1-0.1-11.6,0-12.4,0.7c-0.7,0.7-0.9,1.7-1,6.3l-0.1,5.4l-8.3-6.2C130.2,61,128.5,60.1,127,60.7z M171.7,142.4c1,1.2,1,1.9,1,13v11.7l-1.2,1.2l-1.2,1.2h-16.4c-15.7,0-16.4,0-17.3-1c-0.9-0.9-1-1.6-1-13.4c0-12.4,0-12.5,1.1-13.2c0.9-0.7,3.4-0.8,17.5-0.8h16.5L171.7,142.4z"
+                      ></path>
+                      <path
+                        d="M29.3,106.9C18.7,115,10,121.8,10,122.1s2,0.5,4.4,0.6l4.3,0.1v21.5c0,12.7,0.2,21.8,0.5,22.2c0.4,0.6,3.6,0.7,24.4,0.7h24l0.1-23.7l0.1-23.7H55.1c-10.8,0-12.7-0.1-12.7-0.7c0-0.4,4.8-4.4,10.6-9c5.8-4.6,10.4-8.5,10.3-8.7c-0.7-1.2-12.5-9.5-13.4-9.5C49.3,92.1,40.1,98.7,29.3,106.9z"
+                      ></path>
+                      <path
+                        d="M198.7,96.7c-3.3,2.5-6.1,4.7-6.2,4.8c0,0,4.8,3.9,10.7,8.6c6,4.7,10.8,8.9,10.8,9.2c0,0.6-2,0.7-12.7,0.7h-12.7l0.1,23.7l0.1,23.7l23,0.1c15.3,0,23.3,0,23.9-0.4c0.9-0.5,1-1.2,1-22.4v-21.9h4.5c2.5,0,4.7-0.2,4.8-0.4c0.4-0.6-38.7-30.1-40.1-30.2C205,92.1,203.2,93.2,198.7,96.7z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="text-left">
+                    <div
+                      class="text-xl sm:text-2xl font-bold text-white leading-none"
+                    >
+                      {{ animatedKawasan }}
+                    </div>
+                    <div
+                      class="text-xs text-blue-200 uppercase tracking-wide font-medium mt-0.5"
+                    >
+                      Kawasan
+                    </div>
+                  </div>
+                </div>
+                <div class="text-xs sm:text-sm font-semibold text-white">
+                  Kawasan Permukiman
+                </div>
+                <div class="text-xs text-white/70 hidden sm:block">
+                  Kawasan yang telah dikelola
+                </div>
+              </div>
 
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-              ></path>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <h3 class="stat-number" id="villagesCounter">0</h3>
-            <p class="stat-label">Desa/Kelurahan</p>
-          </div>
-        </div>
+              <!-- Stat 2 -->
+              <div
+                class="glass-card rounded-lg p-2 sm:p-3 border border-white/20 shadow-lg hero-card-animation"
+                style="animation-delay: 0.3s"
+              >
+                <div class="flex items-center gap-2 sm:gap-3 mb-2">
+                  <div
+                    class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-green-500 rounded-lg shadow-md flex-shrink-0"
+                  >
+                    <svg
+                      class="w-5 h-5 sm:w-6 sm:h-6 text-white"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M238.6,201.7c-1,0-5.3,0-7.4,0h-19.9c-12.2-34.4-44.8-59-83.4-59c-38.5,0-71.2,24.7-83.4,59H24.8c-2.1,0-6.4,0-7.4,0c-4.1,0-7.4-3.3-7.4-7.4V187v-73.7c0-8.1,6.6-14.8,14.8-14.8h7.4V69H17.4c-4.1,0-7.4-3.3-7.4-7.4c0-4.1,3.3-7.4,7.4-7.4h221.2c4.1,0,7.4,3.3,7.4,7.4c0,4.1-3.3,7.4-7.4,7.4h-14.7v29.5h7.4c8.1,0,14.8,6.6,14.8,14.8V187v7.4C246,198.4,242.7,201.7,238.6,201.7z M76.4,69H46.9v29.5h29.5V69z M120.6,69H91.1v29.5h29.5V69z M164.9,69h-29.5v29.5h29.5V69z M209.1,69h-29.5v29.5h29.5V69z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="text-left">
+                    <div
+                      class="text-xl sm:text-2xl font-bold text-white leading-none"
+                    >
+                      {{ animatedJembatan }}
+                    </div>
+                    <div
+                      class="text-xs text-green-200 uppercase tracking-wide font-medium mt-0.5"
+                    >
+                      Unit
+                    </div>
+                  </div>
+                </div>
+                <div class="text-xs sm:text-sm font-semibold text-white">
+                  Jembatan Lingkungan
+                </div>
+                <div class="text-xs text-white/70 hidden sm:block">
+                  Total jembatan yang terbangun
+                </div>
+              </div>
 
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-              ></path>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <h3 class="stat-number">
-              <span id="goodConditionCounter">0</span> Km
-            </h3>
-            <p class="stat-label">Jalan Kondisi Baik</p>
+              <!-- Stat 3 -->
+              <div
+                class="glass-card rounded-lg p-2 sm:p-3 border border-white/20 shadow-lg hero-card-animation"
+                style="animation-delay: 0.4s"
+              >
+                <div class="flex items-center gap-2 sm:gap-3 mb-2">
+                  <div
+                    class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-orange-500 rounded-lg shadow-md flex-shrink-0"
+                  >
+                    <svg
+                      class="w-5 h-5 sm:w-6 sm:h-6 text-white"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M147.6,141v-0.5l-3.1-41.5c-0.1-1.1-0.6-2.1-1.4-2.9c-0.9-0.8-1.9-1.2-3-1.2h-24.1c-1.1,0-2.1,0.4-3,1.2c-0.9,0.8-1.3,1.8-1.4,2.9l-3.1,41.5v0.5c-0.1,1,0.3,1.9,1,2.6c0.8,0.7,1.7,1,2.7,1h31.6c1,0,1.9-0.3,2.7-1C147.3,142.9,147.7,142,147.6,141L147.6,141z M246,201.5c0,6.3-2,9.5-6,9.5h-91.3c1.1,0,2.1-0.4,2.8-1.2c0.8-0.8,1.1-1.8,1-2.9l-2.6-33.2c-0.1-1.1-0.6-2.1-1.4-2.9c-0.9-0.8-1.9-1.2-3-1.2h-35.3c-1.1,0-2.1,0.4-3,1.2c-0.9,0.8-1.3,1.8-1.4,2.9l-2.6,33.2c-0.1,1.1,0.3,2.1,1,2.9c0.8,0.8,1.7,1.2,2.8,1.2H16c-4,0-6-3.2-6-9.5c0-4.7,1.1-9.7,3.4-15.1L67.4,51.1c0.7-1.6,1.8-3.1,3.4-4.3c1.6-1.2,3.2-1.8,4.9-1.8h43.9c-1.1,0-2.1,0.4-3,1.2c-0.9,0.8-1.3,1.8-1.4,2.9l-1.9,24.9c-0.1,1.2,0.3,2.2,1,3c0.8,0.8,1.7,1.2,2.8,1.2h21.5c1.1,0,2.1-0.4,2.8-1.2c0.8-0.8,1.1-1.8,1-3l-2-24.9c-0.1-1.1-0.6-2.1-1.4-2.9s-1.9-1.2-3-1.2h44c1.7,0,3.4,0.6,4.9,1.8c1.6,1.2,2.7,2.6,3.4,4.3l54.1,135.4C244.9,191.9,246,196.9,246,201.5L246,201.5z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="text-left">
+                    <div
+                      class="text-xl sm:text-2xl font-bold text-white leading-none"
+                    >
+                      {{ animatedJalan }} km
+                    </div>
+                    <div
+                      class="text-xs text-orange-200 uppercase tracking-wide font-medium mt-0.5"
+                    >
+                      Dipetakan
+                    </div>
+                  </div>
+                </div>
+                <div class="text-xs sm:text-sm font-semibold text-white">
+                  Jalan Lingkungan
+                </div>
+                <div class="text-xs text-white/70 hidden sm:block">
+                  Panjang jalan yang telah dipetakan
+                </div>
+              </div>
+
+              <!-- Stat 4 -->
+              <div
+                class="glass-card rounded-lg p-2 sm:p-3 border border-white/20 shadow-lg hero-card-animation"
+                style="animation-delay: 0.5s"
+              >
+                <div class="flex items-center gap-2 sm:gap-3 mb-2">
+                  <div
+                    class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-purple-500 rounded-lg shadow-md flex-shrink-0"
+                  >
+                    <svg
+                      class="w-5 h-5 sm:w-6 sm:h-6 text-white"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                    >
+                      <path d="M10,210.5h236v16.8H10V210.5L10,210.5z"></path>
+                      <path
+                        d="M90.8,28.8H18v9.9h60.1v70.4H18v9.9h72.8L90.8,28.8L90.8,28.8z"
+                      ></path>
+                      <path
+                        d="M106.2,119.1c-0.4,20.8,0,87.4,0,87.4h67c0,0-2.2-76.5-9.5-96.9c-7.3-20.4-28.8-59.7-69.6-65.5v60.4C94.1,104.5,106.9,105.2,106.2,119.1z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="text-left">
+                    <div
+                      class="text-xl sm:text-2xl font-bold text-white leading-none"
+                    >
+                      {{ animatedDrainase }}
+                    </div>
+                    <div
+                      class="text-xs text-purple-200 uppercase tracking-wide font-medium mt-0.5"
+                    >
+                      Unit
+                    </div>
+                  </div>
+                </div>
+                <div class="text-xs sm:text-sm font-semibold text-white">
+                  Drainase Lingkungan
+                </div>
+                <div class="text-xs text-white/70 hidden sm:block">
+                  Total drainase yang terbangun
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Map Section -->
-    <section id="map" class="map-section">
-      <div class="section-header" data-aos="fade-up">
-        <h2 class="section-title">Peta Interaktif</h2>
-        <p class="section-description">
-          Jelajahi data jalan lingkungan melalui peta interaktif dengan berbagai
-          layer informasi dan fitur analisis spasial.
-        </p>
-      </div>
-      <div class="map-container" data-aos="zoom-in" data-aos-delay="200">
-        <!-- Map Title Frame -->
-        <div id="map-canvas" class="map-title-frame">
-          <div class="title-frame-content">
-            <h3 class="map-title-text">
-              Sistem Informasi Jalan Lingkungan Kab. Kubu Raya
-            </h3>
-          </div>
-        </div>
-        <!-- Map Canvas -->
-        <div class="map-canvas-wrapper">
-          <MapView ref="mapViewRef" />
-        </div>
-      </div>
-    </section>
+    <!-- Section 2: Berita -->
+    <section
+      id="berita"
+      class="py-16 sm:py-20 lg:py-24 relative overflow-hidden"
+      style="
+        background: linear-gradient(
+          to bottom,
+          #0f1931 0%,
+          #1e3a8a 40%,
+          #ffffff 100%
+        );
+        background-image: url('/bg-berita.svg'),
+          linear-gradient(to bottom, #0f1931 0%, #1e3a8a 40%, #ffffff 100%);
+        background-size: 60%, cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+      "
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div
+          class="mb-8 flex items-center justify-between"
+          data-aos="fade-right"
+        >
+          <h2
+            class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white relative inline-block"
+          >
+            Berita Terkini
+            <div
+              class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-500 to-transparent rounded-full"
+            ></div>
+          </h2>
 
-    <!-- Analisis Section -->
-    <section id="analisis" class="analisis-section">
-      <div class="section-header" data-aos="fade-up">
-        <h2 class="section-title">Analisis Kondisi & Kerusakan Jalan</h2>
-        <p class="section-description">
-          Visualisasi dan analisis mendalam kondisi jalan berdasarkan tingkat
-          kerusakan, jenis material, dan sebaran geografis di Kabupaten Kubu
-          Raya.
-        </p>
-      </div>
-      <div class="analisis-content">
-        <div class="analisis-grid">
-          <!-- Material Analysis -->
-          <!-- Combined Donut Charts -->
-          <div class="analisis-card" data-aos="fade-up" data-aos-delay="100">
-            <div class="card-header">
-              <h3 class="card-title">Analisis Kondisi & Material Jalan</h3>
-              <div class="flex items-center gap-3">
-                <select
-                  id="kondisiMaterialFilter"
-                  class="px-3 py-1 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <!-- View All News Button (moved to top right) -->
+          <NuxtLink
+            to="/berita"
+            class="inline-flex items-center px-6 py-3 border-2 border-white text-white font-semibold rounded-full hover:bg-yellow-400 hover:border-blue-600 hover:text-blue-600 transition-all duration-300"
+            data-aos="fade-left"
+          >
+            Lihat Semua Berita
+            <svg
+              class="w-4 h-4 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </NuxtLink>
+        </div>
+
+        <!-- News Slider with Swiper -->
+        <div v-if="beritaList.length > 0" class="relative" data-aos="fade-up">
+          <swiper
+            :modules="swiperModules"
+            :slides-per-view="1"
+            :space-between="20"
+            :pagination="{ clickable: true }"
+            :autoplay="{ delay: 5000, disableOnInteraction: false }"
+            :rewind="true"
+            :breakpoints="{
+              640: { slidesPerView: 2, spaceBetween: 20 },
+              1024: { slidesPerView: 3, spaceBetween: 30 },
+            }"
+            class="news-swiper"
+          >
+            <swiper-slide v-for="item in beritaList.slice(0, 6)" :key="item.id">
+              <div
+                class="relative rounded-2xl overflow-hidden shadow-lg cursor-pointer group h-56"
+                @click="navigateTo(`/berita-detail?slug=${item.slug}`)"
+              >
+                <!-- Thumbnail Background -->
+                <img
+                  :src="getThumbnail(item)"
+                  :alt="item.judul"
+                  class="w-full h-full object-cover"
+                  @error="handleImageError"
+                />
+
+                <!-- Overlay on Hover -->
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6"
                 >
-                  <option value="">Semua Kecamatan</option>
-                </select>
+                  <!-- Kategori dan tanggal -->
+                  <div class="flex items-center space-x-2 mb-2">
+                    <span class="text-sm text-blue-400 font-medium">{{
+                      item.kategori || "Berita"
+                    }}</span>
+                    <span class="text-sm text-gray-300">•</span>
+                    <span class="text-sm text-gray-300">{{
+                      formatRelativeDate(item.tanggalPublikasi)
+                    }}</span>
+                  </div>
+                  <!-- Judul -->
+                  <h3 class="text-lg font-bold text-white mb-2 line-clamp-2">
+                    {{ item.judul }}
+                  </h3>
+                  <!-- Excerpt -->
+                  <p class="text-gray-200 text-sm leading-relaxed line-clamp-3">
+                    {{ getExcerpt(item.konten, 100) }}
+                  </p>
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper>
+        </div>
+
+        <!-- Empty state jika tidak ada berita -->
+        <div v-else class="text-center py-8 bg-white rounded-2xl">
+          <svg
+            class="w-16 h-16 mx-auto text-gray-400 mb-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+            />
+          </svg>
+          <p class="text-gray-500">Belum ada berita tersedia</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dokumentasi Section (Infrastruktur & Kegiatan) -->
+    <section
+      id="dokumentasi"
+      class="py-16 sm:py-20 lg:py-24 bg-white relative overflow-hidden"
+    >
+      <!-- Decorative background -->
+      <div
+        class="absolute top-10 left-10 w-96 h-96 bg-gray-100 rounded-full opacity-20 blur-3xl"
+      ></div>
+      <div
+        class="absolute bottom-10 right-10 w-96 h-96 bg-gray-100 rounded-full opacity-20 blur-3xl"
+      ></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <!-- Left Column: Dokumentasi (75% width) -->
+          <div class="lg:col-span-3">
+            <div
+              class="mb-8 flex items-center justify-between"
+              data-aos="fade-right"
+            >
+              <h2
+                class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 relative inline-block"
+              >
+                Dokumentasi Infrastruktur
+                <div
+                  class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-500 to-transparent rounded-full"
+                ></div>
+              </h2>
+
+              <!-- Lihat Selengkapnya Button (moved to top right) -->
+              <NuxtLink
+                to="/dokumentasi-infrastruktur"
+                class="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-full hover:bg-yellow-400 hover:border-blue-600 hover:text-blue-600 transition-all duration-300"
+                data-aos="fade-left"
+              >
+                Lihat Selengkapnya
                 <svg
-                  class="w-5 h-5 text-gray-400"
+                  class="w-4 h-4 ml-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -259,44 +390,141 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    d="M9 5l7 7-7 7"
                   ></path>
                 </svg>
+              </NuxtLink>
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="mb-8 overflow-x-auto">
+              <div
+                class="flex space-x-2 justify-start sm:justify-center min-w-max sm:min-w-0 pb-2"
+              >
+                <button
+                  v-for="category in infraCategories"
+                  :key="category.id"
+                  @click="selectedCategory = category.id"
+                  :class="[
+                    'px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-300 whitespace-nowrap',
+                    selectedCategory === category.id
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+                  ]"
+                >
+                  {{ category.name }}
+                </button>
               </div>
             </div>
-            <div class="dual-donut-container">
-              <!-- Condition Donut Chart -->
-              <div class="donut-section">
-                <h4 class="donut-title">Kondisi Jalan</h4>
-                <div class="donut-chart">
-                  <canvas id="conditionChart" width="200" height="200"></canvas>
-                  <div class="chart-center">
-                    <div class="center-number">0</div>
-                    <div class="center-label">Km</div>
+
+            <!-- Video Grid - Limit 3 for homepage -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div
+                v-for="(video, index) in filteredVideos"
+                :key="video.id"
+                class="relative bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100"
+                data-aos="zoom-in"
+                :data-aos-delay="index * 100"
+              >
+                <div
+                  @click="
+                    video.youtubeUrl
+                      ? openYouTubeFancybox(video.youtubeUrl, video.title)
+                      : null
+                  "
+                  :class="[
+                    'block relative aspect-video bg-gray-200',
+                    video.youtubeUrl
+                      ? 'cursor-pointer'
+                      : 'cursor-not-allowed opacity-60',
+                  ]"
+                >
+                  <!-- Thumbnail -->
+                  <img
+                    v-if="video.thumbnail"
+                    :src="video.thumbnail"
+                    :alt="video.title"
+                    class="w-full h-full object-cover"
+                  />
+                  <div
+                    v-else
+                    class="w-full h-full bg-gray-300 flex items-center justify-center"
+                  >
+                    <div class="text-center">
+                      <svg
+                        class="w-16 h-16 mx-auto text-gray-400 mb-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <p class="text-sm text-gray-500">Video tidak tersedia</p>
+                    </div>
+                  </div>
+
+                  <!-- Play Button Overlay -->
+                  <div
+                    class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center hover:bg-opacity-50 transition-all duration-200"
+                  >
+                    <div
+                      class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors"
+                    >
+                      <svg
+                        class="w-8 h-8 text-white ml-1"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  <!-- Duration Badge -->
+                  <div
+                    class="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded"
+                  >
+                    {{ video.duration }}
+                  </div>
+                </div>
+
+                <!-- Video Info -->
+                <div class="p-4">
+                  <h3 class="font-bold text-gray-900 mb-2 line-clamp-2">
+                    {{ video.title }}
+                  </h3>
+                  <p class="text-sm text-gray-600 line-clamp-2">
+                    {{ video.description }}
+                  </p>
+                  <div class="mt-3 flex items-center text-xs text-gray-500">
+                    <svg
+                      class="w-4 h-4 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                      />
+                    </svg>
+                    <span>{{ video.category }}</span>
                   </div>
                 </div>
               </div>
-
-              <!-- Material Donut Chart -->
-              <div class="donut-section">
-                <h4 class="donut-title">Material Jalan</h4>
-                <div class="donut-chart">
-                  <canvas id="materialChart" width="200" height="200"></canvas>
-                  <div class="chart-center">
-                    <div class="center-number">0</div>
-                    <div class="center-label">Km</div>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
 
-          <!-- District Damage Analysis -->
-          <div class="analisis-card" data-aos="fade-up" data-aos-delay="200">
-            <div class="card-header">
-              <h3 class="card-title">Tingkat Kerusakan per Kecamatan</h3>
+            <!-- Empty State -->
+            <div v-if="filteredVideos.length === 0" class="text-center py-12">
               <svg
-                class="w-5 h-5 text-gray-400"
+                class="w-16 h-16 mx-auto text-gray-400 mb-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -305,28 +533,116 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                ></path>
+                  d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                />
               </svg>
+              <p class="text-gray-600">Belum ada video untuk kategori ini</p>
             </div>
-            <div class="chart-container">
-              <canvas id="districtChart" width="400" height="300"></canvas>
-            </div>
-          </div>
 
-          <!-- Condition Assessment -->
-          <div class="analisis-card" data-aos="fade-up" data-aos-delay="300">
-            <div class="card-header">
-              <h3 class="card-title">Tingkat Kerusakan per Material</h3>
-              <div class="flex items-center gap-3">
-                <select
-                  id="materialDamageFilter"
-                  class="px-3 py-1 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            <!-- Dokumentasi Kegiatan Section -->
+            <div id="dokumentasi-kegiatan" class="mt-16">
+              <div
+                class="mb-8 flex items-center justify-between"
+                data-aos="fade-right"
+              >
+                <h2
+                  class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 relative inline-block"
                 >
-                  <option value="">Semua Kecamatan</option>
-                </select>
+                  Dokumentasi Kegiatan
+                  <div
+                    class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-500 to-transparent rounded-full"
+                  ></div>
+                </h2>
+
+                <!-- Lihat Selengkapnya Button (moved to top right) -->
+                <NuxtLink
+                  to="/dokumentasi-kegiatan"
+                  class="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-full hover:bg-yellow-400 hover:border-blue-600 hover:text-blue-600 transition-all duration-300"
+                  data-aos="fade-left"
+                >
+                  Lihat Selengkapnya
+                  <svg
+                    class="w-4 h-4 ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5l7 7-7 7"
+                    ></path>
+                  </svg>
+                </NuxtLink>
+              </div>
+
+              <!-- Kegiatan Cards Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div
+                  v-for="(kegiatan, index) in dokumentasiKegiatanHome"
+                  :key="kegiatan.id"
+                  @click="
+                    navigateTo(
+                      `/dokumentasi-kegiatan-detail?slug=${kegiatan.slug}`
+                    )
+                  "
+                  class="bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer border border-gray-100"
+                  data-aos="fade-up"
+                  :data-aos-delay="index * 100"
+                >
+                  <!-- Image dengan placeholder -->
+                  <div class="relative h-48 overflow-hidden">
+                    <img
+                      :src="getThumbnail(kegiatan)"
+                      :alt="kegiatan.judul"
+                      class="w-full h-full object-cover"
+                      @error="handleImageError"
+                    />
+                    <div
+                      class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-semibold"
+                    >
+                      {{ kegiatan.kategori || "Kegiatan" }}
+                    </div>
+                  </div>
+
+                  <!-- Content -->
+                  <div class="p-6">
+                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                      <svg
+                        class="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <span>{{ formatRelativeDate(kegiatan.tanggal) }}</span>
+                    </div>
+                    <h3
+                      class="text-lg font-bold text-gray-900 mb-2 line-clamp-2"
+                    >
+                      {{ kegiatan.judul }}
+                    </h3>
+                    <p class="text-gray-600 text-sm line-clamp-3">
+                      {{ kegiatan.deskripsi }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Empty state -->
+              <div
+                v-if="dokumentasiKegiatanHome.length === 0"
+                class="text-center py-12 bg-white rounded-2xl"
+              >
                 <svg
-                  class="w-5 h-5 text-gray-400"
+                  class="w-16 h-16 mx-auto text-gray-400 mb-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -335,44 +651,371 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  ></path>
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
                 </svg>
+                <p class="text-gray-500">Belum ada dokumentasi kegiatan</p>
               </div>
             </div>
-            <div class="chart-container">
-              <canvas
-                id="materialDamageChart"
-                width="400"
-                height="300"
-              ></canvas>
-            </div>
           </div>
+          <!-- End of Left Column -->
 
-          <!-- Road Length by District -->
-          <div class="analisis-card" data-aos="fade-up" data-aos-delay="400">
-            <div class="card-header">
-              <h3 class="card-title">Panjang Jalan per Kecamatan</h3>
-              <svg
-                class="w-5 h-5 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+          <!-- Right Column: Peta dan Aduan Infrastruktur (25% width) -->
+          <div class="lg:col-span-1">
+            <div class="mb-6 sticky top-24" data-aos="fade-left">
+              <h2
+                class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 relative inline-block"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                ></path>
-              </svg>
-            </div>
-            <div class="chart-container">
-              <canvas
-                id="districtLengthChart"
-                width="400"
-                height="300"
-              ></canvas>
+                Peta dan Aduan Infrastruktur
+                <div
+                  class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-500 to-transparent rounded-full"
+                ></div>
+              </h2>
+
+              <!-- Infrastructure Cards -->
+              <div class="space-y-4 mt-6">
+                <!-- Jalan Lingkungan -->
+                <div
+                  class="bg-white rounded-xl shadow-lg cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                  @click="openSijali('jalan')"
+                  data-aos="fade-up"
+                  data-aos-delay="100"
+                >
+                  <div class="p-4 flex items-center">
+                    <div
+                      class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-lg"
+                    >
+                      <img
+                        src="/assets/images/sijali-logo.svg"
+                        alt="Jalan Lingkungan"
+                        class="w-8 h-8"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <svg
+                        class="w-8 h-8 text-blue-600 hidden"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                    </div>
+                    <div class="ml-3 flex-1">
+                      <h3 class="text-sm font-bold text-gray-900 mb-1">
+                        Jalan Lingkungan
+                      </h3>
+                      <p class="text-gray-600 text-xs leading-relaxed">
+                        Layanan pengaduan jalan
+                      </p>
+                    </div>
+                    <div class="flex-shrink-0 text-blue-600">
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Jembatan Lingkungan -->
+                <div
+                  class="bg-white rounded-xl shadow-lg cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                  @click="openSijali('jembatan')"
+                  data-aos="fade-up"
+                  data-aos-delay="200"
+                >
+                  <div class="p-4 flex items-center">
+                    <div
+                      class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-lg"
+                    >
+                      <img
+                        src="/assets/images/sijali-logo.svg"
+                        alt="Jembatan Lingkungan"
+                        class="w-8 h-8"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <svg
+                        class="w-8 h-8 text-blue-600 hidden"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                    </div>
+                    <div class="ml-3 flex-1">
+                      <h3 class="text-sm font-bold text-gray-900 mb-1">
+                        Jembatan Lingkungan
+                      </h3>
+                      <p class="text-gray-600 text-xs leading-relaxed">
+                        Monitoring jembatan
+                      </p>
+                    </div>
+                    <div class="flex-shrink-0 text-blue-600">
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Drainase Lingkungan -->
+                <div
+                  class="bg-white rounded-xl shadow-lg cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                  @click="openSijali('drainase')"
+                  data-aos="fade-up"
+                  data-aos-delay="300"
+                >
+                  <div class="p-4 flex items-center">
+                    <div
+                      class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-lg"
+                    >
+                      <img
+                        src="/assets/images/sijali-logo.svg"
+                        alt="Drainase Lingkungan"
+                        class="w-8 h-8"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <svg
+                        class="w-8 h-8 text-blue-600 hidden"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                    </div>
+                    <div class="ml-3 flex-1">
+                      <h3 class="text-sm font-bold text-gray-900 mb-1">
+                        Drainase Lingkungan
+                      </h3>
+                      <p class="text-gray-600 text-xs leading-relaxed">
+                        Sistem drainase
+                      </p>
+                    </div>
+                    <div class="flex-shrink-0 text-blue-600">
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Kawasan Permukiman -->
+                <div
+                  class="bg-white rounded-xl shadow-lg cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                  @click="openSijali('kawasan')"
+                  data-aos="fade-up"
+                  data-aos-delay="400"
+                >
+                  <div class="p-4 flex items-center">
+                    <div
+                      class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-lg"
+                    >
+                      <img
+                        src="/assets/images/sijali-logo.svg"
+                        alt="Kawasan Permukiman"
+                        class="w-8 h-8"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <svg
+                        class="w-8 h-8 text-blue-600 hidden"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                    </div>
+                    <div class="ml-3 flex-1">
+                      <h3 class="text-sm font-bold text-gray-900 mb-1">
+                        Kawasan Permukiman
+                      </h3>
+                      <p class="text-gray-600 text-xs leading-relaxed">
+                        Pengelolaan kawasan
+                      </p>
+                    </div>
+                    <div class="flex-shrink-0 text-blue-600">
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Rumah Tidak Layak Huni -->
+                <div
+                  class="bg-white rounded-xl shadow-lg cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                  @click="openSijali('rumah')"
+                  data-aos="fade-up"
+                  data-aos-delay="500"
+                >
+                  <div class="p-4 flex items-center">
+                    <div
+                      class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-lg"
+                    >
+                      <img
+                        src="/assets/images/sijali-logo.svg"
+                        alt="Rumah Tidak Layak Huni"
+                        class="w-8 h-8"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <svg
+                        class="w-8 h-8 text-blue-600 hidden"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                    </div>
+                    <div class="ml-3 flex-1">
+                      <h3 class="text-sm font-bold text-gray-900 mb-1">
+                        Rumah Tidak Layak Huni
+                      </h3>
+                      <p class="text-gray-600 text-xs leading-relaxed">
+                        Program perbaikan rumah
+                      </p>
+                    </div>
+                    <div class="flex-shrink-0 text-blue-600">
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Aspirasi Masyarakat -->
+                <div
+                  class="bg-white rounded-xl shadow-lg cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                  @click="openSijali('aspirasi')"
+                  data-aos="fade-up"
+                  data-aos-delay="600"
+                >
+                  <div class="p-4 flex items-center">
+                    <div
+                      class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-lg"
+                    >
+                      <img
+                        src="/assets/images/sijali-logo.svg"
+                        alt="Aspirasi Masyarakat"
+                        class="w-8 h-8"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                      />
+                      <svg
+                        class="w-8 h-8 text-blue-600 hidden"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                    </div>
+                    <div class="ml-3 flex-1">
+                      <h3 class="text-sm font-bold text-gray-900 mb-1">
+                        Aspirasi Masyarakat
+                      </h3>
+                      <p class="text-gray-600 text-xs leading-relaxed">
+                        Wadah aspirasi
+                      </p>
+                    </div>
+                    <div class="flex-shrink-0 text-blue-600">
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -381,392 +1024,259 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, onUnmounted } from "vue";
-import { CountUp } from "countup.js";
+<script setup lang="ts">
+import { ref, onMounted, computed, watch } from "vue";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/autoplay";
 import AOS from "aos";
 import "aos/dist/aos.css";
-// Import components
-import Navbar from "~/components/Navbar.vue";
-import MapView from "~/components/MapView.vue";
-import WeatherWidget from "~/components/WeatherWidget.vue";
 
-// Refs
-const mapViewRef = ref(null);
+const config = useRuntimeConfig();
+// Use SIJALI's useContentApi instead of useWebProfilApi
+const { baseURL } = useContentApi();
+// baseURL already includes /api if needed, so we use it directly
+const API_URL = baseURL;
 
-// Stats refs
-const totalRoadLength = ref(0);
-const totalDistricts = ref(0);
-const totalVillages = ref(0);
-const goodConditionLength = ref(0);
+// API composables
+const { getBerita, getDokumentasiKegiatan, getStats } = useContentApi();
+const { getThumbnail, handleImageError } = useImagePlaceholder();
+const { formatRelativeDate } = useDateFormat();
+const { getExcerpt } = useTextUtils();
 
-// CountUp instances
-let roadLengthCounter = null;
-let districtsCounter = null;
-let villagesCounter = null;
-let goodConditionCounter = null;
+// Swiper modules
+const swiperModules = [Pagination, Autoplay];
 
-// Flag to track if data is loaded
-const statsLoaded = ref(false);
+// Data refs
+const statsData = ref<any>(null);
+const beritaList = ref<any[]>([]);
+const dokumentasiKegiatanHome = ref<any[]>([]);
+const dokumentasiInfrastrukturHome = ref<any[]>([]);
 
-// Flag to track if animation has been played
-const animationPlayed = ref(false);
+// Animated counter refs
+const animatedKawasan = ref(0);
+const animatedJembatan = ref(0);
+const animatedJalan = ref(0);
+const animatedDrainase = ref(0);
 
-// Intersection Observer for stat cards
-let statsObserver = null;
-
-// Flag to prevent scroll detection during manual scroll
-let isManualScrolling = false;
-let scrollTimeout = null;
-
-// Handle toggle sidebar from navbar
-const handleToggleSidebar = () => {
-  if (mapViewRef.value && mapViewRef.value.toggleMainSidebar) {
-    mapViewRef.value.toggleMainSidebar();
-  }
-};
-
-// Open map - scroll directly to the blue map canvas
-const openMap = () => {
-  // Scroll directly to map canvas (the blue part)
-  const element = document.getElementById("map-canvas");
-  if (element) {
-    const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - 200;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: "smooth",
-    });
-  }
-
-  // Optional: You can add interaction with the map here
-  setTimeout(() => {
-    console.log("Map canvas focused");
-  }, 800);
-};
-
-// Initialize CountUp instances
-const initializeCounters = () => {
-  if (typeof window !== "undefined") {
-    roadLengthCounter = new CountUp("roadLengthCounter", 0, {
-      decimal: ".",
-      decimalPlaces: 2,
-      duration: 1.2,
-      useEasing: true,
-      useGrouping: true,
-      separator: ",",
-    });
-
-    districtsCounter = new CountUp("districtsCounter", 0, {
-      duration: 1.2,
-      useEasing: true,
-      useGrouping: true,
-      separator: ",",
-    });
-
-    villagesCounter = new CountUp("villagesCounter", 0, {
-      duration: 1.2,
-      useEasing: true,
-      useGrouping: true,
-      separator: ",",
-    });
-
-    goodConditionCounter = new CountUp("goodConditionCounter", 0, {
-      decimal: ".",
-      decimalPlaces: 2,
-      duration: 1.2,
-      useEasing: true,
-      useGrouping: true,
-      separator: ",",
-    });
-  }
-};
-
-// Start counter animations sequentially (left to right)
-const startCounters = () => {
-  if (!statsLoaded.value) return;
-
-  // Prevent animation from playing multiple times
-  if (animationPlayed.value) return;
-
-  // Mark animation as played
-  animationPlayed.value = true;
-
-  // Reset counters to 0 first
-  if (roadLengthCounter) roadLengthCounter.reset();
-  if (districtsCounter) districtsCounter.reset();
-  if (villagesCounter) villagesCounter.reset();
-  if (goodConditionCounter) goodConditionCounter.reset();
-
-  // Start animations sequentially with smooth transitions
-  // Card 1: Start immediately (0ms)
-  setTimeout(() => {
-    if (roadLengthCounter && totalRoadLength.value) {
-      roadLengthCounter.update(parseFloat(totalRoadLength.value));
+// CountUp animation function
+const animateValue = (
+  start: number,
+  end: number,
+  duration: number,
+  callback: (value: number) => void
+) => {
+  const startTime = performance.now();
+  const animate = (currentTime: number) => {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+    const current = Math.floor(start + (end - start) * easeOutQuart);
+    callback(current);
+    if (progress < 1) {
+      requestAnimationFrame(animate);
     }
-  }, 0);
-
-  // Card 2: Start with slight overlap (700ms)
-  setTimeout(() => {
-    if (districtsCounter && totalDistricts.value) {
-      districtsCounter.update(totalDistricts.value);
-    }
-  }, 700);
-
-  // Card 3: Start with slight overlap (1400ms)
-  setTimeout(() => {
-    if (villagesCounter && totalVillages.value) {
-      villagesCounter.update(totalVillages.value);
-    }
-  }, 1400);
-
-  // Card 4: Start with slight overlap (2100ms)
-  setTimeout(() => {
-    if (goodConditionCounter && goodConditionLength.value) {
-      goodConditionCounter.update(parseFloat(goodConditionLength.value));
-    }
-  }, 2100);
-};
-
-// Load hero stats from API
-const loadHeroStats = async () => {
-  try {
-    // Get API URL from runtime config
-    const config = useRuntimeConfig();
-    const apiUrl = config.public.apiUrl;
-
-    // Fetch summary data for total road length and districts
-    const summaryResponse = await fetch(`${apiUrl}/jalan/stats/summary`);
-    if (summaryResponse.ok) {
-      const summaryResult = await summaryResponse.json();
-      if (summaryResult.success && summaryResult.data) {
-        // Calculate total road length in Km (API returns totalLength not totalPanjang)
-        const totalLengthM = summaryResult.data.totalLength || 0;
-        totalRoadLength.value = (totalLengthM / 1000).toFixed(2);
-
-        // Count number of districts from kecamatanStats array
-        if (summaryResult.data.kecamatanStats) {
-          totalDistricts.value = summaryResult.data.kecamatanStats.length;
-        }
-
-        console.log("Total road length loaded:", totalRoadLength.value, "Km");
-        console.log("Total districts loaded:", totalDistricts.value);
-      }
-    }
-
-    // Fetch kondisi data for good condition roads
-    const kondisiResponse = await fetch(
-      `${apiUrl}/jalan/stats/kondisi-material-filtered`
-    );
-    if (kondisiResponse.ok) {
-      const kondisiResult = await kondisiResponse.json();
-      if (
-        kondisiResult.success &&
-        kondisiResult.data &&
-        kondisiResult.data.kondisiStats
-      ) {
-        // Find "Baik" condition and get the sum of panjangM
-        const baikCondition = kondisiResult.data.kondisiStats.find(
-          (stat) => stat.keterangan === "Baik"
-        );
-
-        if (
-          baikCondition &&
-          baikCondition._sum &&
-          baikCondition._sum.panjangM
-        ) {
-          const baikPanjangM = baikCondition._sum.panjangM;
-          goodConditionLength.value = (baikPanjangM / 1000).toFixed(2);
-          console.log(
-            "Good condition road length loaded:",
-            goodConditionLength.value,
-            "Km"
-          );
-        }
-      }
-    }
-
-    // Fetch unique desa/kelurahan count
-    try {
-      console.log("Fetching desa count from API...");
-      const desaResponse = await fetch(`${apiUrl}/jalan/filters/desa`);
-      console.log("Desa response status:", desaResponse.status);
-
-      if (desaResponse.ok) {
-        const desaResult = await desaResponse.json();
-        console.log("Desa result:", desaResult);
-
-        if (desaResult.success && desaResult.data) {
-          totalVillages.value = desaResult.data.length;
-          console.log("Total villages loaded:", totalVillages.value);
-        } else {
-          console.warn("Desa API returned no data, using fallback");
-          // Fallback: use a reasonable number based on typical Indonesian administrative structure
-          totalVillages.value = 117; // Based on the GeoJSON data we saw earlier
-        }
-      } else {
-        console.warn("Desa API failed, using fallback");
-        totalVillages.value = 117; // Fallback
-      }
-    } catch (err) {
-      console.error("Error fetching desa count:", err);
-      // Fallback
-      totalVillages.value = 117;
-    }
-
-    // Mark stats as loaded (but don't start animation yet)
-    statsLoaded.value = true;
-
-    // Start counter animation immediately after data is loaded
-    setTimeout(() => {
-      startCounters();
-    }, 500); // Small delay to ensure DOM is ready
-
-    // Load chart data after hero stats are loaded (lower priority)
-    setTimeout(async () => {
-      console.log("Hero stats loaded, loading charts...");
-      // Call initCharts from the component instance
-      if (window.initChartsComponent) {
-        await window.initChartsComponent.initCharts();
-      }
-    }, 1000);
-  } catch (error) {
-    console.error("Error loading hero stats:", error);
-  }
-};
-
-// Setup Intersection Observer for stat cards
-const setupStatsObserver = () => {
-  if (typeof window === "undefined") return;
-
-  const statsElement = document.querySelector(".hero-stats");
-  if (!statsElement) return;
-
-  // Create intersection observer with threshold for mobile/desktop
-  const options = {
-    root: null,
-    rootMargin: "0px",
-    threshold: 0.3, // Trigger when 30% of the element is visible
   };
-
-  statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting && statsLoaded.value && !animationPlayed.value) {
-        // Element is visible, start counter animation
-        console.log("Stat cards visible, starting animation...");
-        setTimeout(() => {
-          startCounters();
-        }, 100);
-      }
-    });
-  }, options);
-
-  // Start observing the stats element
-  statsObserver.observe(statsElement);
-  console.log("Stats observer setup complete");
-
-  // Check if element is already visible (for desktop)
-  // If stat cards are immediately visible on page load, trigger animation
-  setTimeout(() => {
-    if (statsLoaded.value && !animationPlayed.value) {
-      const rect = statsElement.getBoundingClientRect();
-      const isVisible =
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <=
-          (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <=
-          (window.innerWidth || document.documentElement.clientWidth);
-
-      // If at least partially visible in viewport, start animation
-      const isPartiallyVisible =
-        rect.top <
-          (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.bottom > 0;
-
-      if (isVisible || isPartiallyVisible) {
-        console.log(
-          "Stat cards already visible on load (desktop), starting animation..."
-        );
-        setTimeout(() => {
-          startCounters();
-        }, 100);
-      }
-    }
-  }, 300);
+  requestAnimationFrame(animate);
 };
 
-// Scroll to section function with proper offset
-const scrollToSection = (sectionId) => {
-  // Disable auto scroll detection temporarily
-  isManualScrolling = true;
+// Start animations when stats data is loaded
+const startCountUpAnimations = () => {
+  if (!statsData.value) return;
 
-  // Clear existing timeout
-  if (scrollTimeout) clearTimeout(scrollTimeout);
+  animateValue(
+    0,
+    statsData.value.infrastruktur?.kawasanPermukiman || 0,
+    2000,
+    (val) => {
+      animatedKawasan.value = val;
+    }
+  );
 
-  // Get the target element
-  const element = document.getElementById(sectionId);
-  if (!element) return;
+  animateValue(
+    0,
+    statsData.value.infrastruktur?.jembatanLingkungan || 0,
+    2000,
+    (val) => {
+      animatedJembatan.value = val;
+    }
+  );
 
-  // Calculate exact position
-  const navbarHeight = 80; // Height of navbar
-  const elementTop = element.offsetTop;
-  const scrollPosition = elementTop - navbarHeight;
-
-  // Scroll to the position
-  window.scrollTo({
-    top: scrollPosition,
-    behavior: "smooth",
+  animateValue(0, statsData.value.jalan?.totalPanjangKm || 0, 2000, (val) => {
+    animatedJalan.value = val;
   });
 
-  // Re-enable auto detection after scroll completes
-  scrollTimeout = setTimeout(() => {
-    isManualScrolling = false;
-    // Force update active section
-    const event = new CustomEvent("section-change", {
-      detail: { activeSection: sectionId },
-    });
-    window.dispatchEvent(event);
-  }, 1000);
+  animateValue(
+    0,
+    statsData.value.infrastruktur?.drainaseLingkungan || 0,
+    2000,
+    (val) => {
+      animatedDrainase.value = val;
+    }
+  );
 };
 
-// Scroll detection for navbar
-const handleScroll = () => {
-  // Skip auto-detection during manual scrolling
-  if (isManualScrolling) return;
+// Dokumentasi Infrastruktur data
+const selectedCategory = ref("Jalan_Lingkungan");
 
-  const sections = ["hero", "map", "analisis"];
-  const scrollPosition = window.scrollY + 150; // Add more offset for better detection
+const infraCategories = [
+  { id: "Jalan_Lingkungan", name: "Jalan Lingkungan", shortId: "jalan" },
+  {
+    id: "Jembatan_Lingkungan",
+    name: "Jembatan Lingkungan",
+    shortId: "jembatan",
+  },
+  {
+    id: "Drainase_Lingkungan",
+    name: "Drainase Lingkungan",
+    shortId: "drainase",
+  },
+  { id: "Kawasan_Permukiman", name: "Kawasan Permukiman", shortId: "kawasan" },
+  {
+    id: "Rumah_Tidak_Layak_Huni",
+    name: "Rumah Tidak Layak Huni",
+    shortId: "rumah",
+  },
+];
 
-  let activeId = "hero"; // Default to hero
+// Helper functions for YouTube
+const extractYouTubeVideoId = (url: string) => {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : null;
+};
 
-  for (const sectionId of sections) {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const { offsetTop, offsetHeight } = element;
-      // Check if scroll position is within section bounds
-      if (
-        scrollPosition >= offsetTop &&
-        scrollPosition < offsetTop + offsetHeight
-      ) {
-        activeId = sectionId;
-        break;
+const getYouTubeThumbnail = (url: string) => {
+  const videoId = extractYouTubeVideoId(url);
+  return videoId
+    ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+    : null;
+};
+
+const getYouTubeEmbedUrl = (url: string) => {
+  if (!url) return "";
+  const videoId = extractYouTubeVideoId(url);
+  if (!videoId) return "";
+  return `https://www.youtube.com/embed/${videoId}`;
+};
+
+const openYouTubeFancybox = (url: string, title: string) => {
+  if (typeof window !== "undefined" && (window as any).Fancybox) {
+    const videoUrl = getYouTubeEmbedUrl(url);
+    const videoTitle = title || "Video Dokumentasi";
+
+    (window as any).Fancybox.show(
+      [
+        {
+          src: videoUrl,
+          type: "iframe",
+          caption: videoTitle,
+        },
+      ],
+      {
+        Toolbar: {
+          display: {
+            left: ["infobar"],
+            middle: [],
+            right: ["close"],
+          },
+        },
+        closeButton: "top",
+        click: "close",
+        wheel: "close",
+        keyboard: {
+          Escape: "close",
+        },
       }
+    );
+  } else {
+    // Fallback: open in new tab if Fancybox is not available
+    window.open(url, "_blank");
+  }
+};
+
+const formatJenisInfrastruktur = (jenis: string) => {
+  return jenis.replace(/_/g, " ");
+};
+
+// Load dokumentasi infrastruktur from API
+const loadDokumentasiInfrastruktur = async () => {
+  try {
+    // Use the composable method instead of direct fetch
+    const { data, error } = await useContentApi().getDokumentasiInfrastruktur({
+      jenisInfrastruktur: selectedCategory.value,
+      limit: 3,
+    });
+
+    if (error) {
+      console.error("Error loading dokumentasi infrastruktur:", error);
+      dokumentasiInfrastrukturHome.value = [];
+      return;
     }
+
+    dokumentasiInfrastrukturHome.value = (data as any[]) || [];
+  } catch (error) {
+    console.error("Error loading dokumentasi infrastruktur:", error);
+    dokumentasiInfrastrukturHome.value = [];
+  }
+};
+
+// Transform data for display
+const filteredVideos = computed(() => {
+  if (
+    !dokumentasiInfrastrukturHome.value ||
+    !Array.isArray(dokumentasiInfrastrukturHome.value)
+  ) {
+    return [];
   }
 
-  // Emit event to update navbar active section
-  const event = new CustomEvent("section-change", {
-    detail: { activeSection: activeId },
-  });
-  window.dispatchEvent(event);
+  return dokumentasiInfrastrukturHome.value
+    .map((item: any) => {
+      let title = formatJenisInfrastruktur(item.jenisInfrastruktur);
+
+      // Add road info for Jalan Lingkungan
+      if (item.roadInfo && item.roadInfo.namaJalan) {
+        title += ` - ${item.roadInfo.namaJalan}`;
+        if (item.roadInfo.kecamatan) {
+          title += ` - ${item.roadInfo.kecamatan}`;
+        }
+        if (item.roadInfo.desa) {
+          title += ` - ${item.roadInfo.desa}`;
+        }
+      } else if (item.noRuas) {
+        title += ` - ${item.noRuas}`;
+      }
+
+      return {
+        id: item.id,
+        category: formatJenisInfrastruktur(item.jenisInfrastruktur),
+        title,
+        description: `Video dokumentasi ${formatJenisInfrastruktur(
+          item.jenisInfrastruktur
+        ).toLowerCase()} dengan nomor ruas ${item.noRuas || ""}`,
+        youtubeUrl: item.linkYoutube || "",
+        thumbnail: getYouTubeThumbnail(item.linkYoutube || ""),
+        duration: "Video",
+        roadInfo: item.roadInfo || null,
+      };
+    })
+    .slice(0, 3); // Limit to 3 videos for homepage
+});
+
+// Watch for category changes
+watch(selectedCategory, () => {
+  loadDokumentasiInfrastruktur();
+});
+
+// Function to open SIJALI in new tab
+const openSijali = (type: string) => {
+  window.open("https://sijali.vercel.app", "_blank");
 };
 
-// Add scroll listener on mount
+// Initialize data
 onMounted(async () => {
-  window.addEventListener("scroll", handleScroll);
-
   // Initialize AOS
   AOS.init({
     duration: 1000,
@@ -776,1865 +1286,263 @@ onMounted(async () => {
     offset: 100,
   });
 
-  // Initialize counters first
-  initializeCounters();
-
-  // Load hero stats from API first (priority)
-  await loadHeroStats();
-
-  // Setup intersection observer for stat cards (with delay to ensure DOM is ready)
-  setTimeout(() => {
-    setupStatsObserver();
-  }, 200);
-});
-
-// Remove scroll listener on unmount
-onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
-
-  // Disconnect intersection observer
-  if (statsObserver) {
-    statsObserver.disconnect();
+  // Fetch stats for hero section
+  const { data: stats } = await getStats();
+  if (stats) {
+    statsData.value = stats;
+    // Start countup animations after data is loaded
+    setTimeout(() => {
+      startCountUpAnimations();
+    }, 300);
   }
-});
 
-// Set page meta
-useHead({
-  title: "SIJALI Kab. Kubu Raya - Sistem Informasi Jalan Lingkungan",
-  meta: [
-    {
-      name: "description",
-      content:
-        "Web GIS untuk Sistem Informasi Jalan Lingkungan menggunakan ArcGIS JS API",
-    },
-  ],
+  // Fetch latest news (limit 6)
+  const { data: berita } = await getBerita({ limit: 6 });
+  if (berita && Array.isArray(berita)) {
+    beritaList.value = berita;
+  }
+
+  // Fetch dokumentasi kegiatan (limit 3)
+  const { data: dokumentasi } = await getDokumentasiKegiatan({ limit: 3 });
+  if (dokumentasi && Array.isArray(dokumentasi)) {
+    dokumentasiKegiatanHome.value = dokumentasi;
+  }
+
+  // Fetch dokumentasi infrastruktur (limit 3)
+  await loadDokumentasiInfrastruktur();
+
+  // Wait for Fancybox to be loaded from CDN
+  nextTick(() => {
+    // Check if Fancybox is already loaded
+    if (typeof window !== "undefined" && (window as any).Fancybox) {
+      console.log("Fancybox initialized");
+      return;
+    }
+
+    // Wait for script to load
+    const checkFancybox = setInterval(() => {
+      if (typeof window !== "undefined" && (window as any).Fancybox) {
+        console.log("Fancybox loaded and initialized");
+        clearInterval(checkFancybox);
+      }
+    }, 100);
+
+    // Timeout after 5 seconds
+    setTimeout(() => {
+      clearInterval(checkFancybox);
+      if (typeof window !== "undefined" && !(window as any).Fancybox) {
+        console.warn("Fancybox failed to load");
+      }
+    }, 5000);
+  });
 });
 </script>
 
 <style scoped>
-.app {
-  @apply min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col transition-colors duration-300;
+/* Glassmorphism Effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
 }
 
-/* Hero Section */
-.hero-section {
-  @apply bg-gradient-to-br from-slate-800 via-blue-900 to-indigo-900 text-white flex flex-col justify-center relative overflow-hidden;
-  min-height: 100vh;
-  padding-top: 10vh;
+/* Hero Section Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.hero-bg-elements {
-  @apply absolute inset-0 pointer-events-none;
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.hero-bg-circle {
-  @apply absolute rounded-full opacity-10;
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.hero-bg-circle-1 {
-  @apply w-96 h-96 bg-blue-400/20 -top-48 -right-48 animate-pulse;
+.hero-title-animation {
+  animation: fadeInRight 1s ease-out;
 }
 
-.hero-bg-circle-2 {
-  @apply w-64 h-64 bg-indigo-400/20 top-1/4 -left-32 animate-pulse;
-  animation-delay: 1s;
+.hero-subtitle-animation {
+  animation: fadeInRight 1s ease-out 0.2s backwards;
 }
 
-.hero-bg-circle-3 {
-  @apply w-80 h-80 bg-slate-400/20 bottom-0 right-1/4 animate-pulse;
-  animation-delay: 2s;
+.hero-card-animation {
+  animation: scaleIn 0.6s ease-out backwards;
 }
 
-.hero-grid {
-  @apply absolute inset-0 opacity-5;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.1) 1px,
-      transparent 1px
-    ),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 50px 50px;
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
 }
 
-.hero-content {
-  @apply w-full relative z-10 flex items-center justify-between;
-  padding: 5vh 10vw;
+/* Card Glow Effect on Hover */
+.bg-white.rounded-2xl:hover {
+  box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
 }
 
-.hero-text {
-  @apply flex-1 max-w-2xl;
-}
-
-.hero-badge {
-  @apply inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-8 border border-white/20;
-}
-
-.badge-icon {
-  @apply text-lg;
-}
-
-.badge-text {
-  @apply text-sm font-medium text-blue-100;
-}
-
-.hero-title {
-  @apply mb-8;
-}
-
-.title-line-1 {
-  @apply block text-4xl font-light text-white/90;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.title-line-1:hover {
-  transform: translateX(10px);
-  color: rgba(255, 255, 255, 1);
-}
-
-.title-line-2 {
-  @apply block text-5xl font-bold text-white mt-2;
-  transition: transform 0.3s ease, letter-spacing 0.3s ease;
-}
-
-.title-line-2:hover {
-  transform: scale(1.05);
-  letter-spacing: 0.05em;
-}
-
-.title-highlight {
-  @apply block text-3xl font-semibold text-blue-300 mt-4 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent;
-  transition: transform 0.3s ease;
-  background-size: 200% auto;
-  animation: gradientShift 3s ease infinite;
-}
-
-.title-highlight:hover {
-  transform: translateX(10px);
-}
-
-.hero-description {
-  @apply text-lg text-blue-100 mb-10 leading-relaxed max-w-xl;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.hero-description:hover {
-  transform: translateY(-2px);
-  color: rgba(255, 255, 255, 0.95);
-}
-
-.hero-buttons {
-  @apply flex flex-wrap gap-6;
-}
-
-.btn-primary {
-  @apply bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center shadow-xl hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105;
+/* Enhanced Card Borders */
+.border-gray-100 {
   position: relative;
-  overflow: hidden;
-  min-height: 48px;
-  touch-action: manipulation;
 }
 
-.btn-primary::before {
+.border-gray-100::before {
   content: "";
   position: absolute;
   top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  padding: 1px;
   background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
+    135deg,
+    rgba(59, 130, 246, 0.1),
+    rgba(147, 51, 234, 0.1)
   );
-  transition: left 0.5s ease;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.btn-primary:hover::before {
-  left: 100%;
+.border-gray-100:hover::before {
+  opacity: 1;
 }
 
-.btn-secondary {
-  @apply bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/20 hover:border-white/50 px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center shadow-lg hover:shadow-xl transform hover:-translate-y-1;
-  position: relative;
-  overflow: hidden;
-  min-height: 48px;
-  touch-action: manipulation;
+/* Backdrop Filter for Better Readability */
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.btn-secondary::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: left 0.5s ease;
+/* Image Zoom Effect */
+.group:hover img {
+  transform: scale(1.1);
+  transition: transform 0.5s ease;
 }
 
-.btn-secondary:hover::before {
-  left: 100%;
-}
-
-.btn-icon {
-  @apply mr-4 p-2 bg-white/20 rounded-lg;
-}
-
-.btn-content {
-  @apply flex flex-col items-start;
-}
-
-.btn-title {
-  @apply text-base font-semibold;
-}
-
-.btn-subtitle {
-  @apply text-sm opacity-80;
-}
-
-.hero-visual {
-  @apply flex-1 max-w-lg ml-12;
-}
-
-.hero-card {
-  @apply bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-2xl overflow-hidden;
-}
-
-.card-header {
-  @apply flex items-center justify-between p-4 bg-white/5 border-b border-white/10;
-}
-
-.card-dots {
-  @apply flex space-x-2;
-}
-
-.dot {
-  @apply w-3 h-3 rounded-full;
-}
-
-.dot-red {
-  @apply bg-red-400;
-}
-
-.dot-yellow {
-  @apply bg-yellow-400;
-}
-
-.dot-green {
-  @apply bg-green-400;
-}
-
-.card-title {
-  @apply text-sm font-medium text-white/80;
-}
-
-.card-content {
-  @apply p-6;
-}
-
-.hero-stats {
-  @apply w-full relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6;
-  padding: 3vh 10vw;
-}
-
-.stat-card {
-  @apply bg-white/15 backdrop-blur-sm rounded-xl p-6 border border-white/30 flex items-center space-x-4 shadow-lg;
-}
-
-.stat-icon {
-  @apply bg-blue-600/20 p-3 rounded-lg;
-}
-
-.stat-content {
-  @apply flex-1;
-}
-
-.stat-number {
-  @apply text-2xl font-bold text-white drop-shadow-lg;
-}
-
-.hero-stats .stat-label {
-  @apply text-sm font-medium drop-shadow-md;
-  color: rgba(255, 255, 255, 0.8) !important;
-}
-
-/* Section Headers */
-.section-header {
-  @apply text-center mb-12;
-}
-
-.section-title {
-  @apply text-4xl font-bold text-gray-900 mb-4;
-}
-
-.section-description {
-  @apply text-xl text-gray-600 max-w-3xl mx-auto;
-}
-
-/* Map Section */
-.map-section {
-  @apply py-20;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  background: linear-gradient(to bottom, #f8fafc 0%, #e0e7ff 100%);
-  min-height: 60vh;
-}
-
-.map-container {
-  @apply container mx-auto px-8;
-}
-
-/* Map Title Frame */
-.map-title-frame {
-  @apply bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg;
-  @apply rounded-t-xl;
-}
-
-.title-frame-content {
-  @apply px-6 py-2 text-left;
-}
-
-.map-title-text {
-  @apply text-xl font-bold text-white drop-shadow-md;
-  @apply tracking-wide;
-}
-
-/* Map Canvas Wrapper */
-.map-canvas-wrapper {
-  @apply rounded-b-xl overflow-hidden shadow-lg;
-  border-top: none;
-}
-
-/* Analisis Section */
-.analisis-section {
-  @apply py-20 bg-gray-50;
-}
-
-.analisis-content {
-  @apply container mx-auto px-8;
-}
-
-.analisis-grid {
-  @apply grid grid-cols-1 md:grid-cols-2 gap-8;
-}
-
-.analisis-card {
-  @apply bg-white rounded-xl shadow-lg p-6 border border-gray-200;
-}
-
-.card-header {
-  @apply flex items-center justify-between mb-6;
-}
-
-.card-title {
-  @apply text-xl font-semibold text-gray-900;
-}
-
-.chart-placeholder {
-  @apply space-y-4;
-}
-
-.chart-bars {
-  @apply flex items-end space-x-4 h-32;
-}
-
-.bar {
-  @apply flex-1 rounded-t transition-all duration-500;
-}
-
-.chart-labels {
-  @apply flex justify-between text-sm text-gray-600 mt-4;
-}
-
-.label-item {
-  @apply flex flex-col items-center space-y-1;
-}
-
-.label-text {
-  @apply text-sm text-gray-600;
-}
-
-.label-percentage {
-  @apply text-xs font-semibold text-gray-800;
-}
-
-.horizontal-bars {
-  @apply space-y-4;
-}
-
-.h-bar {
-  @apply flex items-center space-x-4;
-}
-
-.h-bar .label {
-  @apply w-24 text-sm text-gray-600;
-}
-
-.bar-container {
-  @apply flex-1 bg-gray-200 rounded-full h-4;
-}
-
-.bar-fill {
-  @apply bg-blue-500 h-4 rounded-full transition-all duration-500;
-}
-
-.h-bar .value {
-  @apply text-sm font-semibold text-gray-900 w-12 text-right;
-}
-
-.trend-chart {
-  @apply text-center;
-}
-
-.priority-list {
-  @apply space-y-4;
-}
-
-.priority-item {
-  @apply flex items-center space-x-4 p-3 rounded-lg bg-gray-50;
-}
-
-.priority-icon {
-  @apply w-3 h-3 rounded-full;
-}
-
-.priority-icon.high {
-  @apply bg-red-500;
-}
-
-.priority-icon.medium {
-  @apply bg-yellow-500;
-}
-
-.priority-icon.low {
-  @apply bg-green-500;
-}
-
-.priority-content {
-  @apply flex-1;
-}
-
-.priority-stats {
-  @apply flex flex-col items-end space-y-1;
-}
-
-.priority-count {
-  @apply text-lg font-bold text-gray-900;
-}
-
-.priority-percentage {
-  @apply text-sm text-gray-600;
-}
-
-.stats-grid {
-  @apply grid grid-cols-2 gap-4;
-}
-
-.stat-item {
-  @apply text-center p-4 bg-gray-50 rounded-lg;
-}
-
-.stat-value {
-  @apply text-2xl font-bold text-blue-600 mb-1;
-}
-
-.stat-label {
-  @apply text-sm text-gray-600;
-}
-
-/* Material Analysis Styles */
-.material-diagram {
-  @apply p-4;
-}
-
-.material-chart {
-  @apply flex items-end space-x-3 h-40;
-}
-
-.material-bar {
-  @apply flex flex-col justify-end items-center rounded-t-lg transition-all duration-500 relative;
-  min-height: 20px;
-}
-
-.material-bar.asphalt {
-  @apply bg-gradient-to-t from-gray-800 to-gray-600;
-}
-
-.material-bar.concrete {
-  @apply bg-gradient-to-t from-gray-400 to-gray-200;
-}
-
-.material-bar.gravel {
-  @apply bg-gradient-to-t from-yellow-600 to-yellow-400;
-}
-
-.material-bar.dirt {
-  @apply bg-gradient-to-t from-amber-800 to-amber-600;
-}
-
-.material-label {
-  @apply text-xs font-semibold text-white mb-1;
-}
-
-.material-percentage {
-  @apply text-xs font-bold text-gray-800 mt-1;
-}
-
-/* Damage Analysis Styles */
-.damage-diagram {
-  @apply p-4;
-}
-
-.damage-pie-chart {
-  @apply grid grid-cols-2 gap-4;
-}
-
-.pie-slice {
-  @apply flex flex-col items-center p-4 rounded-lg text-center;
-}
-
-.pie-slice.crack {
-  @apply bg-red-100 border-2 border-red-300;
-}
-
-.pie-slice.pothole {
-  @apply bg-orange-100 border-2 border-orange-300;
-}
-
-.pie-slice.erosion {
-  @apply bg-yellow-100 border-2 border-yellow-300;
-}
-
-.pie-slice.surface {
-  @apply bg-blue-100 border-2 border-blue-300;
-}
-
-.damage-type {
-  @apply text-sm font-semibold text-gray-800 mb-1;
-}
-
-.damage-percentage {
-  @apply text-lg font-bold text-gray-900;
-}
-
-/* Condition Matrix Styles */
-.condition-matrix {
-  @apply space-y-4;
-}
-
-.condition-row {
-  @apply flex items-center space-x-4;
-}
-
-.material-name {
-  @apply w-16 text-sm font-semibold text-gray-700;
-}
-
-.condition-bars {
-  @apply flex-1 flex space-x-1 h-6 rounded overflow-hidden;
-}
-
-.condition-bar {
-  @apply h-full transition-all duration-500;
-}
-
-.condition-bar.good {
-  @apply bg-green-500;
-}
-
-.condition-bar.fair {
-  @apply bg-yellow-500;
-}
-
-.condition-bar.poor {
-  @apply bg-red-500;
-}
-
-.condition-total {
-  @apply w-16 text-sm font-semibold text-gray-800 text-right;
-}
-
-/* Severity Diagram Styles */
-.severity-diagram {
-  @apply p-4;
-}
-
-.severity-chart {
-  @apply space-y-3;
-}
-
-.severity-level {
-  @apply flex items-center space-x-4 p-3 rounded-lg;
-}
-
-.severity-level.critical {
-  @apply bg-red-50 border-l-4 border-red-500;
-}
-
-.severity-level.high {
-  @apply bg-orange-50 border-l-4 border-orange-500;
-}
-
-.severity-level.medium {
-  @apply bg-yellow-50 border-l-4 border-yellow-500;
-}
-
-.severity-level.low {
-  @apply bg-green-50 border-l-4 border-green-500;
-}
-
-.severity-icon {
-  @apply w-4 h-4 rounded-full;
-}
-
-.severity-level.critical .severity-icon {
-  @apply bg-red-500;
-}
-
-.severity-level.high .severity-icon {
-  @apply bg-orange-500;
-}
-
-.severity-level.medium .severity-icon {
-  @apply bg-yellow-500;
-}
-
-.severity-level.low .severity-icon {
-  @apply bg-green-500;
-}
-
-.severity-info {
-  @apply flex-1;
-}
-
-.severity-label {
-  @apply text-sm font-semibold text-gray-800;
-}
-
-.severity-desc {
-  @apply text-xs text-gray-600;
-}
-
-.severity-stats {
-  @apply flex flex-col items-end;
-}
-
-.severity-count {
-  @apply text-lg font-bold text-gray-900;
-}
-
-.severity-percentage {
-  @apply text-sm text-gray-600;
-}
-
-/* Repair Priority Styles */
-.repair-priority {
-  @apply p-4;
-}
-
-.priority-matrix {
-  @apply space-y-4;
-}
-
-.priority-item {
-  @apply flex items-center space-x-4 p-3 rounded-lg;
-}
-
-.priority-item.high-priority {
-  @apply bg-red-50 border-l-4 border-red-500;
-}
-
-.priority-item.medium-priority {
-  @apply bg-yellow-50 border-l-4 border-yellow-500;
-}
-
-.priority-item.low-priority {
-  @apply bg-green-50 border-l-4 border-green-500;
-}
-
-.priority-material {
-  @apply w-32 text-sm font-semibold text-gray-800;
-}
-
-.priority-chart {
-  @apply flex-1 bg-gray-200 rounded-full h-4;
-}
-
-.priority-bar {
-  @apply h-4 rounded-full transition-all duration-500;
-}
-
-.priority-item.high-priority .priority-bar {
-  @apply bg-red-500;
-}
-
-.priority-item.medium-priority .priority-bar {
-  @apply bg-yellow-500;
-}
-
-.priority-item.low-priority .priority-bar {
-  @apply bg-green-500;
-}
-
-/* Performance Diagram Styles */
-.performance-diagram {
-  @apply p-4;
-}
-
-.performance-chart {
-  @apply space-y-4;
-}
-
-.performance-item {
-  @apply flex items-center space-x-4;
-}
-
-.performance-material {
-  @apply w-16 text-sm font-semibold text-gray-700;
-}
-
-.performance-bar {
-  @apply flex-1 bg-gray-200 rounded-full h-4;
-}
-
-.performance-fill {
-  @apply h-4 rounded-full transition-all duration-500;
-}
-
-.concrete-performance {
-  @apply bg-green-500;
-}
-
-.asphalt-performance {
-  @apply bg-blue-500;
-}
-
-.gravel-performance {
-  @apply bg-yellow-500;
-}
-
-.dirt-performance {
-  @apply bg-red-500;
-}
-
-.performance-score {
-  @apply w-16 text-sm font-bold text-gray-800 text-right;
-}
-
-/* Donut Chart Styles */
-.donut-chart-container {
-  @apply flex items-center space-x-6 p-4;
-}
-
-.donut-chart {
-  @apply relative flex-shrink-0;
-  height: 200px;
-  width: 200px;
-}
-
-.donut-chart canvas {
-  @apply w-full h-full;
-}
-
-.chart-center {
-  @apply absolute inset-0 flex flex-col items-center justify-center pointer-events-none;
-}
-
-.center-number {
-  @apply text-xl font-bold text-gray-900;
-}
-
-.center-label {
-  @apply text-sm text-gray-600;
-}
-
-.chart-container {
-  @apply p-4;
-  height: 300px;
-  width: 100%;
-}
-
-/* Dual Donut Container Styles */
-.dual-donut-container {
-  @apply flex flex-col lg:flex-row gap-8 p-4;
-}
-
-.donut-section {
-  @apply flex-1;
-}
-
-.donut-title {
-  @apply text-lg font-semibold text-gray-800 mb-4 text-center;
-}
-
-.donut-chart {
-  @apply relative flex justify-center mb-4;
-  min-height: 200px;
-  min-width: 200px;
-}
-
-.donut-svg {
-  @apply w-40 h-40;
-}
-
-.donut-legend {
-  @apply space-y-2;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .dual-donut-container {
-    @apply flex-col;
-  }
-
-  .donut-svg {
-    @apply w-32 h-32;
-  }
-}
-
-/* District Damage Analysis now uses condition-matrix styles */
-
-/* Responsive adjustments for district charts */
-@media (max-width: 768px) {
-  .district-damage-container {
-    @apply grid-cols-1 gap-4;
-  }
-
-  .district-svg {
-    @apply w-20 h-20;
-  }
-
-  .chart-container {
-    height: 250px;
-  }
-
-  .donut-chart {
-    height: 160px;
-    width: 160px;
-    min-height: 160px;
-    min-width: 160px;
-    margin: 0 auto; /* Center the chart */
-  }
-
-  .dual-donut-container {
-    @apply flex flex-col items-center space-y-6; /* Center container and stack vertically */
-  }
-
-  .donut-section {
-    @apply flex flex-col items-center; /* Center each donut section */
-  }
-}
-
-@media (max-width: 480px) {
-  .chart-container {
-    height: 200px;
-  }
-
-  .donut-chart {
-    height: 180px;
-    width: 180px;
-    min-height: 180px;
-    min-width: 180px;
-    margin: 0 auto; /* Center the chart */
-  }
-
-  .analisis-card {
-    @apply p-3;
-  }
-
-  .card-header {
-    @apply flex-col items-start gap-2;
-  }
-
-  .card-title {
-    @apply text-sm;
-  }
-}
-
-.priority-title {
-  @apply font-semibold text-gray-900;
-}
-
-.priority-desc {
-  @apply text-sm text-gray-600;
-}
-
-.priority-count {
-  @apply font-bold text-gray-900;
-}
-
-/* Animations & Keyframes */
-@keyframes gradientShift {
+/* Category Badge Pulse */
+@keyframes badgePulse {
   0%,
   100% {
-    background-position: 0% 50%;
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
   }
   50% {
-    background-position: 100% 50%;
+    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
   }
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .hero-content {
-    @apply flex-col text-center;
-    padding: 4vh 6vw;
-  }
+.bg-blue-600.text-white.px-3.py-1:hover {
+  animation: badgePulse 2s infinite;
+}
 
-  .hero-visual {
-    @apply ml-0 mt-8 max-w-full;
-  }
+/* Loading Animation for Images */
+img {
+  transition: opacity 0.3s ease;
+}
 
-  .hero-stats {
-    @apply grid-cols-2;
-    padding: 3vh 6vw;
-  }
+img[src=""] {
+  opacity: 0.5;
+}
 
-  .analisis-grid {
-    @apply grid-cols-1;
-  }
+/* Enhanced Category Tabs */
+button.rounded-lg {
+  position: relative;
+  overflow: hidden;
+}
 
-  .dual-donut-container {
-    @apply flex-col;
+button.rounded-lg::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+button.rounded-lg:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Gradient Border Animation */
+@keyframes borderGlow {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
   }
 }
 
-@media (max-width: 768px) {
-  .hero-section {
-    padding-top: 8vh;
-    min-height: 100vh;
-  }
+.border-white\/30 {
+  animation: borderGlow 3s ease-in-out infinite;
+}
 
-  .hero-content {
-    @apply flex-col text-center;
-    padding: 3vh 5vw;
-  }
+/* Performance Optimization */
+.transform {
+  transform: translateZ(0);
+  will-change: transform;
+}
 
-  .hero-stats {
-    @apply grid-cols-1 gap-4;
-    padding: 2vh 5vw;
-  }
-
-  .hero-visual {
-    @apply ml-0 mt-8 max-w-full;
-  }
-
-  .title-line-1 {
-    @apply text-2xl;
-  }
-
-  .title-line-2 {
-    @apply text-3xl;
-  }
-
-  .title-highlight {
-    @apply text-xl;
-  }
-
-  .hero-description {
-    @apply text-base max-w-full;
-  }
-
-  .hero-buttons {
-    @apply flex-col items-center gap-4;
-  }
-
-  .btn-primary,
-  .btn-secondary {
-    @apply w-full max-w-sm;
-  }
-
-  .analisis-grid {
-    @apply grid-cols-1;
-  }
-
-  .laporan-controls {
-    @apply grid-cols-1;
-  }
-
-  .stats-grid {
-    @apply grid-cols-1;
-  }
-
-  .map-container,
-  .analisis-content {
-    @apply px-4;
-  }
-
-  .map-section {
-    @apply py-12;
-    min-height: 50vh;
-  }
-
-  .map-title-text {
-    @apply text-lg;
-  }
-
-  .section-title {
-    @apply text-2xl;
-  }
-
-  .section-description {
-    @apply text-lg;
-  }
-
-  .card-title {
-    @apply text-lg;
-  }
-
-  .stat-card {
-    @apply p-4;
-  }
-
-  .stat-number {
-    @apply text-xl;
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-@media (max-width: 480px) {
-  .hero-section {
-    padding-top: 6vh;
-  }
-
-  .hero-stats {
-    padding: 1.5vh 4vw;
-  }
-
-  .title-line-1 {
-    @apply text-xl;
-  }
-
-  .title-line-2 {
-    @apply text-2xl;
-  }
-
-  .title-highlight {
-    @apply text-lg;
-  }
-
-  .hero-description {
-    @apply text-sm;
-  }
-
-  .btn-primary,
-  .btn-secondary {
-    @apply px-6 py-3 text-sm;
-  }
-
-  .btn-title {
-    @apply text-sm;
-  }
-
-  .btn-subtitle {
-    @apply text-xs;
-  }
-
-  .section-title {
-    @apply text-xl;
-  }
-
-  .section-description {
-    @apply text-base;
-  }
-
-  .analisis-card {
-    @apply p-4;
-  }
-
-  .card-title {
-    @apply text-base;
-  }
-
-  .stat-card {
-    @apply p-3;
-  }
-
-  .stat-number {
-    @apply text-lg;
-  }
-
-  .stat-label {
-    @apply text-xs;
-  }
-
-  .chart-container {
-    height: 250px;
-  }
-
-  .donut-chart {
-    height: 150px;
-    width: 150px;
-  }
-
-  .donut-svg {
-    @apply w-24 h-24;
-  }
+/* Swiper custom styles */
+.news-swiper {
+  padding: 20px 0 50px;
 }
 
-@media (max-width: 320px) {
-  .hero-stats {
-    padding: 1vh 3vw;
-  }
+.news-swiper :deep(.swiper-pagination-bullet) {
+  background: white;
+  opacity: 0.5;
+  width: 10px;
+  height: 10px;
+  transition: all 0.3s ease;
+}
 
-  .title-line-1 {
-    @apply text-lg;
-  }
-
-  .title-line-2 {
-    @apply text-xl;
-  }
-
-  .title-highlight {
-    @apply text-base;
-  }
-
-  .hero-description {
-    @apply text-xs;
-  }
-
-  .btn-primary,
-  .btn-secondary {
-    @apply px-4 py-2 text-xs;
-    min-height: 40px;
-  }
-
-  .btn-title {
-    @apply text-xs;
-  }
-
-  .btn-subtitle {
-    @apply text-xs;
-  }
-
-  .stat-card {
-    @apply p-2;
-  }
-
-  .stat-number {
-    @apply text-base;
-  }
-
-  .stat-label {
-    @apply text-xs;
-  }
-
-  .section-title {
-    @apply text-lg;
-  }
-
-  .section-description {
-    @apply text-sm;
-  }
-
-  .analisis-card {
-    @apply p-2;
-  }
-
-  .card-title {
-    @apply text-xs;
-  }
-
-  .chart-container {
-    height: 180px;
-  }
-
-  .donut-chart {
-    height: 100px;
-    width: 100px;
-  }
+.news-swiper :deep(.swiper-pagination-bullet-active) {
+  background: white;
+  opacity: 1;
+  width: 30px;
+  border-radius: 5px;
 }
 </style>
-
-<script>
-import { Chart, registerables } from "chart.js";
-
-Chart.register(...registerables);
-
-export default {
-  async mounted() {
-    // Set component instance for external access
-    window.initChartsComponent = this;
-
-    // Don't call initCharts here, it will be called after hero stats are loaded
-    console.log("Component mounted, waiting for hero stats...");
-  },
-  methods: {
-    showChartError(ctx, message) {
-      // Clear the canvas and show error message
-      ctx.getContext("2d").clearRect(0, 0, ctx.width, ctx.height);
-      const parent = ctx.parentElement;
-      parent.innerHTML = `
-        <div class="flex items-center justify-center h-64 text-gray-500">
-          <div class="text-center">
-            <svg class="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-            </svg>
-            <p class="text-sm">${message}</p>
-          </div>
-        </div>
-      `;
-    },
-    async loadKecamatanOptions() {
-      try {
-        const config = useRuntimeConfig();
-        const apiUrl = config.public.apiUrl;
-        const response = await fetch(`${apiUrl}/jalan/filters/kecamatan`);
-        const result = await response.json();
-
-        if (result.success && result.data) {
-          const kondisiFilter = document.getElementById(
-            "kondisiMaterialFilter"
-          );
-          const materialFilter = document.getElementById(
-            "materialDamageFilter"
-          );
-
-          // Clear existing options except first
-          [kondisiFilter, materialFilter].forEach((select) => {
-            if (select) {
-              // Keep first option (Semua Kecamatan)
-              const firstOption = select.querySelector('option[value=""]');
-              select.innerHTML = "";
-              if (firstOption) {
-                select.appendChild(firstOption);
-              }
-
-              // Add kecamatan options
-              result.data.forEach((kecamatan) => {
-                const option = document.createElement("option");
-                option.value = kecamatan;
-                option.textContent = kecamatan;
-                select.appendChild(option);
-              });
-            }
-          });
-        }
-      } catch (error) {
-        console.error("Error loading kecamatan options:", error);
-      }
-    },
-    async initCharts() {
-      // Wait for DOM to be ready
-      await this.$nextTick();
-
-      // Load kecamatan options first
-      await this.loadKecamatanOptions();
-
-      // Load initial data for both charts (all kecamatan) - lower priority
-      console.log("Loading initial chart data...");
-      await this.updateKondisiMaterialCharts("");
-      await this.updateMaterialDamageChart("");
-      console.log("Initial chart data loaded");
-
-      // District Chart - Real Data
-      const districtCtx = document.getElementById("districtChart");
-      if (districtCtx) {
-        // Fetch real data from API
-        try {
-          console.log("Fetching data from API...");
-          const config = useRuntimeConfig();
-          const apiUrl = config.public.apiUrl;
-          const response = await fetch(
-            `${apiUrl}/jalan/stats/kecamatan-kondisi`,
-            {
-              method: "GET",
-              mode: "cors",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          console.log("Response status:", response.status);
-          console.log("Response ok:", response.ok);
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-
-          const result = await response.json();
-          console.log("API result:", result);
-
-          if (result.success && result.data) {
-            // Process data for all kecamatan
-            const allKecamatans = result.data;
-            const labels = allKecamatans.map((k) => k.kecamatan);
-
-            // Prepare datasets for each condition
-            const baikData = allKecamatans.map(
-              (k) => k.conditions.Baik?.count || 0
-            );
-            const sedangData = allKecamatans.map(
-              (k) => k.conditions.Sedang?.count || 0
-            );
-            const rusakRinganData = allKecamatans.map(
-              (k) => k.conditions["Rusak Ringan"]?.count || 0
-            );
-            const rusakBeratData = allKecamatans.map(
-              (k) => k.conditions["Rusak Berat"]?.count || 0
-            );
-
-            new Chart(districtCtx, {
-              type: "bar",
-              data: {
-                labels: labels,
-                datasets: [
-                  {
-                    label: "Baik",
-                    data: baikData,
-                    backgroundColor: "#10b981",
-                  },
-                  {
-                    label: "Sedang",
-                    data: sedangData,
-                    backgroundColor: "#eab308",
-                  },
-                  {
-                    label: "Rusak Ringan",
-                    data: rusakRinganData,
-                    backgroundColor: "#f97316",
-                  },
-                  {
-                    label: "Rusak Berat",
-                    data: rusakBeratData,
-                    backgroundColor: "#dc2626",
-                  },
-                ],
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    position: "top",
-                  },
-                  tooltip: {
-                    enabled: true,
-                    backgroundColor: "rgba(0, 0, 0, 0.8)",
-                    titleColor: "white",
-                    bodyColor: "white",
-                    borderColor: "rgba(255, 255, 255, 0.2)",
-                    borderWidth: 1,
-                    cornerRadius: 8,
-                  },
-                },
-                scales: {
-                  x: {
-                    stacked: true,
-                  },
-                  y: {
-                    stacked: true,
-                    beginAtZero: true,
-                  },
-                },
-              },
-            });
-          } else {
-            console.error("Failed to fetch kecamatan-kondisi data");
-            // Show error message instead of dummy data
-            this.showChartError(districtCtx, "Gagal memuat data kecamatan");
-          }
-        } catch (error) {
-          console.error("Error fetching kecamatan-kondisi data:", error);
-          // Show error message instead of dummy data
-          this.showChartError(districtCtx, "Gagal memuat data kecamatan");
-        }
-      }
-
-      // District Length Chart - Real Data
-      const districtLengthCtx = document.getElementById("districtLengthChart");
-      if (districtLengthCtx) {
-        // Fetch real data from API
-        try {
-          console.log("Fetching kecamatan length data from API...");
-          const config = useRuntimeConfig();
-          const apiUrl = config.public.apiUrl;
-          const response = await fetch(`${apiUrl}/jalan/stats/summary`, {
-            method: "GET",
-            mode: "cors",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          });
-          console.log("Length response status:", response.status);
-          console.log("Length response ok:", response.ok);
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-
-          const result = await response.json();
-          console.log("Length API result:", result);
-
-          if (result.success && result.data && result.data.kecamatanStats) {
-            // Process data for all kecamatan
-            const kecamatanData = result.data.kecamatanStats;
-            const labels = kecamatanData.map((k) => k.kecamatan);
-            const lengths = kecamatanData.map((k) =>
-              (k._sum.panjangM / 1000).toFixed(1)
-            ); // Convert to km
-
-            // Color palette for different kecamatan
-            const colors = [
-              "#3b82f6", // Blue
-              "#10b981", // Green
-              "#f59e0b", // Orange
-              "#ef4444", // Red
-              "#8b5cf6", // Purple
-              "#06b6d4", // Cyan
-              "#84cc16", // Lime
-              "#f97316", // Orange
-              "#ec4899", // Pink
-              "#6b7280", // Gray
-            ];
-
-            new Chart(districtLengthCtx, {
-              type: "bar",
-              data: {
-                labels: labels,
-                datasets: [
-                  {
-                    label: "Panjang Jalan (km)",
-                    data: lengths,
-                    backgroundColor: colors.slice(0, labels.length),
-                    borderWidth: 1,
-                    borderColor: "#ffffff",
-                  },
-                ],
-              },
-              options: {
-                indexAxis: "y",
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                  tooltip: {
-                    enabled: true,
-                    backgroundColor: "rgba(0, 0, 0, 0.8)",
-                    titleColor: "white",
-                    bodyColor: "white",
-                    borderColor: "rgba(255, 255, 255, 0.2)",
-                    borderWidth: 1,
-                    cornerRadius: 8,
-                    callbacks: {
-                      label: function (context) {
-                        return "Panjang: " + context.parsed.x + " km";
-                      },
-                    },
-                  },
-                },
-                scales: {
-                  x: {
-                    beginAtZero: true,
-                    grid: {
-                      color: "rgba(0, 0, 0, 0.1)",
-                    },
-                    ticks: {
-                      callback: function (value) {
-                        return value + " km";
-                      },
-                      color: "#6b7280",
-                    },
-                  },
-                  y: {
-                    grid: {
-                      display: false,
-                    },
-                    ticks: {
-                      color: "#6b7280",
-                    },
-                  },
-                },
-              },
-            });
-          } else {
-            console.error("Failed to fetch kecamatan length data");
-            // Show error message instead of dummy data
-            this.showChartError(
-              districtLengthCtx,
-              "Gagal memuat data panjang jalan"
-            );
-          }
-        } catch (error) {
-          console.error("Error fetching kecamatan length data:", error);
-          // Show error message instead of dummy data
-          this.showChartError(
-            districtLengthCtx,
-            "Gagal memuat data panjang jalan"
-          );
-        }
-      }
-
-      // Add event listeners for filters
-      this.setupFilterListeners();
-    },
-    setupFilterListeners() {
-      // Filter for Analisis Kondisi & Material Jalan
-      const kondisiFilter = document.getElementById("kondisiMaterialFilter");
-      if (kondisiFilter) {
-        kondisiFilter.addEventListener("change", (e) => {
-          this.updateKondisiMaterialCharts(e.target.value);
-        });
-      }
-
-      // Filter for Tingkat Kerusakan per Material
-      const materialFilter = document.getElementById("materialDamageFilter");
-      if (materialFilter) {
-        materialFilter.addEventListener("change", (e) => {
-          this.updateMaterialDamageChart(e.target.value);
-        });
-      }
-    },
-    async updateKondisiMaterialCharts(kecamatan) {
-      try {
-        const config = useRuntimeConfig();
-        const apiUrl = config.public.apiUrl;
-        const url = kecamatan
-          ? `${apiUrl}/jalan/stats/kondisi-material-filtered?kecamatan=${encodeURIComponent(
-              kecamatan
-            )}`
-          : `${apiUrl}/jalan/stats/kondisi-material-filtered`;
-
-        const response = await fetch(url);
-        const result = await response.json();
-
-        if (result.success && result.data) {
-          // Update condition chart
-          this.updateConditionChart(result.data.kondisiStats);
-
-          // Update material chart
-          this.updateMaterialChart(result.data.materialStats);
-        }
-      } catch (error) {
-        console.error("Error updating kondisi material charts:", error);
-      }
-    },
-    async updateMaterialDamageChart(kecamatan) {
-      try {
-        const config = useRuntimeConfig();
-        const apiUrl = config.public.apiUrl;
-        const url = kecamatan
-          ? `${apiUrl}/jalan/stats/material-kondisi?kecamatan=${encodeURIComponent(
-              kecamatan
-            )}`
-          : `${apiUrl}/jalan/stats/material-kondisi`;
-
-        const response = await fetch(url);
-        const result = await response.json();
-
-        if (result.success && result.data) {
-          // Update material damage chart
-          this.updateMaterialDamageChartData(result.data);
-        }
-      } catch (error) {
-        console.error("Error updating material damage chart:", error);
-      }
-    },
-    updateConditionChart(kondisiStats) {
-      const conditionCtx = document.getElementById("conditionChart");
-      if (!conditionCtx) return;
-
-      // Destroy existing chart if it exists
-      if (
-        window.conditionChart &&
-        typeof window.conditionChart.destroy === "function"
-      ) {
-        window.conditionChart.destroy();
-      }
-
-      // Prepare data (convert to km)
-      const labels = kondisiStats.map((s) => s.keterangan);
-      const data = kondisiStats.map((s) =>
-        ((s._sum.panjangM || 0) / 1000).toFixed(2)
-      );
-      const total = data.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
-
-      // Update center text (show total km)
-      const centerNumber = document.querySelector(
-        "#conditionChart + .chart-center .center-number"
-      );
-      if (centerNumber) {
-        centerNumber.textContent = total.toFixed(2);
-      }
-
-      // Create new chart
-      window.conditionChart = new Chart(conditionCtx, {
-        type: "doughnut",
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              data: data,
-              backgroundColor: [
-                "#10b981", // Baik - Green
-                "#eab308", // Sedang - Yellow
-                "#dc2626", // Rusak Berat - Red (bright)
-                "#f97316", // Rusak Ringan - Orange
-              ],
-              borderWidth: 0,
-              hoverOffset: 10,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false,
-            },
-            tooltip: {
-              enabled: true,
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              titleColor: "white",
-              bodyColor: "white",
-              borderColor: "rgba(255, 255, 255, 0.2)",
-              borderWidth: 1,
-              cornerRadius: 8,
-              displayColors: true,
-              callbacks: {
-                label: function (context) {
-                  const total = context.dataset.data.reduce(
-                    (a, b) => parseFloat(a) + parseFloat(b),
-                    0
-                  );
-                  const percentage = (
-                    (parseFloat(context.parsed) / total) *
-                    100
-                  ).toFixed(1);
-                  return (
-                    context.label +
-                    ": " +
-                    parseFloat(context.parsed).toFixed(2) +
-                    " km (" +
-                    percentage +
-                    "%)"
-                  );
-                },
-              },
-            },
-          },
-          cutout: "60%",
-          animation: {
-            animateRotate: true,
-            animateScale: true,
-          },
-        },
-      });
-    },
-    updateMaterialChart(materialStats) {
-      const materialCtx = document.getElementById("materialChart");
-      if (!materialCtx) return;
-
-      // Destroy existing chart if it exists
-      if (
-        window.materialChart &&
-        typeof window.materialChart.destroy === "function"
-      ) {
-        window.materialChart.destroy();
-      }
-
-      // Prepare data (convert to km)
-      const labels = materialStats.map((s) => s.kondisi);
-      const data = materialStats.map((s) =>
-        ((s._sum.panjangM || 0) / 1000).toFixed(2)
-      );
-      const total = data.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
-
-      // Update center text (show total km)
-      const centerNumber = document.querySelector(
-        "#materialChart + .chart-center .center-number"
-      );
-      if (centerNumber) {
-        centerNumber.textContent = total.toFixed(2);
-      }
-
-      // Create new chart
-      window.materialChart = new Chart(materialCtx, {
-        type: "doughnut",
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              data: data,
-              backgroundColor: [
-                "#6b7280", // Gray
-                "#3b82f6", // Blue
-                "#10b981", // Green
-                "#f59e0b", // Orange
-                "#ef4444", // Red
-                "#8b5cf6", // Purple
-                "#06b6d4", // Cyan
-                "#84cc16", // Lime
-              ],
-              borderWidth: 0,
-              hoverOffset: 10,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false,
-            },
-            tooltip: {
-              enabled: true,
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              titleColor: "white",
-              bodyColor: "white",
-              borderColor: "rgba(255, 255, 255, 0.2)",
-              borderWidth: 1,
-              cornerRadius: 8,
-              displayColors: true,
-              callbacks: {
-                label: function (context) {
-                  const total = context.dataset.data.reduce(
-                    (a, b) => parseFloat(a) + parseFloat(b),
-                    0
-                  );
-                  const percentage = (
-                    (parseFloat(context.parsed) / total) *
-                    100
-                  ).toFixed(1);
-                  return (
-                    context.label +
-                    ": " +
-                    parseFloat(context.parsed).toFixed(2) +
-                    " km (" +
-                    percentage +
-                    "%)"
-                  );
-                },
-              },
-            },
-          },
-          cutout: "60%",
-          animation: {
-            animateRotate: true,
-            animateScale: true,
-          },
-        },
-      });
-    },
-    updateMaterialDamageChartData(materialData) {
-      const materialDamageCtx = document.getElementById("materialDamageChart");
-      if (!materialDamageCtx) return;
-
-      // Destroy existing chart if it exists
-      if (
-        window.materialDamageChart &&
-        typeof window.materialDamageChart.destroy === "function"
-      ) {
-        window.materialDamageChart.destroy();
-      }
-
-      // Process data for top 6 materials
-      const topMaterials = materialData.slice(0, 6);
-      const labels = topMaterials.map((m) => m.material);
-
-      // Prepare datasets for each condition (convert to km)
-      const baikData = topMaterials.map((m) =>
-        ((m.conditions.Baik?.length || 0) / 1000).toFixed(2)
-      );
-      const sedangData = topMaterials.map((m) =>
-        ((m.conditions.Sedang?.length || 0) / 1000).toFixed(2)
-      );
-      const rusakRinganData = topMaterials.map((m) =>
-        ((m.conditions["Rusak Ringan"]?.length || 0) / 1000).toFixed(2)
-      );
-      const rusakBeratData = topMaterials.map((m) =>
-        ((m.conditions["Rusak Berat"]?.length || 0) / 1000).toFixed(2)
-      );
-
-      // Create new chart
-      window.materialDamageChart = new Chart(materialDamageCtx, {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: "Baik",
-              data: baikData,
-              backgroundColor: "#10b981",
-              borderColor: "#059669",
-              borderWidth: 1,
-            },
-            {
-              label: "Sedang",
-              data: sedangData,
-              backgroundColor: "#eab308",
-              borderColor: "#ca8a04",
-              borderWidth: 1,
-            },
-            {
-              label: "Rusak Ringan",
-              data: rusakRinganData,
-              backgroundColor: "#f97316",
-              borderColor: "#ea580c",
-              borderWidth: 1,
-            },
-            {
-              label: "Rusak Berat",
-              data: rusakBeratData,
-              backgroundColor: "#dc2626",
-              borderColor: "#b91c1c",
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          indexAxis: "y",
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: "top",
-            },
-            tooltip: {
-              enabled: true,
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              titleColor: "white",
-              bodyColor: "white",
-              borderColor: "rgba(255, 255, 255, 0.2)",
-              borderWidth: 1,
-              cornerRadius: 8,
-              callbacks: {
-                label: function (context) {
-                  return (
-                    context.dataset.label +
-                    ": " +
-                    parseFloat(context.parsed.x).toFixed(2) +
-                    " km"
-                  );
-                },
-              },
-            },
-          },
-          scales: {
-            x: {
-              beginAtZero: true,
-              ticks: {
-                callback: function (value) {
-                  return value + " km";
-                },
-              },
-            },
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
-      });
-    },
-  },
-};
-</script>

@@ -1270,9 +1270,9 @@ const emit = defineEmits(["close", "save", "update"]);
 const { fetchRoads } = useApiService();
 const toast = useToast();
 
-// Web Profil API URL from config
+// SIJALI API URL from config
 const config = useRuntimeConfig();
-const WEB_PROFIL_API = config.public.webProfilApiUrl;
+const API_BASE = config.public.apiBaseUrl || "";
 
 // YouTube URL helper functions
 const getYouTubeEmbedUrl = (url) => {
@@ -1437,7 +1437,7 @@ const fetchDokumentasiByRuas = async (noRuas) => {
   loadingDokumentasi.value = true;
   try {
     const response = await fetch(
-      `${WEB_PROFIL_API}/dokumentasi-infrastruktur/by-ruas/${noRuas}`
+      `${API_BASE}/api/dokumentasi-infrastruktur/by-ruas/${noRuas}`
     );
     const data = await response.json();
 
@@ -1460,7 +1460,11 @@ const fetchDokumentasiByRuas = async (noRuas) => {
 const fetchKondisiOptions = async () => {
   try {
     const config = useRuntimeConfig();
-    const API_BASE = config.public.apiBaseUrl || "http://localhost:3001";
+    if (!config.public.apiBaseUrl) {
+      console.error("⚠️ NUXT_PUBLIC_API_BASE_URL is not set!");
+      return;
+    }
+    const API_BASE = config.public.apiBaseUrl;
     const response = await fetch(`${API_BASE}/api/jalan/filters/kondisi`);
     const data = await response.json();
 
@@ -1475,7 +1479,11 @@ const fetchKondisiOptions = async () => {
 const fetchKeteranganOptions = async () => {
   try {
     const config = useRuntimeConfig();
-    const API_BASE = config.public.apiBaseUrl || "http://localhost:3001";
+    if (!config.public.apiBaseUrl) {
+      console.error("⚠️ NUXT_PUBLIC_API_BASE_URL is not set!");
+      return;
+    }
+    const API_BASE = config.public.apiBaseUrl;
     const response = await fetch(`${API_BASE}/api/jalan/stats/keterangan`);
     const data = await response.json();
 
@@ -1857,7 +1865,11 @@ const loadAllMapData = async (
   try {
     // Load roads data using the same approach as AduanDetailModal
     const config = useRuntimeConfig();
-    const API_BASE = config.public.apiBaseUrl || "http://localhost:3001";
+    if (!config.public.apiBaseUrl) {
+      console.error("⚠️ NUXT_PUBLIC_API_BASE_URL is not set!");
+      return;
+    }
+    const API_BASE = config.public.apiBaseUrl;
 
     const response = await fetch(`${API_BASE}/api/jalan/geojson`);
     const data = await response.json();

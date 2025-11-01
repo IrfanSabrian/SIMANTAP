@@ -1,139 +1,606 @@
 <template>
   <nav
-    class="fixed top-0 left-0 right-0 bg-slate-900/40 backdrop-blur-lg text-white shadow-xl border-b border-white/10 z-[9999] transition-all duration-300"
+    class="shadow-lg fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+    :style="
+      isScrolled ? 'background-color: white' : 'background-color: #0f1931'
+    "
   >
-    <div class="flex items-center justify-center max-w-full px-8 h-16 relative">
-      <!-- Brand -->
-      <div class="flex items-center space-x-2 absolute left-8">
-        <div class="flex items-center justify-center w-16 h-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Left Side: Logo + Nama -->
+        <div class="flex items-center flex-1 min-w-0 mr-2">
+          <NuxtLink
+            to="/"
+            class="flex items-center gap-2 sm:gap-3 flex-shrink-0 mr-2 sm:mr-3 hover:opacity-80 transition-opacity"
+          >
           <img
             src="/assets/images/sijali-logo.svg"
             alt="SIJALI Logo"
-            class="w-full h-full object-contain"
+              class="h-10 sm:h-12 md:h-14 w-auto object-contain"
           />
-        </div>
-        <div>
-          <h1 class="text-xl font-bold">SIJALI</h1>
-          <p class="text-xs text-white/80">Sistem Informasi Jalan Lingkungan</p>
+          </NuxtLink>
+          <div class="flex flex-col min-w-0 flex-1">
+            <h1
+              class="text-sm sm:text-base md:text-lg font-bold transition-colors truncate"
+              :class="isScrolled ? 'text-gray-900' : 'text-white'"
+            >
+              SIJALI - Sistem Informasi Jalan Lingkungan
+            </h1>
+            <p
+              class="text-xs sm:text-sm transition-colors truncate"
+              :class="isScrolled ? 'text-gray-600' : 'text-gray-200'"
+            >
+              Kabupaten Kubu Raya
+            </p>
         </div>
       </div>
 
-      <!-- Navigation Menu -->
-      <div class="hidden lg:flex items-center space-x-8">
+        <!-- Right Side: Menu + Language Button -->
+        <div class="flex items-center space-x-6 flex-shrink-0">
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex items-baseline space-x-4">
+            <!-- Beranda: scrollToSection jika di halaman index, atau NuxtLink jika di halaman lain -->
         <a
+              v-if="isHomePage"
           @click.prevent="scrollToSection('hero')"
           href="javascript:void(0)"
           :class="[
-            'transition-all duration-300 cursor-pointer px-4 py-2 rounded-lg font-medium',
-            activeSection === 'hero'
-              ? 'text-white bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg'
-              : 'text-white/80 hover:text-white hover:bg-white/10 hover:backdrop-blur-sm hover:border hover:border-white/20',
+                'px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer',
+                isScrolled
+                  ? activeSection === 'hero'
+                    ? 'text-blue-600 bg-blue-50'
+                    : 'text-gray-900 hover:text-gray-700'
+                  : activeSection === 'hero'
+                  ? 'text-white bg-white/20'
+                  : 'text-white hover:text-blue-400',
           ]"
         >
           Beranda
         </a>
-        <a
-          @click.prevent="scrollToSection('map')"
-          href="javascript:void(0)"
-          :class="[
-            'transition-all duration-300 cursor-pointer px-4 py-2 rounded-lg font-medium',
-            activeSection === 'map'
-              ? 'text-white bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg'
-              : 'text-white/80 hover:text-white hover:bg-white/10 hover:backdrop-blur-sm hover:border hover:border-white/20',
-          ]"
-        >
-          Peta Interaktif
-        </a>
-        <a
-          @click.prevent="scrollToSection('analisis')"
-          href="javascript:void(0)"
-          :class="[
-            'transition-all duration-300 cursor-pointer px-4 py-2 rounded-lg font-medium',
-            activeSection === 'analisis'
-              ? 'text-white bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg'
-              : 'text-white/80 hover:text-white hover:bg-white/10 hover:backdrop-blur-sm hover:border hover:border-white/20',
-          ]"
-        >
-          Analisis
-        </a>
+            <NuxtLink
+              v-else
+              to="/"
+              class="px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-900 hover:text-gray-700'
+                  : 'text-white hover:text-blue-400'
+              "
+            >
+              Beranda
+            </NuxtLink>
+
+            <div class="relative group">
+              <button
+                class="px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors"
+                :class="
+                  isScrolled
+                    ? 'text-gray-900 hover:text-gray-700'
+                    : 'text-white hover:text-blue-400'
+                "
+              >
+                Profil
+                <svg
+                  class="ml-1 h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div
+                class="absolute left-0 mt-2 w-80 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
+              >
+                <div class="py-1">
+                  <NuxtLink
+                    to="/visi-misi-dinas"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Visi & Misi</NuxtLink
+                  >
+                  <NuxtLink
+                    to="/struktur-organisasi-dinas"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Struktur Organisasi</NuxtLink
+                  >
+                  <a
+                    href="#tugas-pokok-fungsi"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Tugas Pokok & Fungsi</a
+                  >
+                  <a
+                    href="#data-pegawai"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Data Pegawai</a
+                  >
+                </div>
+              </div>
+            </div>
+            <NuxtLink
+              to="/berita"
+              class="px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-900 hover:text-gray-700'
+                  : 'text-white hover:text-blue-400'
+              "
+              >Berita</NuxtLink
+            >
+            <div class="relative group">
+              <button
+                class="px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors"
+                :class="
+                  isScrolled
+                    ? 'text-gray-900 hover:text-gray-700'
+                    : 'text-white hover:text-blue-400'
+                "
+              >
+                Dokumentasi
+                <svg
+                  class="ml-1 h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div
+                class="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
+              >
+                <div class="py-1">
+                  <NuxtLink
+                    to="/dokumentasi-infrastruktur"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Dokumentasi Infrastruktur</NuxtLink
+                  >
+                  <NuxtLink
+                    to="/dokumentasi-kegiatan"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Dokumentasi Kegiatan</NuxtLink
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="relative group">
+              <button
+                class="px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors"
+                :class="
+                  isScrolled
+                    ? 'text-gray-900 hover:text-gray-700'
+                    : 'text-white hover:text-blue-400'
+                "
+              >
+                Peta Interaktif
+                <svg
+                  class="ml-1 h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div
+                class="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
+              >
+                <div class="py-1">
+                  <NuxtLink
+                    to="/peta-interaktif/sijali"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >SIJALI</NuxtLink
+                  >
+                </div>
+              </div>
+            </div>
+            <NuxtLink
+              to="/ppid"
+              class="px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-900 hover:text-gray-700'
+                  : 'text-white hover:text-blue-400'
+              "
+              >PPID</NuxtLink
+            >
+          </div>
+
+          <!-- Translate Button - Desktop (Toggle Switch) -->
+          <div class="hidden md:block">
+            <button
+              @click="handleLanguageToggle"
+              :disabled="isChangingLanguage"
+              class="relative inline-flex h-7 w-14 items-center rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              :class="currentLanguage === 'id' ? 'bg-red-500' : 'bg-blue-500'"
+              :title="
+                currentLanguage === 'id'
+                  ? 'Switch to English'
+                  : 'Beralih ke Indonesia'
+              "
+            >
+              <span
+                class="inline-flex h-5 w-5 transform items-center justify-center rounded-full bg-white shadow-lg transition-transform duration-300 overflow-hidden"
+                :class="
+                  currentLanguage === 'id' ? 'translate-x-1' : 'translate-x-8'
+                "
+              >
+                <img
+                  :src="
+                    currentLanguage === 'id'
+                      ? '/flags/indonesia.svg'
+                      : '/flags/usa.svg'
+                  "
+                  :alt="currentLanguage === 'id' ? 'Indonesia' : 'USA'"
+                  class="w-full h-full object-cover"
+                />
+              </span>
+            </button>
+          </div>
+
+          <!-- Mobile: Language Toggle + Hamburger -->
+          <div class="flex items-center gap-2 md:hidden flex-shrink-0">
+            <!-- Translate Button - Mobile (Toggle Switch) -->
+            <button
+              @click="handleLanguageToggle"
+              :disabled="isChangingLanguage"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+              :class="currentLanguage === 'id' ? 'bg-red-500' : 'bg-blue-500'"
+              :title="
+                currentLanguage === 'id'
+                  ? 'Switch to English'
+                  : 'Beralih ke Indonesia'
+              "
+            >
+              <span
+                class="inline-flex h-4 w-4 transform items-center justify-center rounded-full bg-white shadow-lg transition-transform duration-300 overflow-hidden"
+                :class="
+                  currentLanguage === 'id' ? 'translate-x-1' : 'translate-x-6'
+                "
+              >
+                <img
+                  :src="
+                    currentLanguage === 'id'
+                      ? '/flags/indonesia.svg'
+                      : '/flags/usa.svg'
+                  "
+                  :alt="currentLanguage === 'id' ? 'Indonesia' : 'USA'"
+                  class="w-full h-full object-cover"
+                />
+              </span>
+            </button>
+
+            <!-- Mobile menu button -->
+            <button
+              @click="mobileMenuOpen = !mobileMenuOpen"
+              class="focus:outline-none transition-colors flex-shrink-0 p-1"
+              :class="
+                isScrolled
+                  ? 'text-gray-900 hover:text-gray-700'
+                  : 'text-white hover:text-blue-400'
+              "
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  v-if="!mobileMenuOpen"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+                <path
+                  v-else
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Login Modal -->
-    <LoginModal
-      :showModal="showLoginModal"
-      @login-success="handleLoginSuccess"
-      @close="showLoginModal = false"
-    />
+    <!-- Mobile Menu -->
+    <div v-show="mobileMenuOpen" class="md:hidden">
+      <div
+        class="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t transition-all duration-300"
+        :class="isScrolled ? 'border-gray-200' : 'border-gray-700'"
+        :style="
+          isScrolled ? 'background-color: white' : 'background-color: #0f1931'
+        "
+      >
+        <a
+          v-if="isHomePage"
+          @click.prevent="scrollToSection('hero'); closeMobileMenu()"
+          href="javascript:void(0)"
+          class="block px-3 py-2 rounded-md text-base font-medium transition-colors"
+          :class="
+            isScrolled
+              ? 'text-gray-900 hover:text-gray-700'
+              : 'text-white hover:text-blue-400'
+          "
+          >Beranda</a
+        >
+        <NuxtLink
+          v-else
+          to="/"
+          @click="closeMobileMenu"
+          class="block px-3 py-2 rounded-md text-base font-medium transition-colors"
+          :class="
+            isScrolled
+              ? 'text-gray-900 hover:text-gray-700'
+              : 'text-white hover:text-blue-400'
+          "
+          >Beranda</NuxtLink
+        >
+        <div class="space-y-1">
+          <button
+            @click="profilMenuOpen = !profilMenuOpen"
+            class="w-full text-left px-3 py-2 rounded-md text-base font-medium flex items-center justify-between transition-colors"
+            :class="
+              isScrolled
+                ? 'text-gray-900 hover:text-gray-700'
+                : 'text-white hover:text-blue-400'
+            "
+          >
+            Profil
+            <svg
+              class="h-4 w-4"
+              :class="{ 'rotate-180': profilMenuOpen }"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              ></path>
+            </svg>
+          </button>
+          <div v-show="profilMenuOpen" class="pl-4 space-y-1 mt-2">
+            <NuxtLink
+              to="/visi-misi-dinas"
+              @click="closeMobileMenu"
+              class="block px-3 py-2 rounded-md text-sm transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-600 hover:text-blue-800'
+                  : 'text-gray-300 hover:text-blue-400'
+              "
+              >Visi & Misi</NuxtLink
+            >
+            <NuxtLink
+              to="/struktur-organisasi-dinas"
+              @click="closeMobileMenu"
+              class="block px-3 py-2 rounded-md text-sm transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-600 hover:text-blue-800'
+                  : 'text-gray-300 hover:text-blue-400'
+              "
+              >Struktur Organisasi</NuxtLink
+            >
+            <a
+              href="#tugas-pokok-fungsi"
+              @click="closeMobileMenu"
+              class="block px-3 py-2 rounded-md text-sm transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-600 hover:text-blue-800'
+                  : 'text-gray-300 hover:text-blue-400'
+              "
+              >Tugas Pokok & Fungsi</a
+            >
+            <a
+              href="#data-pegawai"
+              @click="closeMobileMenu"
+              class="block px-3 py-2 rounded-md text-sm transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-600 hover:text-blue-800'
+                  : 'text-gray-300 hover:text-blue-400'
+              "
+              >Data Pegawai</a
+            >
+          </div>
+        </div>
+        <NuxtLink
+          to="/berita"
+          @click="closeMobileMenu"
+          class="block px-3 py-2 rounded-md text-base font-medium transition-colors"
+          :class="
+            isScrolled
+              ? 'text-gray-900 hover:text-gray-700'
+              : 'text-white hover:text-blue-400'
+          "
+          >Berita</NuxtLink
+        >
+
+        <!-- Dokumentasi Menu - Mobile -->
+        <div class="py-2">
+          <button
+            @click="dokumentasiMenuOpen = !dokumentasiMenuOpen"
+            class="w-full text-left px-3 py-2 rounded-md text-base font-medium flex items-center justify-between transition-colors"
+            :class="
+              isScrolled
+                ? 'text-gray-900 hover:text-gray-700'
+                : 'text-white hover:text-blue-400'
+            "
+          >
+            Dokumentasi
+            <svg
+              class="w-4 h-4 transition-transform duration-200"
+              :class="{ 'rotate-180': dokumentasiMenuOpen }"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              ></path>
+            </svg>
+          </button>
+          <div v-show="dokumentasiMenuOpen" class="pl-4 mt-2 space-y-2">
+            <NuxtLink
+              to="/dokumentasi-infrastruktur"
+              @click="closeMobileMenu"
+              class="block px-3 py-2 rounded-md text-sm transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-600 hover:text-blue-800'
+                  : 'text-gray-300 hover:text-blue-400'
+              "
+              >Dokumentasi Infrastruktur</NuxtLink
+            >
+            <NuxtLink
+              to="/dokumentasi-kegiatan"
+              @click="closeMobileMenu"
+              class="block px-3 py-2 rounded-md text-sm transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-600 hover:text-blue-800'
+                  : 'text-gray-300 hover:text-blue-400'
+              "
+              >Dokumentasi Kegiatan</NuxtLink
+            >
+          </div>
+        </div>
+
+        <!-- Peta Interaktif Menu - Mobile -->
+        <div class="py-2">
+          <button
+            @click="petaInteraktifMenuOpen = !petaInteraktifMenuOpen"
+            class="w-full text-left px-3 py-2 rounded-md text-base font-medium flex items-center justify-between transition-colors"
+            :class="
+              isScrolled
+                ? 'text-gray-900 hover:text-gray-700'
+                : 'text-white hover:text-blue-400'
+            "
+          >
+            Peta Interaktif
+            <svg
+              class="w-4 h-4 transition-transform duration-200"
+              :class="{ 'rotate-180': petaInteraktifMenuOpen }"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              ></path>
+            </svg>
+          </button>
+          <div v-show="petaInteraktifMenuOpen" class="pl-4 mt-2 space-y-2">
+            <NuxtLink
+              to="/peta-interaktif/sijali"
+              @click="closeMobileMenu"
+              class="block px-3 py-2 rounded-md text-sm transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-600 hover:text-blue-800'
+                  : 'text-gray-300 hover:text-blue-400'
+              "
+              >SIJALI</NuxtLink
+            >
+          </div>
+        </div>
+
+        <NuxtLink
+          to="/ppid"
+          @click="closeMobileMenu"
+          class="block px-3 py-2 rounded-md text-base font-medium transition-colors"
+          :class="
+            isScrolled
+              ? 'text-gray-900 hover:text-gray-700'
+              : 'text-white hover:text-blue-400'
+          "
+          >PPID</NuxtLink
+        >
+      </div>
+    </div>
   </nav>
 </template>
 
-<script setup>
-import { ref, onMounted, onUnmounted } from "vue";
-import { useAuth } from "~/composables/useAuth";
-import LoginModal from "./LoginModal.vue";
+<script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { useGoogleTranslate } from "~/composables/useGoogleTranslate";
 
-// Define emits
-const emit = defineEmits(["toggle-sidebar", "go-back-to-rtr"]);
+const route = useRoute();
 
-const { isAuthenticated, getUserName, getUserRole, login, logout, initAuth } =
-  useAuth();
-
-// Local state
-const showLoginModal = ref(false);
-const showUserMenu = ref(false);
+const mobileMenuOpen = ref(false);
+const profilMenuOpen = ref(false);
+const dokumentasiMenuOpen = ref(false);
+const petaInteraktifMenuOpen = ref(false);
+const isScrolled = ref(false);
+const isChangingLanguage = ref(false);
 const activeSection = ref("hero");
 
-// Handler for section change event
-const handleSectionChange = (event) => {
+// Check if current page is home page
+const isHomePage = computed(() => route.path === "/");
+
+// Google Translate functionality
+const { currentLanguage, initGoogleTranslate, toggleLanguage } =
+  useGoogleTranslate();
+
+// Handle language toggle with loading state
+const handleLanguageToggle = () => {
+  if (isChangingLanguage.value) return; // Prevent multiple clicks
+
+  console.log("Language toggle clicked!");
+  isChangingLanguage.value = true;
+  toggleLanguage();
+  // The page will reload, so no need to reset isChangingLanguage
+};
+
+// Close mobile menu when link is clicked
+const closeMobileMenu = () => {
+  mobileMenuOpen.value = false;
+  profilMenuOpen.value = false;
+  dokumentasiMenuOpen.value = false;
+  petaInteraktifMenuOpen.value = false;
+};
+
+const handleScroll = () => {
+  // Detect when user scrolls past the hero section (roughly 100vh)
+  isScrolled.value = window.scrollY > window.innerHeight * 0.8;
+};
+
+// Handler for section change event (for home page sections)
+const handleSectionChange = (event: any) => {
   activeSection.value = event.detail.activeSection;
 };
 
-// Initialize auth on mount
-onMounted(() => {
-  initAuth();
-
-  // Listen for section changes from scroll detection
-  window.addEventListener("section-change", handleSectionChange);
-});
-
-// Remove event listener on unmount
-onUnmounted(() => {
-  window.removeEventListener("section-change", handleSectionChange);
-});
-
-// Handle login success
-const handleLoginSuccess = (userData) => {
-  login(userData);
-  showLoginModal.value = false;
-  showUserMenu.value = false;
-};
-
-// Handle logout
-const handleLogout = () => {
-  logout();
-  showUserMenu.value = false;
-};
-
-// Toggle sidebar
-const toggleSidebar = () => {
-  // Emit event to parent component to toggle sidebar
-  emit("toggle-sidebar");
-};
-
-// Go back to RTR
-const goBackToRTR = () => {
-  // Navigate back to RTR page or emit event
-  emit("go-back-to-rtr");
-};
-
-// Close user menu when clicking outside
-const closeUserMenu = () => {
-  showUserMenu.value = false;
-};
-
-// Scroll to section with offset
-const scrollToSection = (sectionId) => {
+// Scroll to section with offset (for home page)
+const scrollToSection = (sectionId: string) => {
   // Update active section immediately
   activeSection.value = sectionId;
 
@@ -152,4 +619,25 @@ const scrollToSection = (sectionId) => {
     behavior: "smooth",
   });
 };
+
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll);
+
+  // Initialize Google Translate
+  initGoogleTranslate();
+
+  // Listen for section changes from scroll detection (for home page)
+  if (isHomePage.value) {
+    window.addEventListener("section-change", handleSectionChange);
+  }
+
+  console.log("Navbar mounted, current language:", currentLanguage.value);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+  if (isHomePage.value) {
+    window.removeEventListener("section-change", handleSectionChange);
+  }
+});
 </script>

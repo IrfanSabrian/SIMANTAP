@@ -6,15 +6,64 @@ const compression = require("compression");
 const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 
-const { PrismaClient } = require("@prisma/client");
+const { prisma } = require("./prisma");
 
 // Import routes
 const jalanRoutes = require("./routes/jalan");
 const authRoutes = require("./routes/auth");
 const aduanRoutes = require("./routes/aduan");
 
+let beritaRoutes,
+  dokumentasiKegiatanRoutes,
+  dokumentasiInfrastrukturRoutes,
+  dokumenPpidRoutes,
+  statsRoutes;
+
+try {
+  console.log("Loading berita routes...");
+  beritaRoutes = require("./routes/berita");
+  console.log("✅ Berita routes loaded");
+} catch (error) {
+  console.error("❌ Error loading berita routes:", error.message);
+}
+
+try {
+  console.log("Loading dokumentasi-kegiatan routes...");
+  dokumentasiKegiatanRoutes = require("./routes/dokumentasi-kegiatan");
+  console.log("✅ Dokumentasi kegiatan routes loaded");
+} catch (error) {
+  console.error("❌ Error loading dokumentasi-kegiatan routes:", error.message);
+}
+
+try {
+  console.log("Loading dokumentasi-infrastruktur routes...");
+  dokumentasiInfrastrukturRoutes = require("./routes/dokumentasi-infrastruktur");
+  console.log("✅ Dokumentasi infrastruktur routes loaded");
+} catch (error) {
+  console.error(
+    "❌ Error loading dokumentasi-infrastruktur routes:",
+    error.message
+  );
+  console.error("Stack:", error.stack);
+}
+
+try {
+  console.log("Loading dokumen-ppid routes...");
+  dokumenPpidRoutes = require("./routes/dokumen-ppid");
+  console.log("✅ Dokumen PPID routes loaded");
+} catch (error) {
+  console.error("❌ Error loading dokumen-ppid routes:", error.message);
+}
+
+try {
+  console.log("Loading stats routes...");
+  statsRoutes = require("./routes/stats");
+  console.log("✅ Stats routes loaded");
+} catch (error) {
+  console.error("❌ Error loading stats routes:", error.message);
+}
+
 const app = express();
-const prisma = new PrismaClient();
 
 // Trust proxy for Railway deployment
 app.set("trust proxy", 1);
@@ -25,15 +74,33 @@ app.use(helmet());
 // Compression middleware
 app.use(compression());
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to 100 requests per windowMs
-  message: {
-    error: "Too many requests from this IP, please try again later.",
-  },
-});
-app.use(limiter);
+// Rate limiting (dapat dinonaktifkan via env)
+const rateLimitEnabled = process.env.RATE_LIMIT_ENABLED !== "false"; // Default: enabled
+if (rateLimitEnabled) {
+  const windowMs = parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000; // Default: 15 menit
+  const maxRequests = parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 1000; // Default: 1000 requests (lebih longgar)
+
+  const limiter = rateLimit({
+    windowMs: windowMs,
+    max: maxRequests,
+    message: {
+      error: "Too many requests from this IP, please try again later.",
+      limit: maxRequests,
+      window: `${windowMs / 1000 / 60} minutes`,
+    },
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  });
+
+  app.use(limiter);
+  console.log(
+    `✅ Rate limiting enabled: ${maxRequests} requests per ${
+      windowMs / 1000 / 60
+    } minutes`
+  );
+} else {
+  console.log("⚠️ Rate limiting disabled (RATE_LIMIT_ENABLED=false)");
+}
 
 // CORS configuration
 const corsOptions = {
@@ -94,10 +161,67 @@ app.get("/health", (req, res) => {
   });
 });
 
+// Test endpoint untuk cek routes
+app.get("/api/test-routes", (req, res) => {
+  res.json({
+    routes: {
+      berita: !!beritaRoutes,
+      dokumentasiKegiatan: !!dokumentasiKegiatanRoutes,
+      dokumentasiInfrastruktur: !!dokumentasiInfrastrukturRoutes,
+      dokumenPpid: !!dokumenPpidRoutes,
+      stats: !!statsRoutes,
+    },
+    message: "Backend routes status check",
+  });
+});
+
 // API routes
 app.use("/api/jalan", jalanRoutes);
 app.use("/api/aduan", aduanRoutes);
 app.use("/api/auth", authRoutes);
+
+if (beritaRoutes) {
+  app.use("/api/berita", beritaRoutes);
+  console.log("✅ Berita routes registered at /api/berita");
+} else {
+  console.warn("⚠️ Berita routes not registered (module failed to load)");
+}
+
+if (dokumentasiKegiatanRoutes) {
+  app.use("/api/dokumentasi-kegiatan", dokumentasiKegiatanRoutes);
+  console.log(
+    "✅ Dokumentasi kegiatan routes registered at /api/dokumentasi-kegiatan"
+  );
+} else {
+  console.warn(
+    "⚠️ Dokumentasi kegiatan routes not registered (module failed to load)"
+  );
+}
+
+if (dokumentasiInfrastrukturRoutes) {
+  app.use("/api/dokumentasi-infrastruktur", dokumentasiInfrastrukturRoutes);
+  console.log(
+    "✅ Dokumentasi infrastruktur routes registered at /api/dokumentasi-infrastruktur"
+  );
+} else {
+  console.warn(
+    "⚠️ Dokumentasi infrastruktur routes not registered (module failed to load)"
+  );
+}
+
+if (dokumenPpidRoutes) {
+  app.use("/api/dokumen-ppid", dokumenPpidRoutes);
+  console.log("✅ Dokumen PPID routes registered at /api/dokumen-ppid");
+} else {
+  console.warn("⚠️ Dokumen PPID routes not registered (module failed to load)");
+}
+
+if (statsRoutes) {
+  app.use("/api/stats", statsRoutes);
+  console.log("✅ Stats routes registered at /api/stats");
+} else {
+  console.warn("⚠️ Stats routes not registered (module failed to load)");
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {

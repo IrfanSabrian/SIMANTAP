@@ -9,7 +9,7 @@
           Kelola Berita
         </h2>
         <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
-          Manage berita untuk Web Profil Dinas Perumahan
+          Manage berita untuk SIJALI
         </p>
       </div>
       <div class="flex flex-wrap gap-2">
@@ -639,7 +639,7 @@ import Toast from "./Toast.vue";
 import { useToast } from "~/composables/useToast";
 
 const config = useRuntimeConfig();
-const WEB_PROFIL_API = config.public.webProfilApiUrl;
+const API_BASE = config.public.apiBaseUrl || "";
 const { success: showSuccess, error: showError } = useToast();
 
 // Data
@@ -712,7 +712,7 @@ const loadBerita = async () => {
     if (filters.search) params.append("search", filters.search);
 
     const response = await $fetch(
-      `${WEB_PROFIL_API}/berita/admin/all?${params}`
+      `${API_BASE}/api/berita/admin/all?${params}`
     );
 
     if (response.success) {
@@ -805,7 +805,7 @@ const handleFileUpload = async (event) => {
     const slug = generateSlug(formData.judul);
     formDataUpload.append("slug", slug);
 
-    const response = await $fetch(`${WEB_PROFIL_API}/upload/image`, {
+    const response = await $fetch(`${API_BASE}/api/upload/image`, {
       method: "POST",
       body: formDataUpload,
     });
@@ -832,8 +832,8 @@ const submitForm = async () => {
   submitting.value = true;
   try {
     const url = formData.id
-      ? `${WEB_PROFIL_API}/berita/admin/${formData.id}`
-      : `${WEB_PROFIL_API}/berita/admin`;
+      ? `${API_BASE}/api/berita/admin/${formData.id}`
+      : `${API_BASE}/api/berita/admin`;
 
     const method = formData.id ? "PUT" : "POST";
 
@@ -927,7 +927,7 @@ const deleteBerita = async () => {
     if (itemToDelete.value?.isMultiple) {
       // Delete multiple items
       const deletePromises = Array.from(selectedItems.value).map((id) =>
-        $fetch(`${WEB_PROFIL_API}/berita/admin/${id}`, {
+        $fetch(`${API_BASE}/api/berita/admin/${id}`, {
           method: "DELETE",
         })
       );
@@ -939,7 +939,7 @@ const deleteBerita = async () => {
     } else {
       // Delete single item
       const response = await $fetch(
-        `${WEB_PROFIL_API}/berita/admin/${itemToDelete.value.id}`,
+        `${API_BASE}/api/berita/admin/${itemToDelete.value.id}`,
         {
           method: "DELETE",
         }

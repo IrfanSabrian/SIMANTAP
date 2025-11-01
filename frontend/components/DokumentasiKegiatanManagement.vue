@@ -592,7 +592,7 @@ import Toast from "./Toast.vue";
 import { useToast } from "~/composables/useToast";
 
 const config = useRuntimeConfig();
-const WEB_PROFIL_API = config.public.webProfilApiUrl;
+const API_BASE = config.public.apiBaseUrl || "";
 const { success: showSuccess, error: showError } = useToast();
 
 // Data
@@ -661,7 +661,7 @@ const loadDokumentasi = async () => {
     if (filters.search) params.append("search", filters.search);
 
     const response = await $fetch(
-      `${WEB_PROFIL_API}/dokumentasi-kegiatan/admin/all?${params}`
+      `${API_BASE}/api/dokumentasi-kegiatan/admin/all?${params}`
     );
 
     if (response.success) {
@@ -748,7 +748,7 @@ const handleThumbnailUpload = async (event) => {
     const slug = generateSlug(formData.judul);
     formDataUpload.append("slug", slug);
 
-    const response = await $fetch(`${WEB_PROFIL_API}/upload/image`, {
+    const response = await $fetch(`${API_BASE}/api/upload/image`, {
       method: "POST",
       body: formDataUpload,
     });
@@ -785,7 +785,7 @@ const handleMultipleImagesUpload = async (event) => {
     const slug = generateSlug(formData.judul);
     formDataUpload.append("slug", slug);
 
-    const response = await $fetch(`${WEB_PROFIL_API}/upload/images`, {
+    const response = await $fetch(`${API_BASE}/api/upload/images`, {
       method: "POST",
       body: formDataUpload,
     });
@@ -809,8 +809,8 @@ const submitForm = async () => {
   submitting.value = true;
   try {
     const url = formData.id
-      ? `${WEB_PROFIL_API}/dokumentasi-kegiatan/admin/${formData.id}`
-      : `${WEB_PROFIL_API}/dokumentasi-kegiatan/admin`;
+      ? `${API_BASE}/api/dokumentasi-kegiatan/admin/${formData.id}`
+      : `${API_BASE}/api/dokumentasi-kegiatan/admin`;
 
     const method = formData.id ? "PUT" : "POST";
 
@@ -844,7 +844,7 @@ const deleteDokumentasi = async () => {
     if (itemToDelete.value?.isMultiple) {
       // Delete multiple items
       const deletePromises = Array.from(selectedItems.value).map((id) =>
-        $fetch(`${WEB_PROFIL_API}/dokumentasi-kegiatan/admin/${id}`, {
+        $fetch(`${API_BASE}/api/dokumentasi-kegiatan/admin/${id}`, {
           method: "DELETE",
         })
       );
@@ -856,7 +856,7 @@ const deleteDokumentasi = async () => {
     } else {
       // Delete single item
       const response = await $fetch(
-        `${WEB_PROFIL_API}/dokumentasi-kegiatan/admin/${itemToDelete.value.id}`,
+        `${API_BASE}/api/dokumentasi-kegiatan/admin/${itemToDelete.value.id}`,
         {
           method: "DELETE",
         }

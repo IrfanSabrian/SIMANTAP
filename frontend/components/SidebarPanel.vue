@@ -478,7 +478,14 @@ const tabs = [
 
 // Get runtime config for API URL
 const config = useRuntimeConfig();
-const apiUrl = config.public.apiUrl || "http://localhost:3001/api";
+
+if (!config.public.apiUrl && !config.public.apiBaseUrl) {
+  console.error(
+    "⚠️ NUXT_PUBLIC_API_URL or NUXT_PUBLIC_API_BASE_URL is not set in environment variables!"
+  );
+}
+
+const apiUrl = config.public.apiUrl || (config.public.apiBaseUrl ? `${config.public.apiBaseUrl}/api` : "");
 
 // Fetch kecamatan options from API
 const fetchKecamatanOptions = async () => {

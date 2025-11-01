@@ -1,0 +1,71 @@
+/* Hide Google Translate toolbar and banner */
+body > .skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Hide the default Google Translate widget */
+#google_translate_element {
+  display: none !important;
+}
+
+.goog-te-gadget {
+  display: none !important;
+}
+
+.goog-te-combo {
+  display: none !important;
+}
+
+.goog-te-gadget-icon {
+  display: none !important;
+}
+
+.goog-te-menu-value span {
+  display: none !important;
+}
+
+.goog-logo-link {
+  display: none !important;
+}
+
+/* Fix body position */
+body.translated-ltr {
+  top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Hide iframe */
+iframe.goog-te-banner-frame,
+iframe.skiptranslate {
+  display: none !important;
+}
+
+/* Ensure no weird spacing */
+html,
+body {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+

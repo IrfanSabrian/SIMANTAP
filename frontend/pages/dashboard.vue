@@ -2426,6 +2426,11 @@
 </template>
 
 <script setup>
+// Use dashboard layout (with navbar, without footer)
+definePageMeta({
+  layout: "dashboard",
+});
+
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import AduanList from "~/components/AduanList.vue";
@@ -2496,8 +2501,13 @@ const config = useRuntimeConfig();
 const isDashboardTab = computed(() => {
   return activeTab.value === "dashboard";
 });
-const API_BASE =
-  config.public.apiBaseUrl || "https://sijali-production.up.railway.app";
+
+if (!config.public.apiBaseUrl) {
+  console.error(
+    "⚠️ NUXT_PUBLIC_API_BASE_URL is not set in environment variables!"
+  );
+}
+const API_BASE = config.public.apiBaseUrl;
 
 // User state
 const user = ref(null);
@@ -3336,8 +3346,11 @@ const handleRoadUpdate = async (updatedRoad) => {
 const handleGeoJSONImport = async (importedData) => {
   try {
     const config = useRuntimeConfig();
-    const API_BASE =
-      config.public.apiBaseUrl || "https://sijali-production.up.railway.app";
+    if (!config.public.apiBaseUrl) {
+      console.error("⚠️ NUXT_PUBLIC_API_BASE_URL is not set!");
+      return;
+    }
+    const API_BASE = config.public.apiBaseUrl;
     const token = localStorage.getItem("token");
 
     // Convert GeoJSON features to road data format
@@ -3507,9 +3520,11 @@ const deleteSelectedRoads = async () => {
     async () => {
       try {
         const config = useRuntimeConfig();
-        const API_BASE =
-          config.public.apiBaseUrl ||
-          "https://sijali-production.up.railway.app";
+        if (!config.public.apiBaseUrl) {
+          console.error("⚠️ NUXT_PUBLIC_API_BASE_URL is not set!");
+          return;
+        }
+        const API_BASE = config.public.apiBaseUrl;
         const token = localStorage.getItem("token");
 
         // Delete each selected road
@@ -3876,6 +3891,12 @@ watch(activeTab, async (newTab) => {
 
 // Lifecycle
 onMounted(async () => {
+  // Ensure language is Indonesian for dashboard page (no translate feature)
+  if (typeof window !== "undefined") {
+    document.cookie = "googtrans=/id/id; path=/; max-age=31536000";
+    localStorage.setItem("preferredLanguage", "id");
+  }
+
   // Check authentication
   token.value = localStorage.getItem("sijali_token");
   const userData = localStorage.getItem("sijali_user");

@@ -629,7 +629,7 @@ import Toast from "./Toast.vue";
 import { useToast } from "~/composables/useToast";
 
 const config = useRuntimeConfig();
-const WEB_PROFIL_API = config.public.webProfilApiUrl;
+const API_BASE = config.public.apiBaseUrl || "";
 const { success: showSuccess, error: showError } = useToast();
 
 // Data
@@ -692,7 +692,7 @@ const loadDokumen = async () => {
     if (filters.search) params.append("search", filters.search);
 
     const response = await $fetch(
-      `${WEB_PROFIL_API}/dokumen-ppid/admin/all?${params}`
+      `${API_BASE}/api/dokumen-ppid/admin/all?${params}`
     );
 
     if (response.success) {
@@ -777,7 +777,7 @@ const handleFileUpload = async (event) => {
     formDataUpload.append("file", file);
     formDataUpload.append("folder", "dokumen_ppid");
 
-    const response = await $fetch(`${WEB_PROFIL_API}/upload/file`, {
+    const response = await $fetch(`${API_BASE}/api/upload/file`, {
       method: "POST",
       body: formDataUpload,
     });
@@ -805,8 +805,8 @@ const submitForm = async () => {
   submitting.value = true;
   try {
     const url = formData.id
-      ? `${WEB_PROFIL_API}/dokumen-ppid/admin/${formData.id}`
-      : `${WEB_PROFIL_API}/dokumen-ppid/admin`;
+      ? `${API_BASE}/api/dokumen-ppid/admin/${formData.id}`
+      : `${API_BASE}/api/dokumen-ppid/admin`;
 
     const method = formData.id ? "PUT" : "POST";
 
@@ -840,7 +840,7 @@ const deleteDokumen = async () => {
     if (itemToDelete.value?.isMultiple) {
       // Delete multiple items
       const deletePromises = Array.from(selectedItems.value).map((id) =>
-        $fetch(`${WEB_PROFIL_API}/dokumen-ppid/admin/${id}`, {
+        $fetch(`${API_BASE}/api/dokumen-ppid/admin/${id}`, {
           method: "DELETE",
         })
       );
@@ -852,7 +852,7 @@ const deleteDokumen = async () => {
     } else {
       // Delete single item
       const response = await $fetch(
-        `${WEB_PROFIL_API}/dokumen-ppid/admin/${itemToDelete.value.id}`,
+        `${API_BASE}/api/dokumen-ppid/admin/${itemToDelete.value.id}`,
         {
           method: "DELETE",
         }
