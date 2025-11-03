@@ -897,67 +897,116 @@
       <!-- Chat Window -->
       <div
         v-if="chatbotOpen"
-        class="bg-white rounded-t-lg shadow-2xl mb-0 w-96 max-h-[600px] flex flex-col border border-gray-200"
+        class="bg-white rounded-t-lg shadow-2xl mb-0 w-96 h-[550px] flex flex-col border border-gray-200"
+        style="height: 550px"
       >
         <!-- Header -->
         <div
-          class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 rounded-t-lg flex items-center justify-between cursor-pointer"
+          class="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg overflow-hidden"
           @click="chatbotOpen = false"
         >
-          <div class="flex items-center gap-3">
-            <img
-              src="/maskot.png"
-              alt="Chatbot"
-              class="w-10 h-10 rounded-full"
-            />
-            <div>
-              <h3 class="font-bold">SIMANTAP Assistant</h3>
-              <p class="text-xs text-blue-100">Online</p>
-            </div>
-          </div>
-          <button
-            class="text-white hover:text-blue-200 transition-colors"
-            @click.stop="chatbotOpen = false"
+          <!-- Wave at bottom -->
+          <svg
+            class="absolute bottom-0 left-0 w-full"
+            viewBox="0 0 1440 60"
+            preserveAspectRatio="none"
+            style="height: 24px"
           >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
+            <path
+              d="M0,30 Q360,10 720,30 T1440,30 L1440,60 L0,60 Z"
+              fill="rgba(255,255,255,0.2)"
+            ></path>
+          </svg>
+
+          <!-- Header Content -->
+          <div class="relative z-10 flex items-center justify-between p-4">
+            <div class="flex items-center gap-3">
+              <img
+                src="/maskot.png"
+                alt="Chatbot"
+                class="w-10 h-10 rounded-full border-2 border-white/80 shadow-md"
               />
-            </svg>
-          </button>
+              <h3 class="font-bold text-xs">SIMANTAP Assistant</h3>
+            </div>
+            <button
+              class="text-white hover:text-red-200 transition-colors p-1.5 hover:bg-white/20 rounded-full"
+              @click.stop="chatbotOpen = false"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <!-- Messages -->
         <div
-          class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50"
+          class="flex-1 overflow-y-auto p-3 space-y-3 bg-gradient-to-b from-gray-50 to-blue-50/30 chat-messages"
           ref="chatMessagesRef"
         >
           <div
             v-for="(message, index) in chatMessages"
             :key="index"
             :class="[
-              'flex',
+              'flex items-end gap-2 animate-fade-in',
               message.sender === 'bot' ? 'justify-start' : 'justify-end',
             ]"
           >
             <div
+              v-if="message.sender === 'bot'"
+              class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0"
+            >
+              <img
+                src="/maskot.png"
+                alt="Bot"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div
               :class="[
-                'max-w-[80%] rounded-lg p-3',
+                'max-w-[75%] rounded-2xl p-3 shadow-sm',
                 message.sender === 'bot'
-                  ? 'bg-blue-50 text-gray-800'
-                  : 'bg-blue-600 text-white',
+                  ? 'bg-white text-gray-800 border border-gray-100'
+                  : 'bg-gradient-to-r from-blue-600 to-blue-500 text-white',
               ]"
             >
-              <p class="text-sm whitespace-pre-wrap">{{ message.text }}</p>
-              <span class="text-xs opacity-70 mt-1 block">
+              <p
+                v-if="!message.loading"
+                class="text-xs whitespace-pre-wrap leading-relaxed"
+              >
+                {{ message.text }}
+              </p>
+              <div v-else class="flex items-center gap-2">
+                <div class="flex gap-1">
+                  <div
+                    class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
+                    style="animation-delay: 0ms"
+                  ></div>
+                  <div
+                    class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
+                    style="animation-delay: 150ms"
+                  ></div>
+                  <div
+                    class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
+                    style="animation-delay: 300ms"
+                  ></div>
+                </div>
+                <span class="text-xs italic text-gray-500">Mengetik...</span>
+              </div>
+              <span
+                v-if="!message.loading"
+                class="text-[10px] opacity-70 mt-1.5 block"
+              >
                 {{ message.time }}
               </span>
             </div>
@@ -965,19 +1014,19 @@
         </div>
 
         <!-- Input -->
-        <div class="border-t border-gray-200 p-4 bg-white">
-          <div class="flex gap-2">
+        <div class="border-t border-gray-200 p-3 bg-white rounded-b-lg">
+          <div class="flex gap-2 items-center">
             <input
               v-model="chatInput"
               type="text"
-              placeholder="Ketik pesan Anda..."
-              class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Ketik pesan..."
+              class="flex-1 px-3 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs transition-all"
               @keyup.enter="sendMessage"
             />
             <button
               @click="sendMessage"
               :disabled="!chatInput.trim()"
-              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              class="p-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full hover:from-blue-700 hover:to-blue-600 disabled:from-gray-300 disabled:to-gray-300 disabled:cursor-not-allowed transition-all transform hover:scale-110 disabled:hover:scale-100 shadow-sm"
             >
               <svg
                 class="w-5 h-5"
@@ -1285,7 +1334,7 @@ const openChatbot = () => {
   }, 100);
 };
 
-const sendMessage = () => {
+const sendMessage = async () => {
   if (!chatInput.value.trim()) return;
 
   // Add user message
@@ -1308,23 +1357,62 @@ const sendMessage = () => {
     }
   }, 100);
 
-  // Bot response (simple echo for now)
-  setTimeout(() => {
-    const botResponse = {
+  // Loading indicator
+  const loadingMessage = {
+    sender: "bot",
+    text: "Mengetik...",
+    loading: true,
+  };
+  chatMessages.value.push(loadingMessage);
+
+  try {
+    // Call AI chatbot API
+    const response = await fetch(`${API_URL}/chatbot`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: messageText,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      // Remove loading message
+      chatMessages.value.pop();
+
+      // Add bot response
+      const botResponse = {
+        sender: "bot",
+        text: data.data.message,
+        time: new Date().toLocaleTimeString("id-ID", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      };
+      chatMessages.value.push(botResponse);
+    } else {
+      throw new Error(data.error);
+    }
+  } catch (error) {
+    console.error("Chatbot error:", error);
+    chatMessages.value.pop();
+    chatMessages.value.push({
       sender: "bot",
-      text: "Terima kasih atas pertanyaan Anda. Tim kami akan segera memproses pertanyaan tersebut.",
+      text: "Maaf, terjadi kesalahan saat memproses pertanyaan Anda. Silakan coba lagi.",
       time: new Date().toLocaleTimeString("id-ID", {
         hour: "2-digit",
         minute: "2-digit",
       }),
-    };
-    chatMessages.value.push(botResponse);
-    setTimeout(() => {
-      if (chatMessagesRef.value) {
-        chatMessagesRef.value.scrollTop = chatMessagesRef.value.scrollHeight;
-      }
-    }, 100);
-  }, 1000);
+    });
+  }
+
+  // Scroll to bottom
+  setTimeout(() => {
+    if (chatMessagesRef.value) {
+      chatMessagesRef.value.scrollTop = chatMessagesRef.value.scrollHeight;
+    }
+  }, 100);
 };
 
 // Function to open SIMANTAP pages
@@ -1605,5 +1693,39 @@ button.rounded-lg:hover::after {
   opacity: 1;
   width: 30px;
   border-radius: 5px;
+}
+
+/* Chatbot Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Chatbot Scrollbar Styling */
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
 }
 </style>

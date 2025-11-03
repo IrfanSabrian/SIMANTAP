@@ -13,7 +13,10 @@ const jalanRoutes = require("./routes/jalan");
 const authRoutes = require("./routes/auth");
 const aduanRoutes = require("./routes/aduan");
 
-let dokumentasiKegiatanRoutes, dokumentasiInfrastrukturRoutes, statsRoutes;
+let dokumentasiKegiatanRoutes,
+  dokumentasiInfrastrukturRoutes,
+  statsRoutes,
+  chatbotRoutes;
 
 try {
   console.log("Loading dokumentasi-kegiatan routes...");
@@ -41,6 +44,14 @@ try {
   console.log("✅ Stats routes loaded");
 } catch (error) {
   console.error("❌ Error loading stats routes:", error.message);
+}
+
+try {
+  console.log("Loading chatbot routes...");
+  chatbotRoutes = require("./routes/chatbot");
+  console.log("✅ Chatbot routes loaded");
+} catch (error) {
+  console.error("❌ Error loading chatbot routes:", error.message);
 }
 
 const app = express();
@@ -185,6 +196,13 @@ if (statsRoutes) {
   console.log("✅ Stats routes registered at /api/stats");
 } else {
   console.warn("⚠️ Stats routes not registered (module failed to load)");
+}
+
+if (chatbotRoutes) {
+  app.use("/api/chatbot", chatbotRoutes);
+  console.log("✅ Chatbot routes registered at /api/chatbot");
+} else {
+  console.warn("⚠️ Chatbot routes not registered (module failed to load)");
 }
 
 // Error handling middleware
