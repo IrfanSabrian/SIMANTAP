@@ -13,38 +13,38 @@
             to="/"
             class="flex items-center gap-2 sm:gap-3 flex-shrink-0 mr-2 sm:mr-3 hover:opacity-80 transition-opacity"
           >
-          <img
-            src="/assets/images/sijali-logo.svg"
-            alt="SIJALI Logo"
+            <img
+              src="/assets/images/sijali-logo.svg"
+              alt="SIMANTAP Logo"
               class="h-10 sm:h-12 md:h-14 w-auto object-contain"
-          />
+            />
           </NuxtLink>
           <div class="flex flex-col min-w-0 flex-1">
             <h1
               class="text-sm sm:text-base md:text-lg font-bold transition-colors truncate"
               :class="isScrolled ? 'text-gray-900' : 'text-white'"
             >
-              SIJALI - Sistem Informasi Jalan Lingkungan
+              SIMANTAP KUBU RAYA
             </h1>
             <p
               class="text-xs sm:text-sm transition-colors truncate"
               :class="isScrolled ? 'text-gray-600' : 'text-gray-200'"
             >
-              Kabupaten Kubu Raya
+              Sistem Informasi Manajemen Tata Permukiman
             </p>
+          </div>
         </div>
-      </div>
 
         <!-- Right Side: Menu + Language Button -->
         <div class="flex items-center space-x-6 flex-shrink-0">
           <!-- Desktop Menu -->
           <div class="hidden md:flex items-baseline space-x-4">
             <!-- Beranda: scrollToSection jika di halaman index, atau NuxtLink jika di halaman lain -->
-        <a
+            <a
               v-if="isHomePage"
-          @click.prevent="scrollToSection('hero')"
-          href="javascript:void(0)"
-          :class="[
+              @click.prevent="scrollToSection('hero')"
+              href="javascript:void(0)"
+              :class="[
                 'px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer',
                 isScrolled
                   ? activeSection === 'hero'
@@ -53,10 +53,10 @@
                   : activeSection === 'hero'
                   ? 'text-white bg-white/20'
                   : 'text-white hover:text-blue-400',
-          ]"
-        >
-          Beranda
-        </a>
+              ]"
+            >
+              Beranda
+            </a>
             <NuxtLink
               v-else
               to="/"
@@ -70,67 +70,6 @@
               Beranda
             </NuxtLink>
 
-            <div class="relative group">
-              <button
-                class="px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors"
-                :class="
-                  isScrolled
-                    ? 'text-gray-900 hover:text-gray-700'
-                    : 'text-white hover:text-blue-400'
-                "
-              >
-                Profil
-                <svg
-                  class="ml-1 h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"
-                  ></path>
-                </svg>
-              </button>
-              <div
-                class="absolute left-0 mt-2 w-80 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
-              >
-                <div class="py-1">
-                  <NuxtLink
-                    to="/visi-misi-dinas"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >Visi & Misi</NuxtLink
-                  >
-                  <NuxtLink
-                    to="/struktur-organisasi-dinas"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >Struktur Organisasi</NuxtLink
-                  >
-                  <a
-                    href="#tugas-pokok-fungsi"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >Tugas Pokok & Fungsi</a
-                  >
-                  <a
-                    href="#data-pegawai"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >Data Pegawai</a
-                  >
-                </div>
-              </div>
-            </div>
-            <NuxtLink
-              to="/berita"
-              class="px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              :class="
-                isScrolled
-                  ? 'text-gray-900 hover:text-gray-700'
-                  : 'text-white hover:text-blue-400'
-              "
-              >Berita</NuxtLink
-            >
             <div class="relative group">
               <button
                 class="px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors"
@@ -203,21 +142,31 @@
                   <NuxtLink
                     to="/peta-interaktif/sijali"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >SIJALI</NuxtLink
+                    >Jalan Lingkungan (SIJALI)</NuxtLink
+                  >
+                  <NuxtLink
+                    to="/peta-interaktif/jembatan"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Jembatan Lingkungan</NuxtLink
+                  >
+                  <NuxtLink
+                    to="/peta-interaktif/drainase"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Drainase Lingkungan</NuxtLink
+                  >
+                  <NuxtLink
+                    to="/peta-interaktif/kawasan"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Kawasan Permukiman</NuxtLink
+                  >
+                  <NuxtLink
+                    to="/peta-interaktif/rumah"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Rumah Tidak Layak Huni</NuxtLink
                   >
                 </div>
               </div>
             </div>
-            <NuxtLink
-              to="/ppid"
-              class="px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              :class="
-                isScrolled
-                  ? 'text-gray-900 hover:text-gray-700'
-                  : 'text-white hover:text-blue-400'
-              "
-              >PPID</NuxtLink
-            >
           </div>
 
           <!-- Translate Button - Desktop (Toggle Switch) -->
@@ -332,7 +281,10 @@
       >
         <a
           v-if="isHomePage"
-          @click.prevent="scrollToSection('hero'); closeMobileMenu()"
+          @click.prevent="
+            scrollToSection('hero');
+            closeMobileMenu();
+          "
           href="javascript:void(0)"
           class="block px-3 py-2 rounded-md text-base font-medium transition-colors"
           :class="
@@ -353,90 +305,6 @@
               : 'text-white hover:text-blue-400'
           "
           >Beranda</NuxtLink
-        >
-        <div class="space-y-1">
-          <button
-            @click="profilMenuOpen = !profilMenuOpen"
-            class="w-full text-left px-3 py-2 rounded-md text-base font-medium flex items-center justify-between transition-colors"
-            :class="
-              isScrolled
-                ? 'text-gray-900 hover:text-gray-700'
-                : 'text-white hover:text-blue-400'
-            "
-          >
-            Profil
-            <svg
-              class="h-4 w-4"
-              :class="{ 'rotate-180': profilMenuOpen }"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              ></path>
-            </svg>
-          </button>
-          <div v-show="profilMenuOpen" class="pl-4 space-y-1 mt-2">
-            <NuxtLink
-              to="/visi-misi-dinas"
-              @click="closeMobileMenu"
-              class="block px-3 py-2 rounded-md text-sm transition-colors"
-              :class="
-                isScrolled
-                  ? 'text-gray-600 hover:text-blue-800'
-                  : 'text-gray-300 hover:text-blue-400'
-              "
-              >Visi & Misi</NuxtLink
-            >
-            <NuxtLink
-              to="/struktur-organisasi-dinas"
-              @click="closeMobileMenu"
-              class="block px-3 py-2 rounded-md text-sm transition-colors"
-              :class="
-                isScrolled
-                  ? 'text-gray-600 hover:text-blue-800'
-                  : 'text-gray-300 hover:text-blue-400'
-              "
-              >Struktur Organisasi</NuxtLink
-            >
-            <a
-              href="#tugas-pokok-fungsi"
-              @click="closeMobileMenu"
-              class="block px-3 py-2 rounded-md text-sm transition-colors"
-              :class="
-                isScrolled
-                  ? 'text-gray-600 hover:text-blue-800'
-                  : 'text-gray-300 hover:text-blue-400'
-              "
-              >Tugas Pokok & Fungsi</a
-            >
-            <a
-              href="#data-pegawai"
-              @click="closeMobileMenu"
-              class="block px-3 py-2 rounded-md text-sm transition-colors"
-              :class="
-                isScrolled
-                  ? 'text-gray-600 hover:text-blue-800'
-                  : 'text-gray-300 hover:text-blue-400'
-              "
-              >Data Pegawai</a
-            >
-          </div>
-        </div>
-        <NuxtLink
-          to="/berita"
-          @click="closeMobileMenu"
-          class="block px-3 py-2 rounded-md text-base font-medium transition-colors"
-          :class="
-            isScrolled
-              ? 'text-gray-900 hover:text-gray-700'
-              : 'text-white hover:text-blue-400'
-          "
-          >Berita</NuxtLink
         >
 
         <!-- Dokumentasi Menu - Mobile -->
@@ -529,22 +397,54 @@
                   ? 'text-gray-600 hover:text-blue-800'
                   : 'text-gray-300 hover:text-blue-400'
               "
-              >SIJALI</NuxtLink
+              >Jalan Lingkungan (SIJALI)</NuxtLink
+            >
+            <NuxtLink
+              to="/peta-interaktif/jembatan"
+              @click="closeMobileMenu"
+              class="block px-3 py-2 rounded-md text-sm transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-600 hover:text-blue-800'
+                  : 'text-gray-300 hover:text-blue-400'
+              "
+              >Jembatan Lingkungan</NuxtLink
+            >
+            <NuxtLink
+              to="/peta-interaktif/drainase"
+              @click="closeMobileMenu"
+              class="block px-3 py-2 rounded-md text-sm transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-600 hover:text-blue-800'
+                  : 'text-gray-300 hover:text-blue-400'
+              "
+              >Drainase Lingkungan</NuxtLink
+            >
+            <NuxtLink
+              to="/peta-interaktif/kawasan"
+              @click="closeMobileMenu"
+              class="block px-3 py-2 rounded-md text-sm transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-600 hover:text-blue-800'
+                  : 'text-gray-300 hover:text-blue-400'
+              "
+              >Kawasan Permukiman</NuxtLink
+            >
+            <NuxtLink
+              to="/peta-interaktif/rumah"
+              @click="closeMobileMenu"
+              class="block px-3 py-2 rounded-md text-sm transition-colors"
+              :class="
+                isScrolled
+                  ? 'text-gray-600 hover:text-blue-800'
+                  : 'text-gray-300 hover:text-blue-400'
+              "
+              >Rumah Tidak Layak Huni</NuxtLink
             >
           </div>
         </div>
-
-        <NuxtLink
-          to="/ppid"
-          @click="closeMobileMenu"
-          class="block px-3 py-2 rounded-md text-base font-medium transition-colors"
-          :class="
-            isScrolled
-              ? 'text-gray-900 hover:text-gray-700'
-              : 'text-white hover:text-blue-400'
-          "
-          >PPID</NuxtLink
-        >
       </div>
     </div>
   </nav>
@@ -557,7 +457,6 @@ import { useGoogleTranslate } from "~/composables/useGoogleTranslate";
 const route = useRoute();
 
 const mobileMenuOpen = ref(false);
-const profilMenuOpen = ref(false);
 const dokumentasiMenuOpen = ref(false);
 const petaInteraktifMenuOpen = ref(false);
 const isScrolled = ref(false);
@@ -584,7 +483,6 @@ const handleLanguageToggle = () => {
 // Close mobile menu when link is clicked
 const closeMobileMenu = () => {
   mobileMenuOpen.value = false;
-  profilMenuOpen.value = false;
   dokumentasiMenuOpen.value = false;
   petaInteraktifMenuOpen.value = false;
 };

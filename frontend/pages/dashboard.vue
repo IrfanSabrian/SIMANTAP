@@ -41,7 +41,7 @@
             <!-- Logo & Title -->
             <img
               src="~/assets/images/sijali-logo.svg"
-              alt="SIJALI Logo"
+              alt="SIMANTAP Logo"
               class="h-10 w-10"
             />
             <div class="hidden sm:block">
@@ -138,167 +138,6 @@
             </svg>
             <span class="font-medium">Dashboard</span>
           </button>
-
-          <!-- Menu Profil (Accordion) -->
-          <div class="mt-2">
-            <button
-              @click="profilMenuOpen = !profilMenuOpen"
-              class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-left transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <div class="flex items-center space-x-2">
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                  />
-                </svg>
-                <span class="text-xs font-semibold uppercase tracking-wider"
-                  >Profil</span
-                >
-              </div>
-              <svg
-                :class="[
-                  'w-4 h-4 transition-transform duration-200',
-                  profilMenuOpen ? 'rotate-180' : '',
-                ]"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-
-            <!-- Profil Submenu -->
-            <div
-              v-show="profilMenuOpen"
-              class="mt-1 space-y-1 pl-3 overflow-hidden transition-all duration-200"
-            >
-              <button
-                @click="
-                  activeTab = 'profil-berita';
-                  sidebarOpen = false;
-                "
-                :class="[
-                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
-                  activeTab === 'profil-berita'
-                    ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
-                ]"
-              >
-                <svg
-                  class="w-4 h-4 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-                  />
-                </svg>
-                <span>Kelola Berita</span>
-              </button>
-
-              <button
-                @click="
-                  activeTab = 'profil-dokumentasi-kegiatan';
-                  sidebarOpen = false;
-                "
-                :class="[
-                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
-                  activeTab === 'profil-dokumentasi-kegiatan'
-                    ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white shadow-md'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
-                ]"
-              >
-                <svg
-                  class="w-4 h-4 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-                <span>Dokumentasi Kegiatan</span>
-              </button>
-
-              <button
-                @click="
-                  activeTab = 'profil-dokumentasi-infrastruktur';
-                  sidebarOpen = false;
-                "
-                :class="[
-                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
-                  activeTab === 'profil-dokumentasi-infrastruktur'
-                    ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
-                ]"
-              >
-                <svg
-                  class="w-4 h-4 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                  />
-                </svg>
-                <span>Dokumentasi Infrastruktur</span>
-              </button>
-
-              <button
-                @click="
-                  activeTab = 'profil-dokumen-ppid';
-                  sidebarOpen = false;
-                "
-                :class="[
-                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm',
-                  activeTab === 'profil-dokumen-ppid'
-                    ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700',
-                ]"
-              >
-                <svg
-                  class="w-4 h-4 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                  />
-                </svg>
-                <span>Dokumen PPID</span>
-              </button>
-            </div>
-          </div>
 
           <!-- Menu Data (Accordion) -->
           <div class="mt-2">
@@ -756,88 +595,6 @@
             <!-- Dashboard Section -->
             <div v-show="activeTab === 'dashboard'" class="space-y-6">
               <AduanList />
-            </div>
-
-            <!-- Profil - Kelola Berita Section -->
-            <div v-show="activeTab === 'profil-berita'" class="space-y-6">
-              <!-- Header Banner -->
-              <div
-                class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-purple-500"
-              >
-                <h2
-                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
-                >
-                  Kelola Berita
-                </h2>
-                <p class="text-gray-600 dark:text-gray-400">
-                  Manajemen berita dan artikel untuk website profil Kabupaten
-                  Kubu Raya
-                </p>
-              </div>
-              <BeritaManagement />
-            </div>
-
-            <!-- Profil - Dokumentasi Kegiatan Section -->
-            <div
-              v-show="activeTab === 'profil-dokumentasi-kegiatan'"
-              class="space-y-6"
-            >
-              <!-- Header Banner -->
-              <div
-                class="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-pink-500"
-              >
-                <h2
-                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
-                >
-                  Dokumentasi Kegiatan
-                </h2>
-                <p class="text-gray-600 dark:text-gray-400">
-                  Kelola dokumentasi foto dan informasi kegiatan dinas di
-                  Kabupaten Kubu Raya
-                </p>
-              </div>
-              <DokumentasiKegiatanManagement />
-            </div>
-
-            <!-- Profil - Dokumentasi Infrastruktur Section -->
-            <div
-              v-show="activeTab === 'profil-dokumentasi-infrastruktur'"
-              class="space-y-6"
-            >
-              <!-- Header Banner -->
-              <div
-                class="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-orange-500"
-              >
-                <h2
-                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
-                >
-                  Dokumentasi Infrastruktur
-                </h2>
-                <p class="text-gray-600 dark:text-gray-400">
-                  Manajemen dokumentasi pembangunan dan pemeliharaan
-                  infrastruktur di Kabupaten Kubu Raya
-                </p>
-              </div>
-              <DokumentasiInfrastrukturManagement />
-            </div>
-
-            <!-- Profil - Dokumen PPID Section -->
-            <div v-show="activeTab === 'profil-dokumen-ppid'" class="space-y-6">
-              <!-- Header Banner -->
-              <div
-                class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-green-500"
-              >
-                <h2
-                  class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
-                >
-                  Dokumen PPID
-                </h2>
-                <p class="text-gray-600 dark:text-gray-400">
-                  Kelola dokumen informasi publik (PPID) untuk transparansi
-                  pemerintahan Kabupaten Kubu Raya
-                </p>
-              </div>
-              <DokumenPpidManagement />
             </div>
 
             <!-- Jalan Lingkungan Section -->
@@ -1768,7 +1525,7 @@
                   Manajemen User
                 </h2>
                 <p class="text-gray-600 dark:text-gray-400">
-                  Kelola pengguna dan hak akses sistem SIJALI Kabupaten Kubu
+                  Kelola pengguna dan hak akses sistem SIMANTAP Kabupaten Kubu
                   Raya
                 </p>
               </div>
@@ -1786,7 +1543,7 @@
                       Manajemen User
                     </h3>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      Kelola data pengguna sistem SIJALI
+                      Kelola data pengguna sistem SIMANTAP
                     </p>
                   </div>
                   <div class="flex space-x-2">
@@ -2439,10 +2196,8 @@ import UserDetailModal from "~/components/UserDetailModal.vue";
 import GeoJSONImportModal from "~/components/GeoJSONImportModal.vue";
 import AnalysisDashboard from "~/components/AnalysisDashboard.vue";
 import ReportGenerator from "~/components/ReportGenerator.vue";
-import BeritaManagement from "~/components/BeritaManagement.vue";
 import DokumentasiKegiatanManagement from "~/components/DokumentasiKegiatanManagement.vue";
 import DokumentasiInfrastrukturManagement from "~/components/DokumentasiInfrastrukturManagement.vue";
-import DokumenPpidManagement from "~/components/DokumenPpidManagement.vue";
 import Toast from "~/components/Toast.vue";
 import ConfirmationModal from "~/components/ConfirmationModal.vue";
 import { useReportGenerator } from "~/composables/useReportGenerator.js";
@@ -2484,11 +2239,11 @@ const loadChartJS = async () => {
 
 // Set page title
 useHead({
-  title: "Dashboard - SIJALI",
+  title: "Dashboard - SIMANTAP KUBU RAYA",
   meta: [
     {
       name: "description",
-      content: "Dashboard Sistem Informasi Jalan Lingkungan",
+      content: "Dashboard Sistem Informasi Manajemen Tata Permukiman",
     },
   ],
 });
@@ -2516,7 +2271,6 @@ const token = ref(null);
 // UI State
 const activeTab = ref("dashboard");
 const sidebarOpen = ref(false);
-const profilMenuOpen = ref(false); // Accordion state for Profil menu - default closed
 const dataMenuOpen = ref(false); // Accordion state for Data menu - default closed
 const loading = ref(true);
 const loadingRoads = ref(true);

@@ -34,7 +34,7 @@
               >
                 <img
                   src="~/assets/images/sijali-logo.svg"
-                  alt="SIJALI Logo"
+                  alt="SIMANTAP Logo"
                   class="h-20 w-20"
                 />
               </div>
@@ -290,7 +290,7 @@
 
       <!-- Footer -->
       <p class="text-center text-sm text-white/80 mt-6">
-        © 2025 SIJALI - Sistem Informasi Jalan Lingkungan
+        © 2025 SIMANTAP KUBU RAYA - Sistem Informasi Manajemen Tata Permukiman
       </p>
     </div>
   </div>
@@ -307,11 +307,11 @@ definePageMeta({
 
 // Set page title
 useHead({
-  title: "Login - SIJALI",
+  title: "Login - SIMANTAP KUBU RAYA",
   meta: [
     {
       name: "description",
-      content: "Login ke Sistem Informasi Jalan Lingkungan",
+      content: "Login ke Sistem Informasi Manajemen Tata Permukiman",
     },
   ],
 });

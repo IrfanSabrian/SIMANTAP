@@ -373,7 +373,7 @@ export const useReportGenerator = () => {
 
       html += `
           <div class="footer">
-            <div>Laporan ini dibuat secara otomatis oleh Sistem Informasi Jalan Lingkungan (SIJALI)</div>
+            <div>Laporan ini dibuat secara otomatis oleh SIMANTAP KUBU RAYA</div>
             <div>Kabupaten Kubu Raya - ${new Date().toLocaleDateString(
               "id-ID"
             )}</div>
@@ -1040,7 +1040,7 @@ export const useReportGenerator = () => {
 
       html += `
           <div class="footer">
-            <div>Laporan ini dibuat secara otomatis oleh Sistem Informasi Jalan Lingkungan (SIJALI)</div>
+            <div>Laporan ini dibuat secara otomatis oleh SIMANTAP KUBU RAYA</div>
             <div>Kabupaten Kubu Raya - ${new Date().toLocaleDateString(
               "id-ID"
             )}</div>
@@ -1564,7 +1564,7 @@ export const useReportGenerator = () => {
 
       html += `
           <div class="footer">
-            <div>Laporan ini dibuat secara otomatis oleh Sistem Informasi Jalan Lingkungan (SIJALI)</div>
+            <div>Laporan ini dibuat secara otomatis oleh SIMANTAP KUBU RAYA</div>
             <div>Kabupaten Kubu Raya - ${new Date().toLocaleDateString(
               "id-ID"
             )}</div>
@@ -2054,7 +2054,7 @@ export const useReportGenerator = () => {
       new Paragraph({
         children: [
           new TextRun({
-            text: "Laporan ini dibuat secara otomatis oleh Sistem Informasi Jalan Lingkungan (SIJALI)",
+            text: "Laporan ini dibuat secara otomatis oleh SIMANTAP KUBU RAYA",
             size: 14, // Reduced from 16
           }),
         ],

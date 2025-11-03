@@ -13,19 +13,7 @@ const jalanRoutes = require("./routes/jalan");
 const authRoutes = require("./routes/auth");
 const aduanRoutes = require("./routes/aduan");
 
-let beritaRoutes,
-  dokumentasiKegiatanRoutes,
-  dokumentasiInfrastrukturRoutes,
-  dokumenPpidRoutes,
-  statsRoutes;
-
-try {
-  console.log("Loading berita routes...");
-  beritaRoutes = require("./routes/berita");
-  console.log("✅ Berita routes loaded");
-} catch (error) {
-  console.error("❌ Error loading berita routes:", error.message);
-}
+let dokumentasiKegiatanRoutes, dokumentasiInfrastrukturRoutes, statsRoutes;
 
 try {
   console.log("Loading dokumentasi-kegiatan routes...");
@@ -45,14 +33,6 @@ try {
     error.message
   );
   console.error("Stack:", error.stack);
-}
-
-try {
-  console.log("Loading dokumen-ppid routes...");
-  dokumenPpidRoutes = require("./routes/dokumen-ppid");
-  console.log("✅ Dokumen PPID routes loaded");
-} catch (error) {
-  console.error("❌ Error loading dokumen-ppid routes:", error.message);
 }
 
 try {
@@ -165,10 +145,8 @@ app.get("/health", (req, res) => {
 app.get("/api/test-routes", (req, res) => {
   res.json({
     routes: {
-      berita: !!beritaRoutes,
       dokumentasiKegiatan: !!dokumentasiKegiatanRoutes,
       dokumentasiInfrastruktur: !!dokumentasiInfrastrukturRoutes,
-      dokumenPpid: !!dokumenPpidRoutes,
       stats: !!statsRoutes,
     },
     message: "Backend routes status check",
@@ -179,13 +157,6 @@ app.get("/api/test-routes", (req, res) => {
 app.use("/api/jalan", jalanRoutes);
 app.use("/api/aduan", aduanRoutes);
 app.use("/api/auth", authRoutes);
-
-if (beritaRoutes) {
-  app.use("/api/berita", beritaRoutes);
-  console.log("✅ Berita routes registered at /api/berita");
-} else {
-  console.warn("⚠️ Berita routes not registered (module failed to load)");
-}
 
 if (dokumentasiKegiatanRoutes) {
   app.use("/api/dokumentasi-kegiatan", dokumentasiKegiatanRoutes);
@@ -207,13 +178,6 @@ if (dokumentasiInfrastrukturRoutes) {
   console.warn(
     "⚠️ Dokumentasi infrastruktur routes not registered (module failed to load)"
   );
-}
-
-if (dokumenPpidRoutes) {
-  app.use("/api/dokumen-ppid", dokumenPpidRoutes);
-  console.log("✅ Dokumen PPID routes registered at /api/dokumen-ppid");
-} else {
-  console.warn("⚠️ Dokumen PPID routes not registered (module failed to load)");
 }
 
 if (statsRoutes) {

@@ -11,7 +11,7 @@
       <!-- Header -->
       <div class="flex items-center justify-between mb-6">
         <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">
-          Login SIJALI
+          Login SIMANTAP
         </h2>
         <button
           @click="closeModal"

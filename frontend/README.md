@@ -1,6 +1,6 @@
-# SIJALI Web GIS
+# SIMANTAP KUBU RAYA Web GIS
 
-Sistem Informasi Jalan Lingkungan berbasis Web GIS menggunakan Nuxt.js dan ArcGIS JS API.
+SIMANTAP KUBU RAYA (Sistem Informasi Manajemen Tata Permukiman) berbasis Web GIS menggunakan Nuxt.js dan ArcGIS JS API.
 
 ## Fitur
 

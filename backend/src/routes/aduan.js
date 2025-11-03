@@ -149,7 +149,7 @@ const sendStatusEmail = async (
     console.warn("⚠️  Could not fetch road details:", error.message);
   }
 
-  const subject = `SIJALI - Status Aduan Ruas ${nomorRuas}: ${status}`;
+  const subject = `SIMANTAP KUBU RAYA - Status Aduan Ruas ${nomorRuas}: ${status}`;
 
   const statusMap = {
     diajukan: {
@@ -186,8 +186,8 @@ const sendStatusEmail = async (
               <tr>
                 <td style="background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);padding:30px 40px;text-align:center">
                   <!-- Title and subtitle -->
-                  <h1 style="margin:0;color:#ffffff;font-size:28px;font-weight:bold;letter-spacing:2px">SIJALI</h1>
-                  <p style="margin:8px 0 0 0;color:#dbeafe;font-size:14px;font-weight:400">Sistem Informasi Jalan Lingkungan - Kab. Kubu Raya</p>
+                  <h1 style="margin:0;color:#ffffff;font-size:28px;font-weight:bold;letter-spacing:2px">SIMANTAP</h1>
+                  <p style="margin:8px 0 0 0;color:#dbeafe;font-size:14px;font-weight:400">Sistem Informasi Manajemen Tata Permukiman - Kab. Kubu Raya</p>
                 </td>
               </tr>
               <!-- Content -->
@@ -196,7 +196,7 @@ const sendStatusEmail = async (
                   <h2 style="margin:0 0 20px 0;color:#111827;font-size:20px">Informasi Status Aduan</h2>
                   <p style="margin:0 0 24px 0;color:#4b5563;line-height:1.6">Halo,</p>
                   <p style="margin:0 0 24px 0;color:#4b5563;line-height:1.6">
-                    Terima kasih telah melaporkan aduan jalan melalui sistem SIJALI. Berikut adalah informasi terkait laporan Anda:
+                    Terima kasih telah melaporkan aduan jalan melalui sistem SIMANTAP. Berikut adalah informasi terkait laporan Anda:
                   </p>
                   
                   <!-- Info Box -->
@@ -275,10 +275,10 @@ const sendStatusEmail = async (
               <tr>
                 <td style="background-color:#f9fafb;padding:24px 40px;border-top:1px solid #e5e7eb">
                   <p style="margin:0 0 8px 0;color:#6b7280;font-size:12px;line-height:1.6">
-                    Email ini dikirim secara otomatis oleh sistem SIJALI. Mohon tidak membalas email ini.
+                    Email ini dikirim secara otomatis oleh sistem SIMANTAP. Mohon tidak membalas email ini.
                   </p>
                   <p style="margin:0;color:#9ca3af;font-size:11px">
-                    © 2025 SIJALI - Kabupaten Kubu Raya
+                    © 2025 SIMANTAP KUBU RAYA - Kabupaten Kubu Raya
                   </p>
                 </td>
               </tr>
@@ -348,7 +348,7 @@ try {
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY ? "***" : "NOT SET",
     api_secret: process.env.CLOUDINARY_API_SECRET ? "***" : "NOT SET",
-    folder: process.env.CLOUDINARY_FOLDER || "SIJALI",
+    folder: process.env.CLOUDINARY_FOLDER || "SIMANTAP",
   });
 
   storage = new CloudinaryStorage({
@@ -357,7 +357,7 @@ try {
       const nomorRuas = req.body.nomor_ruas || "unknown";
       return {
         folder: `${
-          process.env.CLOUDINARY_FOLDER || "SIJALI"
+          process.env.CLOUDINARY_FOLDER || "SIMANTAP"
         }/aduan/${nomorRuas}`,
         allowed_formats: ["jpg", "jpeg", "png", "gif", "webp"],
         transformation: [{ width: 1200, height: 1200, crop: "limit" }],

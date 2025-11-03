@@ -94,32 +94,6 @@ enum JenisInfrastruktur {
 }
 
 // ============================================
-// BERITA (News)
-// ============================================
-
-model Berita {
-  id               Int       @id @default(autoincrement())
-  judul            String    @db.VarChar(255)
-  slug             String    @unique @db.VarChar(255)
-  ringkasan        String?   @db.Text
-  konten           String    @db.Text
-  thumbnail        String?   @db.VarChar(500)
-  kategori         String?   @db.VarChar(100)
-  penulis          String?   @default("Admin") @db.VarChar(100)
-  waktuBaca        String?   @map("waktu_baca") @db.VarChar(20)
-  status           String    @default("published") @db.VarChar(20)
-  tanggalPublikasi DateTime? @map("tanggal_publikasi")
-  dibuatPada       DateTime  @default(now()) @map("dibuat_pada")
-  diperbaruiPada   DateTime  @updatedAt @map("diperbarui_pada")
-
-  @@index([slug])
-  @@index([status])
-  @@index([kategori])
-  @@index([tanggalPublikasi])
-  @@map("berita")
-}
-
-// ============================================
 // DOKUMENTASI KEGIATAN
 // ============================================
 
@@ -157,31 +131,4 @@ model DokumentasiInfrastruktur {
   @@index([jenisInfrastruktur])
   @@index([noRuas])
   @@map("dokumentasi_infrastruktur")
-}
-
-// ============================================
-// DOKUMEN PPID (Informasi Publik)
-// ============================================
-
-model DokumenPpid {
-  id               Int       @id @default(autoincrement())
-  judul            String    @db.VarChar(255)
-  slug             String    @unique @db.VarChar(255)
-  deskripsi        String?   @db.Text
-  kategori         String?   @db.VarChar(100)
-  urlFile          String    @map("url_file") @db.VarChar(500)
-  namaFile         String    @map("nama_file") @db.VarChar(255)
-  tahun            String?   @db.VarChar(4)
-  nomorDokumen     String?   @map("nomor_dokumen") @db.VarChar(100)
-  jumlahUnduhan    Int       @default(0) @map("jumlah_unduhan")
-  status           String    @default("published") @db.VarChar(20)
-  tanggalPublikasi DateTime? @map("tanggal_publikasi")
-  dibuatPada       DateTime  @default(now()) @map("dibuat_pada")
-  diperbaruiPada   DateTime  @updatedAt @map("diperbarui_pada")
-
-  @@index([slug])
-  @@index([kategori])
-  @@index([status])
-  @@index([tahun])
-  @@map("dokumen_ppid")
 }

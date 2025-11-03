@@ -1270,7 +1270,7 @@ const emit = defineEmits(["close", "save", "update"]);
 const { fetchRoads } = useApiService();
 const toast = useToast();
 
-// SIJALI API URL from config
+// SIMANTAP API URL from config
 const config = useRuntimeConfig();
 const API_BASE = config.public.apiBaseUrl || "";
 

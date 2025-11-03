@@ -1,7 +1,7 @@
 {
-  "name": "sijali-backend",
+  "name": "simantap-backend",
   "version": "1.0.0",
-  "description": "Backend API for SIJALI (Sistem Informasi Jalan Lingkungan) Kubu Raya",
+  "description": "Backend API for SIMANTAP KUBU RAYA (Sistem Informasi Manajemen Tata Permukiman)",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",

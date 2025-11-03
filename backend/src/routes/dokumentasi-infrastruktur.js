@@ -53,7 +53,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET dokumentasi by no_ruas (public) - untuk SIJALI
+// GET dokumentasi by no_ruas (public) - untuk SIMANTAP
 router.get("/by-ruas/:noRuas", async (req, res) => {
   try {
     const { noRuas } = req.params;
@@ -336,4 +336,3 @@ router.delete("/admin/:id", async (req, res) => {
 });
 
 module.exports = router;
-

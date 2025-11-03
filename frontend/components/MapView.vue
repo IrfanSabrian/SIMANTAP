@@ -171,13 +171,13 @@
               </svg>
               <img
                 src="/assets/images/sijali-logo.svg"
-                alt="SIJALI Logo"
+                alt="SIMANTAP Logo"
                 class="h-12 w-12 object-contain flex-shrink-0"
               />
               <div class="leading-tight text-left">
-                <div class="text-base font-extrabold tracking-wide">SIJALI</div>
+                <div class="text-base font-extrabold tracking-wide">SIMANTAP</div>
                 <div class="text-[11px] text-gray-500 dark:text-gray-400">
-                  Kab. Kubu Raya
+                  Kubu Raya
                 </div>
               </div>
             </template>
@@ -936,7 +936,7 @@ import { useToast } from "~/composables/useToast";
 const { fetchRoadsGeoJSON } = useApiService();
 const toast = useToast();
 
-// SIJALI API URL from config
+// SIMANTAP API URL from config
 const config = useRuntimeConfig();
 const API_BASE = config.public.apiBaseUrl || "";
 

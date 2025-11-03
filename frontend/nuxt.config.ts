@@ -82,13 +82,13 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      title: "SIJALI Kab. Kubu Raya",
+      title: "SIMANTAP KUBU RAYA",
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
           name: "description",
-          content: "Sistem Informasi Jalan Lingkungan Kab. Kubu Raya",
+          content: "Sistem Informasi Manajemen Tata Permukiman - Kabupaten Kubu Raya",
         },
       ],
       link: [
@@ -122,14 +122,14 @@ export default defineNuxtConfig({
     public: {
       arcgisApiKey:
         process.env.NUXT_PUBLIC_ARCGIS_API_KEY || "your-api-key-here",
-      // SIJALI Backend API
+      // SIMANTAP Backend API
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
       apiUrl: process.env.NUXT_PUBLIC_API_URL,
-      appName: process.env.NUXT_PUBLIC_APP_NAME || "SIJALI",
+      appName: process.env.NUXT_PUBLIC_APP_NAME || "SIMANTAP",
       appVersion: process.env.NUXT_PUBLIC_APP_VERSION || "1.0.0",
       appDescription:
         process.env.NUXT_PUBLIC_APP_DESCRIPTION ||
-        "Sistem Informasi Jalan Lingkungan Kab. Kubu Raya",
+        "Sistem Informasi Manajemen Tata Permukiman - Kabupaten Kubu Raya",
       mapCenterLat: parseFloat(
         process.env.NUXT_PUBLIC_MAP_CENTER_LAT || "-0.5"
       ),
@@ -139,7 +139,7 @@ export default defineNuxtConfig({
       mapZoom: parseInt(process.env.NUXT_PUBLIC_MAP_ZOOM || "10"),
       cloudinaryCloudName:
         process.env.NUXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "your_cloud_name",
-      cloudinaryFolder: process.env.NUXT_PUBLIC_CLOUDINARY_FOLDER || "SIJALI",
+      cloudinaryFolder: process.env.NUXT_PUBLIC_CLOUDINARY_FOLDER || "SIMANTAP",
     },
   },
 });

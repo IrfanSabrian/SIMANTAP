@@ -1,6 +1,6 @@
 /**
  * Composable untuk API Content (Berita, Dokumentasi, PPID)
- * Mengambil data dari backend SIJALI
+ * Mengambil data dari backend SIMANTAP
  */
 export const useContentApi = () => {
   const config = useRuntimeConfig();
@@ -10,16 +10,26 @@ export const useContentApi = () => {
       "⚠️ NUXT_PUBLIC_API_BASE_URL or NUXT_PUBLIC_API_URL is not set in environment variables!"
     );
     return {
-      getBerita: () => Promise.resolve({ data: null, error: "API URL not configured" }),
-      getBeritaBySlug: () => Promise.resolve({ data: null, error: "API URL not configured" }),
-      getDokumentasiKegiatan: () => Promise.resolve({ data: null, error: "API URL not configured" }),
-      getDokumentasiKegiatanBySlug: () => Promise.resolve({ data: null, error: "API URL not configured" }),
-      getDokumentasiInfrastruktur: () => Promise.resolve({ data: null, error: "API URL not configured" }),
-      getDokumentasiInfrastrukturById: () => Promise.resolve({ data: null, error: "API URL not configured" }),
-      getDokumentasiInfrastrukturByRuas: () => Promise.resolve({ data: null, error: "API URL not configured" }),
-      getDokumenPpid: () => Promise.resolve({ data: null, error: "API URL not configured" }),
-      getDokumenPpidBySlug: () => Promise.resolve({ data: null, error: "API URL not configured" }),
-      getStats: () => Promise.resolve({ data: null, error: "API URL not configured" }),
+      getBerita: () =>
+        Promise.resolve({ data: null, error: "API URL not configured" }),
+      getBeritaBySlug: () =>
+        Promise.resolve({ data: null, error: "API URL not configured" }),
+      getDokumentasiKegiatan: () =>
+        Promise.resolve({ data: null, error: "API URL not configured" }),
+      getDokumentasiKegiatanBySlug: () =>
+        Promise.resolve({ data: null, error: "API URL not configured" }),
+      getDokumentasiInfrastruktur: () =>
+        Promise.resolve({ data: null, error: "API URL not configured" }),
+      getDokumentasiInfrastrukturById: () =>
+        Promise.resolve({ data: null, error: "API URL not configured" }),
+      getDokumentasiInfrastrukturByRuas: () =>
+        Promise.resolve({ data: null, error: "API URL not configured" }),
+      getDokumenPpid: () =>
+        Promise.resolve({ data: null, error: "API URL not configured" }),
+      getDokumenPpidBySlug: () =>
+        Promise.resolve({ data: null, error: "API URL not configured" }),
+      getStats: () =>
+        Promise.resolve({ data: null, error: "API URL not configured" }),
       baseURL: "",
     };
   }
@@ -46,8 +56,8 @@ export const useContentApi = () => {
 
     // Build final URL
     // Remove /api from endpoint if baseURL already includes /api
-    const cleanEndpoint = endpoint.startsWith("/api") 
-      ? endpoint.replace("/api", "") 
+    const cleanEndpoint = endpoint.startsWith("/api")
+      ? endpoint.replace("/api", "")
       : endpoint;
     const url = `${baseURL}${cleanEndpoint}`;
 
@@ -97,4 +107,3 @@ export const useContentApi = () => {
     baseURL: baseURL,
   };
 };
-

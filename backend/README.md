@@ -1,6 +1,6 @@
-# SIJALI Backend API
+# SIMANTAP Backend API
 
-Backend API untuk Sistem Informasi Jalan Lingkungan (SIJALI) Kubu Raya menggunakan Express.js dan Prisma ORM dengan PostgreSQL + PostGIS.
+Backend API untuk SIMANTAP KUBU RAYA (Sistem Informasi Manajemen Tata Permukiman) menggunakan Express.js dan Prisma ORM dengan PostgreSQL + PostGIS.
 
 ## Features
 

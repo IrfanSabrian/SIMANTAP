@@ -125,8 +125,9 @@
 
               <!-- Stat 3 -->
               <div
-                class="glass-card rounded-lg p-2 sm:p-3 border border-white/20 shadow-lg hero-card-animation"
+                class="glass-card rounded-lg p-2 sm:p-3 border border-white/20 shadow-lg hero-card-animation cursor-pointer hover:scale-105 transition-transform"
                 style="animation-delay: 0.4s"
+                @click="navigateTo('/peta-interaktif/sijali')"
               >
                 <div class="flex items-center gap-2 sm:gap-3 mb-2">
                   <div
@@ -208,137 +209,6 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section 2: Berita -->
-    <section
-      id="berita"
-      class="py-16 sm:py-20 lg:py-24 relative overflow-hidden"
-      style="
-        background: linear-gradient(
-          to bottom,
-          #0f1931 0%,
-          #1e3a8a 40%,
-          #ffffff 100%
-        );
-        background-image: url('/bg-berita.svg'),
-          linear-gradient(to bottom, #0f1931 0%, #1e3a8a 40%, #ffffff 100%);
-        background-size: 60%, cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-      "
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div
-          class="mb-8 flex items-center justify-between"
-          data-aos="fade-right"
-        >
-          <h2
-            class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white relative inline-block"
-          >
-            Berita Terkini
-            <div
-              class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-500 to-transparent rounded-full"
-            ></div>
-          </h2>
-
-          <!-- View All News Button (moved to top right) -->
-          <NuxtLink
-            to="/berita"
-            class="inline-flex items-center px-6 py-3 border-2 border-white text-white font-semibold rounded-full hover:bg-yellow-400 hover:border-blue-600 hover:text-blue-600 transition-all duration-300"
-            data-aos="fade-left"
-          >
-            Lihat Semua Berita
-            <svg
-              class="w-4 h-4 ml-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              ></path>
-            </svg>
-          </NuxtLink>
-        </div>
-
-        <!-- News Slider with Swiper -->
-        <div v-if="beritaList.length > 0" class="relative" data-aos="fade-up">
-          <swiper
-            :modules="swiperModules"
-            :slides-per-view="1"
-            :space-between="20"
-            :pagination="{ clickable: true }"
-            :autoplay="{ delay: 5000, disableOnInteraction: false }"
-            :rewind="true"
-            :breakpoints="{
-              640: { slidesPerView: 2, spaceBetween: 20 },
-              1024: { slidesPerView: 3, spaceBetween: 30 },
-            }"
-            class="news-swiper"
-          >
-            <swiper-slide v-for="item in beritaList.slice(0, 6)" :key="item.id">
-              <div
-                class="relative rounded-2xl overflow-hidden shadow-lg cursor-pointer group h-56"
-                @click="navigateTo(`/berita-detail?slug=${item.slug}`)"
-              >
-                <!-- Thumbnail Background -->
-                <img
-                  :src="getThumbnail(item)"
-                  :alt="item.judul"
-                  class="w-full h-full object-cover"
-                  @error="handleImageError"
-                />
-
-                <!-- Overlay on Hover -->
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6"
-                >
-                  <!-- Kategori dan tanggal -->
-                  <div class="flex items-center space-x-2 mb-2">
-                    <span class="text-sm text-blue-400 font-medium">{{
-                      item.kategori || "Berita"
-                    }}</span>
-                    <span class="text-sm text-gray-300">•</span>
-                    <span class="text-sm text-gray-300">{{
-                      formatRelativeDate(item.tanggalPublikasi)
-                    }}</span>
-                  </div>
-                  <!-- Judul -->
-                  <h3 class="text-lg font-bold text-white mb-2 line-clamp-2">
-                    {{ item.judul }}
-                  </h3>
-                  <!-- Excerpt -->
-                  <p class="text-gray-200 text-sm leading-relaxed line-clamp-3">
-                    {{ getExcerpt(item.konten, 100) }}
-                  </p>
-                </div>
-              </div>
-            </swiper-slide>
-          </swiper>
-        </div>
-
-        <!-- Empty state jika tidak ada berita -->
-        <div v-else class="text-center py-8 bg-white rounded-2xl">
-          <svg
-            class="w-16 h-16 mx-auto text-gray-400 mb-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-            />
-          </svg>
-          <p class="text-gray-500">Belum ada berita tersedia</p>
         </div>
       </div>
     </section>
@@ -1021,6 +891,125 @@
         </div>
       </div>
     </section>
+
+    <!-- Mascot Chatbot (Fixed Bottom Right) -->
+    <div class="fixed bottom-0 right-0 z-40 hidden lg:block">
+      <!-- Chat Window -->
+      <div
+        v-if="chatbotOpen"
+        class="bg-white rounded-t-lg shadow-2xl mb-0 w-96 max-h-[600px] flex flex-col border border-gray-200"
+      >
+        <!-- Header -->
+        <div
+          class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 rounded-t-lg flex items-center justify-between cursor-pointer"
+          @click="chatbotOpen = false"
+        >
+          <div class="flex items-center gap-3">
+            <img
+              src="/maskot.png"
+              alt="Chatbot"
+              class="w-10 h-10 rounded-full"
+            />
+            <div>
+              <h3 class="font-bold">SIMANTAP Assistant</h3>
+              <p class="text-xs text-blue-100">Online</p>
+            </div>
+          </div>
+          <button
+            class="text-white hover:text-blue-200 transition-colors"
+            @click.stop="chatbotOpen = false"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Messages -->
+        <div
+          class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50"
+          ref="chatMessagesRef"
+        >
+          <div
+            v-for="(message, index) in chatMessages"
+            :key="index"
+            :class="[
+              'flex',
+              message.sender === 'bot' ? 'justify-start' : 'justify-end',
+            ]"
+          >
+            <div
+              :class="[
+                'max-w-[80%] rounded-lg p-3',
+                message.sender === 'bot'
+                  ? 'bg-blue-50 text-gray-800'
+                  : 'bg-blue-600 text-white',
+              ]"
+            >
+              <p class="text-sm whitespace-pre-wrap">{{ message.text }}</p>
+              <span class="text-xs opacity-70 mt-1 block">
+                {{ message.time }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div class="border-t border-gray-200 p-4 bg-white">
+          <div class="flex gap-2">
+            <input
+              v-model="chatInput"
+              type="text"
+              placeholder="Ketik pesan Anda..."
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              @keyup.enter="sendMessage"
+            />
+            <button
+              @click="sendMessage"
+              :disabled="!chatInput.trim()"
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mascot Button -->
+      <div
+        v-if="!chatbotOpen"
+        class="cursor-pointer transform transition-all duration-300 hover:scale-110"
+        @click="openChatbot"
+      >
+        <img
+          src="/maskot.png"
+          alt="Mascot SIMANTAP"
+          class="w-32 h-auto opacity-90 hover:opacity-100 transition-opacity duration-300"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -1035,23 +1024,21 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 const config = useRuntimeConfig();
-// Use SIJALI's useContentApi instead of useWebProfilApi
+// Use SIMANTAP's useContentApi instead of useWebProfilApi
 const { baseURL } = useContentApi();
 // baseURL already includes /api if needed, so we use it directly
 const API_URL = baseURL;
 
 // API composables
-const { getBerita, getDokumentasiKegiatan, getStats } = useContentApi();
+const { getDokumentasiKegiatan, getStats } = useContentApi();
 const { getThumbnail, handleImageError } = useImagePlaceholder();
 const { formatRelativeDate } = useDateFormat();
-const { getExcerpt } = useTextUtils();
 
 // Swiper modules
 const swiperModules = [Pagination, Autoplay];
 
 // Data refs
 const statsData = ref<any>(null);
-const beritaList = ref<any[]>([]);
 const dokumentasiKegiatanHome = ref<any[]>([]);
 const dokumentasiInfrastrukturHome = ref<any[]>([]);
 
@@ -1060,6 +1047,12 @@ const animatedKawasan = ref(0);
 const animatedJembatan = ref(0);
 const animatedJalan = ref(0);
 const animatedDrainase = ref(0);
+
+// Chatbot refs
+const chatbotOpen = ref(false);
+const chatMessages = ref<any[]>([]);
+const chatInput = ref("");
+const chatMessagesRef = ref<any>(null);
 
 // CountUp animation function
 const animateValue = (
@@ -1270,9 +1263,83 @@ watch(selectedCategory, () => {
   loadDokumentasiInfrastruktur();
 });
 
-// Function to open SIJALI in new tab
+// Chatbot functions
+const openChatbot = () => {
+  chatbotOpen.value = true;
+  if (chatMessages.value.length === 0) {
+    const welcomeMessage = {
+      sender: "bot",
+      text: "Ada yang bisa dibantu?",
+      time: new Date().toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+    chatMessages.value.push(welcomeMessage);
+  }
+  // Scroll to bottom
+  setTimeout(() => {
+    if (chatMessagesRef.value) {
+      chatMessagesRef.value.scrollTop = chatMessagesRef.value.scrollHeight;
+    }
+  }, 100);
+};
+
+const sendMessage = () => {
+  if (!chatInput.value.trim()) return;
+
+  // Add user message
+  const userMessage = {
+    sender: "user",
+    text: chatInput.value.trim(),
+    time: new Date().toLocaleTimeString("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+  };
+  chatMessages.value.push(userMessage);
+  const messageText = chatInput.value.trim();
+  chatInput.value = "";
+
+  // Scroll to bottom
+  setTimeout(() => {
+    if (chatMessagesRef.value) {
+      chatMessagesRef.value.scrollTop = chatMessagesRef.value.scrollHeight;
+    }
+  }, 100);
+
+  // Bot response (simple echo for now)
+  setTimeout(() => {
+    const botResponse = {
+      sender: "bot",
+      text: "Terima kasih atas pertanyaan Anda. Tim kami akan segera memproses pertanyaan tersebut.",
+      time: new Date().toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+    chatMessages.value.push(botResponse);
+    setTimeout(() => {
+      if (chatMessagesRef.value) {
+        chatMessagesRef.value.scrollTop = chatMessagesRef.value.scrollHeight;
+      }
+    }, 100);
+  }, 1000);
+};
+
+// Function to open SIMANTAP pages
 const openSijali = (type: string) => {
-  window.open("https://sijali.vercel.app", "_blank");
+  const routeMap: Record<string, string> = {
+    jalan: "/peta-interaktif/sijali",
+    jembatan: "/peta-interaktif/jembatan",
+    drainase: "/peta-interaktif/drainase",
+    kawasan: "/peta-interaktif/kawasan",
+    rumah: "/peta-interaktif/rumah",
+    aspirasi: "/peta-interaktif/aspirasi",
+  };
+
+  const route = routeMap[type] || "/peta-interaktif/sijali";
+  navigateTo(route);
 };
 
 // Initialize data
@@ -1294,12 +1361,6 @@ onMounted(async () => {
     setTimeout(() => {
       startCountUpAnimations();
     }, 300);
-  }
-
-  // Fetch latest news (limit 6)
-  const { data: berita } = await getBerita({ limit: 6 });
-  if (berita && Array.isArray(berita)) {
-    beritaList.value = berita;
   }
 
   // Fetch dokumentasi kegiatan (limit 3)

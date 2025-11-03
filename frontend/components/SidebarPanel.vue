@@ -7,14 +7,14 @@
           <div class="logo-image">
             <img
               src="/assets/images/sijali-logo.svg"
-              alt="SIJALI Logo"
+              alt="SIMANTAP Logo"
               class="w-12 h-12 object-contain"
             />
           </div>
           <div class="logo-text">
-            <h2>SIJALI Kab. Kubu Raya</h2>
+            <h2>SIMANTAP KUBU RAYA</h2>
             <p class="text-xs text-gray-600">
-              Sistem Informasi Jalan Lingkungan Kab. Kubu Raya
+              Sistem Informasi Manajemen Tata Permukiman
             </p>
           </div>
         </div>
