@@ -1,216 +1,131 @@
 <template>
   <div>
-    <!-- Hero Section -->
+    <!-- Hero Section with Slider -->
     <section
       id="home"
-      class="relative min-h-screen flex items-center justify-center overflow-hidden py-16 md:py-0"
+      class="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      <!-- Background -->
-      <div class="absolute inset-0">
-        <div
-          class="w-full h-full bg-cover bg-center bg-no-repeat"
-          style="background-image: url('/bg.png')"
+      <!-- Slider Background -->
+      <Swiper
+        :modules="heroSwiperModules"
+        :autoplay="{
+          delay: 5000,
+          disableOnInteraction: false,
+        }"
+        :loop="true"
+        :effect="'fade'"
+        :speed="1000"
+        :allow-touch-move="false"
+        @swiper="setHeroSwiper"
+        @slideChange="onHeroSlideChange"
+        class="hero-swiper"
+      >
+        <SwiperSlide
+          v-for="(slide, index) in heroSlides"
+          :key="index"
+          class="hero-slide"
         >
-          <div class="absolute inset-0 bg-black/50"></div>
-        </div>
-      </div>
-
-      <!-- Content -->
-      <div class="relative z-10 w-full px-4 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto pt-8 sm:pt-12 lg:pt-16">
-          <!-- Text Content -->
-          <div class="text-left mb-16 sm:mb-20 lg:mb-24">
-            <h1
-              class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 sm:mb-6 tracking-wide hero-title-animation"
-              style="color: #18eef7"
-            >
-              Selamat Datang di Website Resmi
-            </h1>
-            <h2
-              class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight hero-subtitle-animation max-w-6xl"
-            >
-              Bidang Perumahan dan Kawasan Permukiman<br />
-              Dinas PUPRPRKP Kabupaten Kubu Raya
-            </h2>
+          <div
+            class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            :style="`background-image: url('${slide.image}')`"
+          >
+            <div class="absolute inset-0 bg-black/50"></div>
           </div>
 
-          <!-- Stats Cards -->
-          <div class="max-w-4xl">
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
-              <!-- Stat 1 -->
+          <!-- Content Overlay -->
+          <div
+            class="relative z-10 w-full h-full flex flex-col justify-end pb-8 px-4 sm:px-6 lg:px-8"
+          >
+            <div class="max-w-7xl mx-auto w-full">
               <div
-                class="glass-card rounded-lg p-2 sm:p-3 border border-white/20 shadow-lg hero-card-animation"
-                style="animation-delay: 0.2s"
+                class="flex flex-col lg:flex-row lg:items-end lg:justify-between w-full gap-6 lg:gap-8"
               >
-                <div class="flex items-center gap-2 sm:gap-3 mb-2">
+                <!-- Left Bottom Text Block -->
+                <div class="w-full lg:max-w-lg lg:flex-shrink-0">
                   <div
-                    class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-blue-500 rounded-lg shadow-md flex-shrink-0"
+                    class="relative"
+                    style="
+                      min-height: 210px;
+                      display: flex;
+                      flex-direction: column;
+                    "
+                    :key="currentSlideIndex"
                   >
-                    <svg
-                      class="w-5 h-5 sm:w-6 sm:h-6 text-white"
-                      viewBox="0 0 256 256"
-                      fill="currentColor"
-                    >
-                      <path
-                        d="M127,60.7c-1.2,0.5-71.2,53.6-71.2,54c0,0.7,2.2,1,9.5,1h7.3v38.7v38.8l1.2,1.2c1.1,1.1,1.5,1.2,5.5,1.2h4.3v-25.9c0-25.4,0-25.9,1-27.2l1-1.3h16.5c14.1,0,16.6,0.1,17.5,0.8l1.1,0.7v26.5v26.4H151h30.4l1.2-1.2l1.2-1.2v-38.8v-38.7h7.8c4.4,0,8.1-0.2,8.5-0.5c0.9-0.6,1.5-0.1-14.8-12.4l-12.6-9.5l0-14.9c0-11-0.2-15.2-0.6-16.1l-0.6-1.2L160,60.9c-10.1-0.1-11.6,0-12.4,0.7c-0.7,0.7-0.9,1.7-1,6.3l-0.1,5.4l-8.3-6.2C130.2,61,128.5,60.1,127,60.7z M171.7,142.4c1,1.2,1,1.9,1,13v11.7l-1.2,1.2l-1.2,1.2h-16.4c-15.7,0-16.4,0-17.3-1c-0.9-0.9-1-1.6-1-13.4c0-12.4,0-12.5,1.1-13.2c0.9-0.7,3.4-0.8,17.5-0.8h16.5L171.7,142.4z"
-                      ></path>
-                      <path
-                        d="M29.3,106.9C18.7,115,10,121.8,10,122.1s2,0.5,4.4,0.6l4.3,0.1v21.5c0,12.7,0.2,21.8,0.5,22.2c0.4,0.6,3.6,0.7,24.4,0.7h24l0.1-23.7l0.1-23.7H55.1c-10.8,0-12.7-0.1-12.7-0.7c0-0.4,4.8-4.4,10.6-9c5.8-4.6,10.4-8.5,10.3-8.7c-0.7-1.2-12.5-9.5-13.4-9.5C49.3,92.1,40.1,98.7,29.3,106.9z"
-                      ></path>
-                      <path
-                        d="M198.7,96.7c-3.3,2.5-6.1,4.7-6.2,4.8c0,0,4.8,3.9,10.7,8.6c6,4.7,10.8,8.9,10.8,9.2c0,0.6-2,0.7-12.7,0.7h-12.7l0.1,23.7l0.1,23.7l23,0.1c15.3,0,23.3,0,23.9-0.4c0.9-0.5,1-1.2,1-22.4v-21.9h4.5c2.5,0,4.7-0.2,4.8-0.4c0.4-0.6-38.7-30.1-40.1-30.2C205,92.1,203.2,93.2,198.7,96.7z"
-                      ></path>
-                    </svg>
-                  </div>
-                  <div class="text-left">
-                    <div
-                      class="text-xl sm:text-2xl font-bold text-white leading-none"
-                    >
-                      {{ animatedKawasan }}
+                    <!-- Judul - Posisi tetap di atas -->
+                    <div class="mb-3 sm:mb-4 flex-shrink-0">
+                      <h1
+                        class="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight font-sans"
+                      >
+                        {{ currentSlide.title }}
+                      </h1>
                     </div>
-                    <div
-                      class="text-xs text-blue-200 uppercase tracking-wide font-medium mt-0.5"
-                    >
-                      Kawasan
-                    </div>
-                  </div>
-                </div>
-                <div class="text-xs sm:text-sm font-semibold text-white">
-                  Kawasan Permukiman
-                </div>
-                <div class="text-xs text-white/70 hidden sm:block">
-                  Kawasan yang telah dikelola
-                </div>
-              </div>
 
-              <!-- Stat 2 -->
-              <div
-                class="glass-card rounded-lg p-2 sm:p-3 border border-white/20 shadow-lg hero-card-animation"
-                style="animation-delay: 0.3s"
-              >
-                <div class="flex items-center gap-2 sm:gap-3 mb-2">
-                  <div
-                    class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-green-500 rounded-lg shadow-md flex-shrink-0"
-                  >
-                    <svg
-                      class="w-5 h-5 sm:w-6 sm:h-6 text-white"
-                      viewBox="0 0 256 256"
-                      fill="currentColor"
-                    >
-                      <path
-                        d="M238.6,201.7c-1,0-5.3,0-7.4,0h-19.9c-12.2-34.4-44.8-59-83.4-59c-38.5,0-71.2,24.7-83.4,59H24.8c-2.1,0-6.4,0-7.4,0c-4.1,0-7.4-3.3-7.4-7.4V187v-73.7c0-8.1,6.6-14.8,14.8-14.8h7.4V69H17.4c-4.1,0-7.4-3.3-7.4-7.4c0-4.1,3.3-7.4,7.4-7.4h221.2c4.1,0,7.4,3.3,7.4,7.4c0,4.1-3.3,7.4-7.4,7.4h-14.7v29.5h7.4c8.1,0,14.8,6.6,14.8,14.8V187v7.4C246,198.4,242.7,201.7,238.6,201.7z M76.4,69H46.9v29.5h29.5V69z M120.6,69H91.1v29.5h29.5V69z M164.9,69h-29.5v29.5h29.5V69z M209.1,69h-29.5v29.5h29.5V69z"
-                      ></path>
-                    </svg>
-                  </div>
-                  <div class="text-left">
-                    <div
-                      class="text-xl sm:text-2xl font-bold text-white leading-none"
-                    >
-                      {{ animatedJembatan }}
+                    <!-- Deskripsi -->
+                    <div class="mb-4 sm:mb-5 flex-1 min-h-0">
+                      <p
+                        class="text-sm sm:text-base md:text-lg text-white/90 leading-relaxed font-sans"
+                      >
+                        {{ currentSlide.brandingDescription }}
+                      </p>
                     </div>
-                    <div
-                      class="text-xs text-green-200 uppercase tracking-wide font-medium mt-0.5"
-                    >
-                      Unit
-                    </div>
-                  </div>
-                </div>
-                <div class="text-xs sm:text-sm font-semibold text-white">
-                  Jembatan Lingkungan
-                </div>
-                <div class="text-xs text-white/70 hidden sm:block">
-                  Total jembatan yang terbangun
-                </div>
-              </div>
 
-              <!-- Stat 3 -->
-              <div
-                class="glass-card rounded-lg p-2 sm:p-3 border border-white/20 shadow-lg hero-card-animation cursor-pointer hover:scale-105 transition-transform"
-                style="animation-delay: 0.4s"
-                @click="navigateTo('/peta-interaktif/sijali')"
-              >
-                <div class="flex items-center gap-2 sm:gap-3 mb-2">
-                  <div
-                    class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-orange-500 rounded-lg shadow-md flex-shrink-0"
-                  >
-                    <svg
-                      class="w-5 h-5 sm:w-6 sm:h-6 text-white"
-                      viewBox="0 0 256 256"
-                      fill="currentColor"
-                    >
-                      <path
-                        d="M147.6,141v-0.5l-3.1-41.5c-0.1-1.1-0.6-2.1-1.4-2.9c-0.9-0.8-1.9-1.2-3-1.2h-24.1c-1.1,0-2.1,0.4-3,1.2c-0.9,0.8-1.3,1.8-1.4,2.9l-3.1,41.5v0.5c-0.1,1,0.3,1.9,1,2.6c0.8,0.7,1.7,1,2.7,1h31.6c1,0,1.9-0.3,2.7-1C147.3,142.9,147.7,142,147.6,141L147.6,141z M246,201.5c0,6.3-2,9.5-6,9.5h-91.3c1.1,0,2.1-0.4,2.8-1.2c0.8-0.8,1.1-1.8,1-2.9l-2.6-33.2c-0.1-1.1-0.6-2.1-1.4-2.9c-0.9-0.8-1.9-1.2-3-1.2h-35.3c-1.1,0-2.1,0.4-3,1.2c-0.9,0.8-1.3,1.8-1.4,2.9l-2.6,33.2c-0.1,1.1,0.3,2.1,1,2.9c0.8,0.8,1.7,1.2,2.8,1.2H16c-4,0-6-3.2-6-9.5c0-4.7,1.1-9.7,3.4-15.1L67.4,51.1c0.7-1.6,1.8-3.1,3.4-4.3c1.6-1.2,3.2-1.8,4.9-1.8h43.9c-1.1,0-2.1,0.4-3,1.2c-0.9,0.8-1.3,1.8-1.4,2.9l-1.9,24.9c-0.1,1.2,0.3,2.2,1,3c0.8,0.8,1.7,1.2,2.8,1.2h21.5c1.1,0,2.1-0.4,2.8-1.2c0.8-0.8,1.1-1.8,1-3l-2-24.9c-0.1-1.1-0.6-2.1-1.4-2.9s-1.9-1.2-3-1.2h44c1.7,0,3.4,0.6,4.9,1.8c1.6,1.2,2.7,2.6,3.4,4.3l54.1,135.4C244.9,191.9,246,196.9,246,201.5L246,201.5z"
-                      ></path>
-                    </svg>
-                  </div>
-                  <div class="text-left">
-                    <div
-                      class="text-xl sm:text-2xl font-bold text-white leading-none"
-                    >
-                      {{ animatedJalan }} km
-                    </div>
-                    <div
-                      class="text-xs text-orange-200 uppercase tracking-wide font-medium mt-0.5"
-                    >
-                      Dipetakan
+                    <!-- Tombol - Posisi tetap di bawah -->
+                    <div class="mt-auto flex-shrink-0">
+                      <NuxtLink
+                        :to="currentSlide.link"
+                        class="inline-flex items-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white font-semibold rounded-lg transition-all duration-300 text-sm sm:text-base group shadow-lg hover:shadow-xl"
+                      >
+                        Lihat Peta Interaktif
+                        <svg
+                          class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3"
+                          ></path>
+                        </svg>
+                      </NuxtLink>
                     </div>
                   </div>
                 </div>
-                <div class="text-xs sm:text-sm font-semibold text-white">
-                  Jalan Lingkungan
-                </div>
-                <div class="text-xs text-white/70 hidden sm:block">
-                  Panjang jalan yang telah dipetakan
-                </div>
-              </div>
 
-              <!-- Stat 4 -->
-              <div
-                class="glass-card rounded-lg p-2 sm:p-3 border border-white/20 shadow-lg hero-card-animation"
-                style="animation-delay: 0.5s"
-              >
-                <div class="flex items-center gap-2 sm:gap-3 mb-2">
-                  <div
-                    class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-purple-500 rounded-lg shadow-md flex-shrink-0"
-                  >
-                    <svg
-                      class="w-5 h-5 sm:w-6 sm:h-6 text-white"
-                      viewBox="0 0 256 256"
-                      fill="currentColor"
+                <!-- Right Side: Image Preview Slider -->
+                <div class="hidden lg:block w-full lg:w-auto lg:flex-shrink-0">
+                  <!-- Thumbnail Navigation -->
+                  <div class="flex gap-3 justify-center">
+                    <button
+                      v-for="(slide, index) in heroSlides"
+                      :key="index"
+                      @click="goToSlide(index)"
+                      class="relative transition-all duration-300 rounded-lg overflow-hidden border-2"
+                      :class="
+                        currentSlideIndex === index
+                          ? 'border-white shadow-lg scale-110'
+                          : 'border-white/30 opacity-60 hover:opacity-80 hover:scale-105'
+                      "
                     >
-                      <path d="M10,210.5h236v16.8H10V210.5L10,210.5z"></path>
-                      <path
-                        d="M90.8,28.8H18v9.9h60.1v70.4H18v9.9h72.8L90.8,28.8L90.8,28.8z"
-                      ></path>
-                      <path
-                        d="M106.2,119.1c-0.4,20.8,0,87.4,0,87.4h67c0,0-2.2-76.5-9.5-96.9c-7.3-20.4-28.8-59.7-69.6-65.5v60.4C94.1,104.5,106.9,105.2,106.2,119.1z"
-                      ></path>
-                    </svg>
+                      <img
+                        :src="slide.image"
+                        :alt="slide.title"
+                        class="w-20 h-16 object-cover"
+                      />
+                      <div
+                        v-if="currentSlideIndex === index"
+                        class="absolute inset-0 bg-white/10"
+                      ></div>
+                    </button>
                   </div>
-                  <div class="text-left">
-                    <div
-                      class="text-xl sm:text-2xl font-bold text-white leading-none"
-                    >
-                      {{ animatedDrainase }}
-                    </div>
-                    <div
-                      class="text-xs text-purple-200 uppercase tracking-wide font-medium mt-0.5"
-                    >
-                      Unit
-                    </div>
-                  </div>
-                </div>
-                <div class="text-xs sm:text-sm font-semibold text-white">
-                  Drainase Lingkungan
-                </div>
-                <div class="text-xs text-white/70 hidden sm:block">
-                  Total drainase yang terbangun
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </SwiperSlide>
+      </Swiper>
     </section>
 
     <!-- Dokumentasi Section (Infrastruktur & Kegiatan) -->
@@ -895,12 +810,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, computed, watch, nextTick } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
-import { Pagination, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
+import "swiper/css/effect-fade";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -917,74 +833,108 @@ const { formatRelativeDate } = useDateFormat();
 
 // Swiper modules
 const swiperModules = [Pagination, Autoplay];
+const heroSwiperModules = [Autoplay, EffectFade];
+const descriptionSwiperModules = [EffectFade];
+
+// Swiper instances
+let heroSwiperInstance: any = null;
+let descriptionSwiperInstance: any = null;
+const currentSlideIndex = ref(0);
+
+// Computed property for current slide
+const currentSlide = computed(() => {
+  return heroSlides.value[currentSlideIndex.value] || heroSlides.value[0];
+});
+
+const setHeroSwiper = (swiper: any) => {
+  heroSwiperInstance = swiper;
+  // Initialize current slide index
+  currentSlideIndex.value = swiper.realIndex;
+};
+
+const onHeroSlideChange = (swiper: any) => {
+  const realIndex = swiper.realIndex;
+  currentSlideIndex.value = realIndex;
+  // Sync description slider when hero changes (autoplay)
+  if (
+    descriptionSwiperInstance &&
+    descriptionSwiperInstance.realIndex !== realIndex
+  ) {
+    descriptionSwiperInstance.slideToLoop(realIndex, 0); // Instant sync
+  }
+};
+
+const setDescriptionSwiper = (swiper: any) => {
+  descriptionSwiperInstance = swiper;
+  // Initialize description position
+  if (heroSwiperInstance) {
+    descriptionSwiperInstance.slideToLoop(heroSwiperInstance.realIndex);
+  }
+};
+
+const onDescriptionSlideChange = (swiper: any) => {
+  // Keep description in sync with hero
+};
+
+const goToSlide = (index: number) => {
+  if (heroSwiperInstance) {
+    heroSwiperInstance.slideToLoop(index, 1000); // Smooth transition
+  }
+};
+
+// Hero slider data
+const heroSlides = ref([
+  {
+    image: "/slider/jalan_lingkungan.png",
+    title: "Jalan Lingkungan",
+    description:
+      "Data komprehensif infrastruktur jalan lingkungan di Kabupaten Kubu Raya.",
+    brandingDescription:
+      "Jalan lingkungan adalah infrastruktur jalan yang berada di dalam kawasan permukiman untuk melayani kebutuhan transportasi lokal masyarakat.",
+    link: "/peta-interaktif/sijali",
+  },
+  {
+    image: "/slider/jembatan_lingkungan.png",
+    title: "Jembatan Lingkungan",
+    description:
+      "Informasi jembatan lingkungan yang menghubungkan berbagai daerah di Kubu Raya.",
+    brandingDescription:
+      "Jembatan lingkungan merupakan infrastruktur penghubung yang memfasilitasi aksesibilitas antar wilayah permukiman.",
+    link: "/peta-interaktif/jembatan",
+  },
+  {
+    image: "/slider/drainase_lingkungan.png",
+    title: "Drainase Lingkungan",
+    description:
+      "Sistem drainase terintegrasi untuk mengelola air permukaan di kawasan permukiman.",
+    brandingDescription:
+      "Drainase lingkungan adalah sistem pengelolaan air permukaan yang berfungsi untuk mengalirkan dan mengendalikan air hujan di kawasan permukiman.",
+    link: "/peta-interaktif/drainase",
+  },
+  {
+    image: "/slider/kawasan_permukiman.png",
+    title: "Kawasan Permukiman",
+    description:
+      "Peta interaktif kawasan permukiman untuk perencanaan tata ruang yang lebih baik.",
+    brandingDescription:
+      "Kawasan permukiman adalah wilayah yang digunakan untuk tempat tinggal atau hunian beserta sarana pendukungnya.",
+    link: "/peta-interaktif/kawasan",
+  },
+  {
+    image: "/slider/rumah_tidak_layak_huni.png",
+    title: "Rumah Tidak Layak Huni",
+    description:
+      "Identifikasi dan pemetaan rumah tidak layak huni untuk program perbaikan perumahan.",
+    brandingDescription:
+      "Rumah tidak layak huni adalah bangunan tempat tinggal yang tidak memenuhi syarat kesehatan, kenyamanan, dan keselamatan.",
+    link: "/peta-interaktif/rumah",
+  },
+]);
 
 // Data refs
 const statsData = ref<any>(null);
 const dokumentasiKegiatanHome = ref<any[]>([]);
 const dokumentasiInfrastrukturHome = ref<any[]>([]);
-
-// Animated counter refs
-const animatedKawasan = ref(0);
-const animatedJembatan = ref(0);
-const animatedJalan = ref(0);
-const animatedDrainase = ref(0);
-
-// CountUp animation function
-const animateValue = (
-  start: number,
-  end: number,
-  duration: number,
-  callback: (value: number) => void
-) => {
-  const startTime = performance.now();
-  const animate = (currentTime: number) => {
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-    const current = Math.floor(start + (end - start) * easeOutQuart);
-    callback(current);
-    if (progress < 1) {
-      requestAnimationFrame(animate);
-    }
-  };
-  requestAnimationFrame(animate);
-};
-
-// Start animations when stats data is loaded
-const startCountUpAnimations = () => {
-  if (!statsData.value) return;
-
-  animateValue(
-    0,
-    statsData.value.infrastruktur?.kawasanPermukiman || 0,
-    2000,
-    (val) => {
-      animatedKawasan.value = val;
-    }
-  );
-
-  animateValue(
-    0,
-    statsData.value.infrastruktur?.jembatanLingkungan || 0,
-    2000,
-    (val) => {
-      animatedJembatan.value = val;
-    }
-  );
-
-  animateValue(0, statsData.value.jalan?.totalPanjangKm || 0, 2000, (val) => {
-    animatedJalan.value = val;
-  });
-
-  animateValue(
-    0,
-    statsData.value.infrastruktur?.drainaseLingkungan || 0,
-    2000,
-    (val) => {
-      animatedDrainase.value = val;
-    }
-  );
-};
 
 // Dokumentasi Infrastruktur data
 const selectedCategory = ref("Jalan_Lingkungan");
@@ -1168,10 +1118,6 @@ onMounted(async () => {
   const { data: stats } = await getStats();
   if (stats) {
     statsData.value = stats;
-    // Start countup animations after data is loaded
-    setTimeout(() => {
-      startCountUpAnimations();
-    }, 300);
   }
 
   // Fetch dokumentasi kegiatan (limit 3)
@@ -1219,6 +1165,16 @@ onMounted(async () => {
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
 }
 
+/* Enhanced Glass Card for Hero Section */
+.glass-card-enhanced {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
 /* Hero Section Animations */
 @keyframes fadeInUp {
   from {
@@ -1263,6 +1219,29 @@ onMounted(async () => {
 
 .hero-card-animation {
   animation: scaleIn 0.6s ease-out backwards;
+}
+
+/* Hero Slider Styles */
+:deep(.hero-swiper) {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+:deep(.hero-swiper .swiper-wrapper) {
+  height: 100%;
+}
+
+:deep(.hero-swiper .swiper-slide) {
+  height: 100%;
+  position: relative;
+}
+
+.hero-slide {
+  width: 100%;
+  height: 100%;
 }
 
 /* Smooth scroll behavior */

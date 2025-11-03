@@ -1144,7 +1144,7 @@ router.post("/", async (req, res) => {
     console.error("Error code:", error.code);
     console.error("Full error:", error);
     console.error("===========================");
-    
+
     res.status(500).json({
       success: false,
       error: "Failed to create road",
@@ -1221,7 +1221,7 @@ router.put("/:id", async (req, res) => {
     console.error("Full error:", error);
     console.error("Stack trace:", error.stack);
     console.error("===========================");
-    
+
     res.status(500).json({
       success: false,
       error: "Failed to update road",
@@ -1259,7 +1259,7 @@ router.delete("/:id", async (req, res) => {
     console.error("Error code:", error.code);
     console.error("Full error:", error);
     console.error("===========================");
-    
+
     res.status(500).json({
       success: false,
       error: "Failed to delete road",
