@@ -5,9 +5,10 @@ const axios = require("axios");
 const router = express.Router();
 
 // HuggingFace Configuration
-// Updated to use new Inference Providers API (migrated from deprecated api-inference.huggingface.co)
+// Note: api-inference.huggingface.co is deprecated but still works until Nov 2025
+// For router.huggingface.co, manual endpoint configuration may be needed
 const HF_API_URL =
-  process.env.HF_API_URL || "https://router.huggingface.co/hf-inference/models";
+  process.env.HF_API_URL || "https://api-inference.huggingface.co/models";
 // Using a smaller, faster model for better performance
 // Options: bigscience/bloom-560m, microsoft/DialoGPT-medium, gpt2
 const HF_MODEL = process.env.HF_MODEL || "microsoft/DialoGPT-medium";
