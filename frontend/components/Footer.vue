@@ -9,7 +9,7 @@
           <div class="flex items-start mb-4">
             <div class="flex items-center gap-3 mr-3 flex-shrink-0">
               <img
-                src="/assets/images/sijali-logo.svg"
+                src="/simantap-logo.svg"
                 alt="SIMANTAP Logo"
                 class="h-14 w-auto object-contain"
               />

@@ -16,7 +16,7 @@
             class="flex items-center gap-2 sm:gap-3 flex-shrink-0 mr-2 sm:mr-3 hover:opacity-80 transition-opacity"
           >
             <img
-              src="/assets/images/sijali-logo.svg"
+              src="/simantap-logo.svg"
               alt="SIMANTAP Logo"
               class="h-10 sm:h-12 md:h-14 w-auto object-contain"
             />
