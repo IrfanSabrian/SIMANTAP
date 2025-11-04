@@ -88,18 +88,13 @@
             </button>
           </div>
         </div>
-
-        <div
-          class="hero-visual hidden md:block"
-          data-aos="fade-left"
-          data-aos-delay="600"
-        >
-          <WeatherWidget />
-        </div>
       </div>
+    </section>
 
+    <!-- Map Section -->
+    <section id="map" class="map-section">
       <!-- Stats Cards -->
-      <div class="hero-stats">
+      <div class="hero-stats" data-aos="fade-up">
         <div class="stat-card">
           <div class="stat-icon">
             <svg
@@ -198,10 +193,7 @@
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- Map Section -->
-    <section id="map" class="map-section">
       <div class="section-header" data-aos="fade-up">
         <h2 class="section-title">Peta Interaktif</h2>
         <p class="section-description">
@@ -389,7 +381,6 @@ import "aos/dist/aos.css";
 // Import components
 import Navbar from "~/components/Navbar.vue";
 import MapView from "~/components/MapView.vue";
-import WeatherWidget from "~/components/WeatherWidget.vue";
 
 // Halaman index tidak menggunakan layout default karena sudah punya Navbar sendiri
 definePageMeta({

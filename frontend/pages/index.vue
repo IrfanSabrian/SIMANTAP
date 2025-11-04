@@ -4,6 +4,8 @@
     <section
       id="home"
       class="relative min-h-screen flex items-center justify-center overflow-hidden"
+      @mousemove="handleMouseMove"
+      @mouseleave="resetMousePosition"
     >
       <!-- Slider Background -->
       <Swiper
@@ -26,8 +28,8 @@
           class="hero-slide"
         >
           <div
-            class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            :style="`background-image: url('${slide.image}')`"
+            class="absolute inset-0 bg-cover bg-center bg-no-repeat hero-background"
+            :style="getBackgroundStyle(slide.image)"
           >
             <div class="absolute inset-0 bg-black/50"></div>
           </div>
@@ -38,87 +40,118 @@
           >
             <div class="max-w-7xl mx-auto w-full">
               <div
-                class="flex flex-col lg:flex-row lg:items-end lg:justify-between w-full gap-6 lg:gap-8"
+                class="flex flex-col lg:flex-row lg:items-end lg:justify-start w-full gap-6 lg:gap-8"
               >
-                <!-- Left Bottom Text Block -->
-                <div class="w-full lg:max-w-lg lg:flex-shrink-0">
-                  <div
-                    class="relative"
-                    style="
-                      min-height: 210px;
-                      display: flex;
-                      flex-direction: column;
-                    "
-                    :key="currentSlideIndex"
-                  >
-                    <!-- Judul - Posisi tetap di atas -->
-                    <div class="mb-3 sm:mb-4 flex-shrink-0">
-                      <h1
-                        class="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight font-sans"
-                      >
-                        {{ currentSlide.title }}
-                      </h1>
-                    </div>
-
-                    <!-- Deskripsi -->
-                    <div class="mb-4 sm:mb-5 flex-1 min-h-0">
-                      <p
-                        class="text-sm sm:text-base md:text-lg text-white/90 leading-relaxed font-sans"
-                      >
-                        {{ currentSlide.brandingDescription }}
-                      </p>
-                    </div>
-
-                    <!-- Tombol - Posisi tetap di bawah -->
-                    <div class="mt-auto flex-shrink-0">
-                      <NuxtLink
-                        :to="currentSlide.link"
-                        class="inline-flex items-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white font-semibold rounded-lg transition-all duration-300 text-sm sm:text-base group shadow-lg hover:shadow-xl"
-                      >
-                        Lihat Peta Interaktif
-                        <svg
-                          class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                          ></path>
-                        </svg>
-                      </NuxtLink>
-                    </div>
+                <!-- Left Side: Branding Text -->
+                <div
+                  class="w-full lg:max-w-lg lg:flex-shrink-0 order-2 lg:order-1"
+                >
+                  <div class="relative">
+                    <h1
+                      class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight font-sans mb-4"
+                    >
+                      <span class="inline-block"> SIMANTAP KUBU RAYA </span>
+                    </h1>
+                    <h2
+                      class="text-base sm:text-lg md:text-xl text-white/90 font-semibold mb-4"
+                    >
+                      Sistem Informasi Manajemen Tata Permukiman
+                    </h2>
+                    <p
+                      class="text-sm sm:text-base md:text-lg text-white/80 leading-relaxed font-sans italic"
+                    >
+                      "Platform spasial cerdas untuk manajemen dan perencanaan
+                      permukiman Kubu Raya."
+                    </p>
                   </div>
                 </div>
 
-                <!-- Right Side: Image Preview Slider -->
-                <div class="hidden lg:block w-full lg:w-auto lg:flex-shrink-0">
-                  <!-- Thumbnail Navigation -->
-                  <div class="flex gap-3 justify-center">
-                    <button
-                      v-for="(slide, index) in heroSlides"
-                      :key="index"
-                      @click="goToSlide(index)"
-                      class="relative transition-all duration-300 rounded-lg overflow-hidden border-2"
-                      :class="
-                        currentSlideIndex === index
-                          ? 'border-white shadow-lg scale-110'
-                          : 'border-white/30 opacity-60 hover:opacity-80 hover:scale-105'
-                      "
+                <!-- Right Side: Content with Thumbnail -->
+                <div
+                  class="w-full lg:w-auto lg:flex-shrink-0 order-1 lg:order-2 lg:max-w-[450px] lg:ml-auto"
+                >
+                  <div class="flex flex-col gap-4">
+                    <!-- Content Text Block (Above Thumbnail) -->
+                    <div
+                      class="relative hero-content-wrapper bg-white/5 backdrop-blur-sm rounded-lg p-4 lg:p-5"
+                      :key="currentSlideIndex"
                     >
-                      <img
-                        :src="slide.image"
-                        :alt="slide.title"
-                        class="w-20 h-16 object-cover"
-                      />
-                      <div
-                        v-if="currentSlideIndex === index"
-                        class="absolute inset-0 bg-white/10"
-                      ></div>
-                    </button>
+                      <!-- Judul -->
+                      <div class="mb-3 flex-shrink-0">
+                        <h3
+                          class="text-xl sm:text-2xl font-bold text-white leading-tight font-sans hero-title"
+                        >
+                          <span class="inline-block hero-title-text">
+                            {{ currentSlide.title }}
+                          </span>
+                        </h3>
+                      </div>
+
+                      <!-- Deskripsi -->
+                      <div class="mb-4 flex-shrink-0">
+                        <p
+                          class="text-sm sm:text-base text-white/90 leading-relaxed font-sans hero-description line-clamp-3"
+                        >
+                          {{ currentSlide.brandingDescription }}
+                        </p>
+                      </div>
+
+                      <!-- Tombol -->
+                      <div class="flex-shrink-0">
+                        <NuxtLink
+                          :to="currentSlide.link"
+                          class="hero-button inline-flex items-center gap-3 px-6 py-3 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white font-semibold rounded-lg transition-all duration-300 text-sm sm:text-base group shadow-lg hover:shadow-xl relative overflow-hidden"
+                          @click="handleButtonClick"
+                        >
+                          <span class="relative z-10 flex items-center gap-3">
+                            Lihat Peta Interaktif
+                            <svg
+                              class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"
+                              ></path>
+                            </svg>
+                          </span>
+                        </NuxtLink>
+                      </div>
+                    </div>
+
+                    <!-- Thumbnail Navigation -->
+                    <div class="hero-thumbnail-container">
+                      <button
+                        v-for="(slide, index) in heroSlides"
+                        :key="index"
+                        @click="goToSlide(index)"
+                        class="relative transition-opacity duration-300 rounded-lg overflow-hidden border-2 hero-thumbnail"
+                        :class="
+                          currentSlideIndex === index
+                            ? 'border-white shadow-lg ring-2 ring-white/50'
+                            : 'border-white/30 opacity-60 hover:opacity-80'
+                        "
+                      >
+                        <img
+                          :src="slide.image"
+                          :alt="slide.title"
+                          class="object-cover"
+                        />
+                        <div
+                          v-if="currentSlideIndex === index"
+                          class="absolute inset-0 bg-white/10"
+                        ></div>
+                        <div
+                          v-if="currentSlideIndex === index"
+                          :key="`progress-${currentSlideIndex}`"
+                          class="absolute bottom-0 left-0 right-0 h-1 bg-white/50 hero-progress-bar"
+                        ></div>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -126,6 +159,26 @@
           </div>
         </SwiperSlide>
       </Swiper>
+
+      <!-- Progress Indicator -->
+      <div
+        class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 hidden lg:flex items-center justify-center"
+      >
+        <div class="flex gap-2 items-center">
+          <div
+            v-for="(slide, index) in heroSlides"
+            :key="index"
+            class="h-1 w-8 rounded-full overflow-hidden bg-white/20"
+          >
+            <div
+              v-if="currentSlideIndex === index"
+              :key="`indicator-${currentSlideIndex}`"
+              class="h-full bg-white hero-progress-indicator"
+              :style="{ animationDuration: '5s' }"
+            ></div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Dokumentasi Section (Infrastruktur & Kegiatan) -->
@@ -841,6 +894,56 @@ let heroSwiperInstance: any = null;
 let descriptionSwiperInstance: any = null;
 const currentSlideIndex = ref(0);
 
+// Interactive effects for hero section - Parallax
+const mousePosition = ref({ x: 50, y: 50 });
+
+const handleMouseMove = (event: MouseEvent) => {
+  if (event.currentTarget instanceof HTMLElement) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    mousePosition.value = {
+      x: ((event.clientX - rect.left) / rect.width) * 100,
+      y: ((event.clientY - rect.top) / rect.height) * 100,
+    };
+  }
+};
+
+const resetMousePosition = () => {
+  mousePosition.value = { x: 50, y: 50 };
+};
+
+const getBackgroundStyle = (image: string) => {
+  const x = mousePosition.value.x;
+  const y = mousePosition.value.y;
+  const parallaxX = (x - 50) * 0.02;
+  const parallaxY = (y - 50) * 0.02;
+  return {
+    backgroundImage: `url('${image}')`,
+    transform: `translate(${parallaxX}%, ${parallaxY}%) scale(1.1)`,
+    transition: "transform 0.3s ease-out",
+  };
+};
+
+const handleButtonClick = (event: MouseEvent) => {
+  const button = event.currentTarget as HTMLElement;
+  const ripple = document.createElement("span");
+  ripple.classList.add("ripple-effect");
+
+  const rect = button.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  const x = event.clientX - rect.left - size / 2;
+  const y = event.clientY - rect.top - size / 2;
+
+  ripple.style.width = ripple.style.height = `${size}px`;
+  ripple.style.left = `${x}px`;
+  ripple.style.top = `${y}px`;
+
+  button.appendChild(ripple);
+
+  setTimeout(() => {
+    ripple.remove();
+  }, 600);
+};
+
 // Computed property for current slide
 const currentSlide = computed(() => {
   return heroSlides.value[currentSlideIndex.value] || heroSlides.value[0];
@@ -1157,70 +1260,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* Glassmorphism Effect */
-.glass-card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-}
-
-/* Enhanced Glass Card for Hero Section */
-.glass-card-enhanced {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-}
-
-/* Hero Section Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.hero-title-animation {
-  animation: fadeInRight 1s ease-out;
-}
-
-.hero-subtitle-animation {
-  animation: fadeInRight 1s ease-out 0.2s backwards;
-}
-
-.hero-card-animation {
-  animation: scaleIn 0.6s ease-out backwards;
-}
-
 /* Hero Slider Styles */
 :deep(.hero-swiper) {
   width: 100%;
@@ -1242,6 +1281,190 @@ onMounted(async () => {
 .hero-slide {
   width: 100%;
   height: 100%;
+}
+
+/* Parallax Background */
+.hero-background {
+  will-change: transform;
+  transition: transform 0.3s ease-out;
+}
+
+/* Hero Content Animations */
+.hero-content-wrapper {
+  min-height: auto;
+}
+
+/* Thumbnail Container */
+.hero-thumbnail-container {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  height: 64px;
+  flex-wrap: nowrap;
+}
+
+.hero-title-text {
+  animation: slideInFromLeft 0.8s ease-out;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.hero-subtitle {
+  animation: fadeIn 1s ease-out 0.2s backwards;
+}
+
+.hero-description {
+  animation: fadeIn 1s ease-out 0.3s backwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Interactive Button with Ripple Effect */
+.hero-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.hero-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.hero-button:active {
+  transform: scale(0.98);
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(0);
+  animation: ripple 0.6s ease-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Thumbnail Hover Effects */
+.hero-thumbnail {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 80px;
+  height: 64px;
+  display: inline-block;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.hero-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-thumbnail:hover img {
+  opacity: 0.9;
+}
+
+.hero-thumbnail::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.1)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hero-thumbnail:hover::after {
+  opacity: 1;
+}
+
+/* Line clamp utility */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Progress Bar Animation */
+.hero-progress-bar {
+  animation: progressBar 5s linear;
+  width: 0%;
+}
+
+@keyframes progressBar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.hero-progress-indicator {
+  animation: progressIndicator 5s linear;
+  width: 0%;
+}
+
+@keyframes progressIndicator {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
 }
 
 /* Smooth scroll behavior */
@@ -1354,10 +1577,6 @@ button.rounded-lg:hover::after {
   50% {
     opacity: 1;
   }
-}
-
-.border-white\/30 {
-  animation: borderGlow 3s ease-in-out infinite;
 }
 
 /* Performance Optimization */

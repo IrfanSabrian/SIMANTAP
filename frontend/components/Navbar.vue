@@ -1,6 +1,11 @@
 <template>
   <nav
-    class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/10 backdrop-blur-[10px] border-b border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)]"
+    :class="[
+      'fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-[10px] border-b shadow-[0_8px_32px_0_rgba(0,0,0,0.1)]',
+      isScrolled && isHomePage
+        ? 'bg-[#0f1931]/90 border-gray-700/50'
+        : 'bg-white/10 border-white/20',
+    ]"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
@@ -69,7 +74,12 @@
                 </svg>
               </button>
               <div
-                class="absolute left-0 mt-2 w-64 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 bg-[rgba(15,25,49,0.9)] backdrop-blur-[10px] border border-white/20"
+                :class="[
+                  'absolute left-0 mt-2 w-64 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 backdrop-blur-[10px] border',
+                  isScrolled && isHomePage
+                    ? 'bg-[#0f1931]/90 border-gray-700/50'
+                    : 'bg-[rgba(15,25,49,0.9)] border-white/20',
+                ]"
               >
                 <div class="py-1">
                   <NuxtLink
@@ -105,7 +115,12 @@
                 </svg>
               </button>
               <div
-                class="absolute left-0 mt-2 w-64 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 bg-[rgba(15,25,49,0.9)] backdrop-blur-[10px] border border-white/20"
+                :class="[
+                  'absolute left-0 mt-2 w-64 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 backdrop-blur-[10px] border',
+                  isScrolled && isHomePage
+                    ? 'bg-[#0f1931]/90 border-gray-700/50'
+                    : 'bg-[rgba(15,25,49,0.9)] border-white/20',
+                ]"
               >
                 <div class="py-1">
                   <NuxtLink
@@ -141,11 +156,6 @@
                 class="px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors text-white hover:text-blue-400"
               >
                 Data
-                <span
-                  class="ml-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-yellow-500/20 text-yellow-300"
-                >
-                  Dalam Pengembangan
-                </span>
                 <svg
                   class="ml-1 h-4 w-4"
                   fill="none"
@@ -161,7 +171,12 @@
                 </svg>
               </button>
               <div
-                class="absolute left-0 mt-2 w-64 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 bg-[rgba(15,25,49,0.9)] backdrop-blur-[10px] border border-white/20"
+                :class="[
+                  'absolute left-0 mt-2 w-64 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 backdrop-blur-[10px] border',
+                  isScrolled && isHomePage
+                    ? 'bg-[#0f1931]/90 border-gray-700/50'
+                    : 'bg-[rgba(15,25,49,0.9)] border-white/20',
+                ]"
               >
                 <div class="py-1">
                   <NuxtLink
@@ -293,7 +308,12 @@
     <!-- Mobile Menu -->
     <div v-show="mobileMenuOpen" class="md:hidden">
       <div
-        class="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-white/20 transition-all duration-300 bg-[rgba(15,25,49,0.85)] backdrop-blur-[10px]"
+        :class="[
+          'px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t transition-all duration-300 backdrop-blur-[10px]',
+          isScrolled && isHomePage
+            ? 'bg-[#0f1931]/90 border-gray-700/50'
+            : 'bg-[rgba(15,25,49,0.85)] border-white/20',
+        ]"
       >
         <a
           v-if="isHomePage"
@@ -413,19 +433,7 @@
             @click="dataMenuOpen = !dataMenuOpen"
             class="w-full text-left px-3 py-2 rounded-md text-base font-medium flex items-center justify-between transition-colors text-white hover:text-blue-400"
           >
-            <div class="flex items-center gap-2">
-              Data
-              <span
-                class="px-2 py-0.5 text-xs font-semibold rounded-full"
-                :class="
-                  isScrolled
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : 'bg-yellow-500/20 text-yellow-300'
-                "
-              >
-                Dalam Pengembangan
-              </span>
-            </div>
+            Data
             <svg
               class="w-4 h-4 transition-transform duration-200"
               :class="{ 'rotate-180': dataMenuOpen }"
@@ -518,8 +526,13 @@ const closeMobileMenu = () => {
 };
 
 const handleScroll = () => {
-  // Detect when user scrolls past the hero section (roughly 100vh)
-  isScrolled.value = window.scrollY > window.innerHeight * 0.8;
+  // Detect when user scrolls past the hero section (100vh)
+  if (isHomePage.value) {
+    isScrolled.value = window.scrollY > window.innerHeight * 0.9;
+  } else {
+    // For non-home pages, always show scrolled style
+    isScrolled.value = window.scrollY > 50;
+  }
 };
 
 // Scroll to section with offset (for home page)
@@ -541,6 +554,9 @@ const scrollToSection = (sectionId: string) => {
 };
 
 onMounted(() => {
+  // Check initial scroll position
+  handleScroll();
+
   window.addEventListener("scroll", handleScroll);
 
   // Initialize Google Translate
