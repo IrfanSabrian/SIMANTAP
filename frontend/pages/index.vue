@@ -48,12 +48,17 @@
                 >
                   <div class="relative">
                     <h1
-                      class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight font-sans mb-4"
+                      class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight font-sans mb-2"
                     >
-                      <span class="inline-block"> SIMANTAP KUBU RAYA </span>
+                      <span class="block"> SIMANTAP </span>
+                      <span
+                        class="block text-lg sm:text-xl md:text-2xl lg:text-3xl mt-1"
+                      >
+                        KUBU RAYA
+                      </span>
                     </h1>
                     <h2
-                      class="text-base sm:text-lg md:text-xl text-white/90 font-semibold mb-4"
+                      class="text-sm sm:text-base md:text-lg text-white/90 font-semibold mb-4"
                     >
                       Sistem Informasi Manajemen Tata Permukiman
                     </h2>

@@ -3,16 +3,21 @@
     <Navbar @toggle-sidebar="handleToggleSidebar" />
 
     <!-- Hero Section -->
-    <section id="hero" class="hero-section">
-      <!-- Background Elements -->
-      <div class="hero-bg-elements">
-        <div class="hero-bg-circle hero-bg-circle-1"></div>
-        <div class="hero-bg-circle hero-bg-circle-2"></div>
-        <div class="hero-bg-circle hero-bg-circle-3"></div>
-        <div class="hero-grid"></div>
+    <section
+      id="hero"
+      class="hero-section"
+      @mousemove="handleMouseMove"
+      @mouseleave="resetMousePosition"
+    >
+      <!-- Background Image with Parallax -->
+      <div
+        class="absolute inset-0 bg-cover bg-center bg-no-repeat hero-background"
+        :style="getBackgroundStyle('/slider/jalan_lingkungan.png')"
+      >
+        <div class="absolute inset-0 bg-black/50"></div>
       </div>
 
-      <div class="hero-content">
+      <div class="hero-content relative z-10">
         <div class="hero-text">
           <h1 class="hero-title">
             <span
@@ -415,6 +420,35 @@ let statsObserver = null;
 let isManualScrolling = false;
 let scrollTimeout = null;
 
+// Parallax effect for hero background
+const mousePosition = ref({ x: 50, y: 50 });
+
+const handleMouseMove = (event) => {
+  if (event.currentTarget instanceof HTMLElement) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    mousePosition.value = {
+      x: ((event.clientX - rect.left) / rect.width) * 100,
+      y: ((event.clientY - rect.top) / rect.height) * 100,
+    };
+  }
+};
+
+const resetMousePosition = () => {
+  mousePosition.value = { x: 50, y: 50 };
+};
+
+const getBackgroundStyle = (image) => {
+  const x = mousePosition.value.x;
+  const y = mousePosition.value.y;
+  const parallaxX = (x - 50) * 0.02;
+  const parallaxY = (y - 50) * 0.02;
+  return {
+    backgroundImage: `url('${image}')`,
+    transform: `translate(${parallaxX}%, ${parallaxY}%) scale(1.1)`,
+    transition: "transform 0.3s ease-out",
+  };
+};
+
 // Handle toggle sidebar from navbar
 const handleToggleSidebar = () => {
   if (mapViewRef.value && mapViewRef.value.toggleMainSidebar) {
@@ -814,41 +848,15 @@ useHead({
 
 /* Hero Section */
 .hero-section {
-  @apply bg-gradient-to-br from-slate-800 via-blue-900 to-indigo-900 text-white flex flex-col justify-center relative overflow-hidden;
+  @apply text-white flex flex-col justify-center relative overflow-hidden;
   min-height: 100vh;
   padding-top: 10vh;
 }
 
-.hero-bg-elements {
-  @apply absolute inset-0 pointer-events-none;
-}
-
-.hero-bg-circle {
-  @apply absolute rounded-full opacity-10;
-}
-
-.hero-bg-circle-1 {
-  @apply w-96 h-96 bg-blue-400/20 -top-48 -right-48 animate-pulse;
-}
-
-.hero-bg-circle-2 {
-  @apply w-64 h-64 bg-indigo-400/20 top-1/4 -left-32 animate-pulse;
-  animation-delay: 1s;
-}
-
-.hero-bg-circle-3 {
-  @apply w-80 h-80 bg-slate-400/20 bottom-0 right-1/4 animate-pulse;
-  animation-delay: 2s;
-}
-
-.hero-grid {
-  @apply absolute inset-0 opacity-5;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.1) 1px,
-      transparent 1px
-    ),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 50px 50px;
+/* Parallax Background */
+.hero-background {
+  will-change: transform;
+  transition: transform 0.3s ease-out;
 }
 
 .hero-content {
