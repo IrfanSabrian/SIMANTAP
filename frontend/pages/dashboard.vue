@@ -764,6 +764,50 @@
                       </button>
                       <button
                         v-if="hasSelectedRoads"
+                        @click="exportSelectedShapefile"
+                        :disabled="isDownloadingShapefile"
+                        class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors flex items-center space-x-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <svg
+                          v-if="!isDownloadingShapefile"
+                          class="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          />
+                        </svg>
+                        <svg
+                          v-else
+                          class="animate-spin w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            class="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            stroke-width="4"
+                          ></circle>
+                          <path
+                            class="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        <span>{{
+                          isDownloadingShapefile ? "Downloading..." : "Export Shapefile"
+                        }}</span>
+                      </button>
+                      <button
+                        v-if="hasSelectedRoads"
                         @click="deleteSelectedRoads"
                         class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors flex items-center space-x-1"
                       >
@@ -928,11 +972,6 @@
                         >
                           Keterangan
                         </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          Dokumentasi
-                        </th>
                       </tr>
                     </thead>
                     <tbody
@@ -940,7 +979,7 @@
                     >
                       <tr v-if="loadingRoads">
                         <td
-                          colspan="26"
+                          colspan="25"
                           class="px-6 py-8 text-center text-gray-500 dark:text-gray-400"
                         >
                           <div
@@ -955,7 +994,7 @@
                       </tr>
                       <tr v-else-if="filteredRoads.length === 0">
                         <td
-                          colspan="25"
+                          colspan="24"
                           class="px-6 py-8 text-center text-gray-500 dark:text-gray-400"
                         >
                           Tidak ada data
@@ -1204,12 +1243,6 @@
                           <span v-else class="text-gray-500 dark:text-gray-400"
                             >-</span
                           >
-                        </td>
-                        <!-- Dokumentasi -->
-                        <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
-                        >
-                          {{ road.dokumentasi || "null" }}
                         </td>
                       </tr>
                     </tbody>
@@ -2010,18 +2043,6 @@
                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     ></textarea>
                   </div>
-                  <div class="md:col-span-2">
-                    <label
-                      class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                      >Dokumentasi (Link YouTube)</label
-                    >
-                    <input
-                      v-model="roadForm.dokumentasi"
-                      type="url"
-                      placeholder="https://www.youtube.com/watch?v=..."
-                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                    />
-                  </div>
                 </div>
                 <div class="flex justify-end space-x-3 mt-6">
                   <button
@@ -2367,6 +2388,7 @@ const extractYouTubeVideoId = (url) => {
 // Select mode state
 const selectMode = ref(false);
 const selectedRoads = ref(new Set());
+const isDownloadingShapefile = ref(false);
 
 // User select mode state
 const userSelectMode = ref(false);
@@ -3191,6 +3213,8 @@ const toggleSelectAll = () => {
 };
 
 const exportSelectedRoads = async () => {
+  console.log("🟢 DASHBOARD - exportSelectedRoads() called - VERSION 2.0");
+  
   if (!hasSelectedRoads.value) return;
 
   try {
@@ -3198,40 +3222,46 @@ const exportSelectedRoads = async () => {
       selectedRoads.value.has(road.id)
     );
 
-    // Convert to GeoJSON format
-    const geojson = {
-      type: "FeatureCollection",
-      features: selectedRoadsList.map((road) => ({
-        type: "Feature",
-        properties: {
-          No_Ruas: road.No_Ruas || road.noRuas,
-          Nama_Jalan:
-            road.Nama_Jalan || road.namaJalan || road.Nama || road.nama,
-          Kecamatan: road.Kecamatan || road.kecamatan,
-          Desa: road.Desa || road.desa,
-          Panjang_M: road.Panjang_M || road.panjangM,
-          Lebar_m_: road.Lebar_m_ || road.lebarM,
-          Kondisi: road.Kondisi || road.kondisi,
-          Keterangan: road.Keterangan || road.keterangan,
-          No_Jalan: road.No_Jalan || road.noJalan,
-          Tahun: road.Tahun || road.tahun,
-          Nilai: road.Nilai || road.nilai,
-          Bobot: road.Bobot || road.bobot,
-          No_Prov: road.No_Prov || road.noProv,
-          No_Kab: road.No_Kab || road.noKab,
-          No_Kec: road.No_Kec || road.noKec,
-          No_Desa: road.No_Desa || road.noDesa,
-          FID: road.FID || road.fid,
-          Shape_Leng: road.Shape_Leng || road.shapeLeng,
-          Pngnl_Awal: road.Pngnl_Awal || road.pngnlAwal,
-          Pngnl_Akhi: road.Pngnl_Akhi || road.pngnlAkhi,
-        },
-        geometry: road.geometry || {
-          type: "LineString",
-          coordinates: road.coordinates || [],
-        },
-      })),
-    };
+    // Get IDs of selected roads
+    const selectedIds = selectedRoadsList.map((road) => road.id);
+
+    const config = useRuntimeConfig();
+    const API_BASE = config.public.apiBaseUrl || "http://localhost:3001";
+
+    console.log(`📤 DASHBOARD - Requesting GeoJSON export for ${selectedIds.length} roads`);
+    console.log(`📍 API URL: ${API_BASE}/api/jalan/export/geojson`);
+    console.log(`📋 Method: POST with IDs:`, selectedIds);
+
+    // Call API to get GeoJSON with geometry
+    const response = await fetch(`${API_BASE}/api/jalan/export/geojson`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ids: selectedIds }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to export GeoJSON");
+    }
+
+    const result = await response.json();
+    
+    if (!result.success) {
+      console.error(`❌ DASHBOARD - Export failed:`, result.error);
+      throw new Error(result.error || "Failed to export GeoJSON");
+    }
+
+    const geojson = result.data;
+
+    console.log(`✅ DASHBOARD - Received GeoJSON with ${geojson.features?.length || 0} features`);
+    if (geojson.features && geojson.features.length > 0) {
+      const firstFeature = geojson.features[0];
+      console.log(`🔍 DASHBOARD - First feature geometry:`, firstFeature.geometry ? "Present ✓" : "NULL ✗");
+      if (firstFeature.geometry) {
+        console.log(`📐 DASHBOARD - Coordinates count:`, firstFeature.geometry.coordinates?.length || 0);
+      }
+    }
 
     // Download as file
     const dataStr = JSON.stringify(geojson, null, 2);
@@ -3253,6 +3283,123 @@ const exportSelectedRoads = async () => {
   } catch (error) {
     console.error("Error exporting roads:", error);
     toast.error("Terjadi kesalahan saat mengexport data");
+  }
+};
+
+const exportSelectedShapefile = async () => {
+  if (!hasSelectedRoads.value) return;
+
+  isDownloadingShapefile.value = true;
+  try {
+    const selectedRoadsList = roads.value.filter((road) =>
+      selectedRoads.value.has(road.id)
+    );
+
+    // Get unique kecamatan and desa from selected roads
+    const kecamatanSet = new Set();
+    const desaSet = new Set();
+
+    selectedRoadsList.forEach((road) => {
+      const kec = road.Kecamatan || road.kecamatan;
+      const desa = road.Desa || road.desa;
+      if (kec) kecamatanSet.add(kec);
+      if (desa) desaSet.add(desa);
+    });
+
+    // If there's only one kecamatan and desa, use API download
+    if (kecamatanSet.size === 1 && desaSet.size === 1) {
+      const kecamatan = Array.from(kecamatanSet)[0];
+      const desa = Array.from(desaSet)[0];
+
+      const config = useRuntimeConfig();
+      const API_BASE = config.public.apiBaseUrl || "http://localhost:3001";
+
+      const params = new URLSearchParams({
+        kecamatan: kecamatan,
+        desa: desa,
+      });
+
+      const response = await fetch(
+        `${API_BASE}/api/jalan/download/shapefile?${params}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Download failed");
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+
+      // Get filename from Content-Disposition header or create default
+      const contentDisposition = response.headers.get("Content-Disposition");
+      let filename = "jalan_lingkungan.zip";
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+        if (filenameMatch) {
+          filename = filenameMatch[1];
+        }
+      }
+
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast.success(
+        `Berhasil mengunduh Shapefile untuk ${selectedRoadsList.length} data jalan!`
+      );
+    } else {
+      // Multiple kecamatan/desa selected, export GeoJSON with geometry instead
+      const selectedIds = selectedRoadsList.map((road) => road.id);
+
+      const config = useRuntimeConfig();
+      const API_BASE = config.public.apiBaseUrl || "http://localhost:3001";
+
+      // Call API to get GeoJSON with geometry
+      const geoResponse = await fetch(`${API_BASE}/api/jalan/export/geojson`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ids: selectedIds }),
+      });
+
+      if (!geoResponse.ok) {
+        throw new Error("Failed to export GeoJSON");
+      }
+
+      const geoResult = await geoResponse.json();
+      
+      if (!geoResult.success) {
+        throw new Error(geoResult.error || "Failed to export GeoJSON");
+      }
+
+      const geojson = geoResult.data;
+
+      const blob = new Blob([JSON.stringify(geojson, null, 2)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `selected_roads_${new Date().getTime()}.geojson`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      toast.info(
+        "Data dari berbagai lokasi dipilih. GeoJSON didownload sebagai gantinya. Anda dapat mengkonversi ke Shapefile menggunakan QGIS."
+      );
+    }
+  } catch (error) {
+    console.error("Error downloading Shapefile:", error);
+    toast.error("Gagal mengunduh Shapefile");
+  } finally {
+    isDownloadingShapefile.value = false;
   }
 };
 

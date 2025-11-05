@@ -1,5 +1,8 @@
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
+const archiver = require("archiver");
+const stream = require("stream");
+const shpwrite = require("shp-write");
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -1227,6 +1230,532 @@ router.put("/:id", async (req, res) => {
       error: "Failed to update road",
       details: error.message,
       code: error.code,
+    });
+  }
+});
+
+// GET /api/jalan/download/geojson - Download GeoJSON with filters
+router.get("/download/geojson", async (req, res) => {
+  try {
+    const { kecamatan, desa } = req.query;
+
+    console.log("=== DOWNLOAD GEOJSON REQUEST ===");
+    console.log("Kecamatan:", kecamatan);
+    console.log("Desa:", desa);
+    console.log("================================");
+
+    // Build WHERE clause
+    let whereConditions = [];
+    let params = [];
+
+    if (kecamatan) {
+      whereConditions.push(
+        `kecamatan ILIKE '%' || $${params.length + 1} || '%'`
+      );
+      params.push(kecamatan);
+    }
+
+    if (desa) {
+      whereConditions.push(`desa ILIKE '%' || $${params.length + 1} || '%'`);
+      params.push(desa);
+    }
+
+    const whereClause =
+      whereConditions.length > 0
+        ? `WHERE ${whereConditions.join(" AND ")}`
+        : "";
+
+    // Use raw SQL to get geometry as text (WKT format)
+    const query = `
+      SELECT 
+        id, fid, no_ruas, no_prov, no_kab, no_kec, no_desa,
+        no_jalan, nama, nama_jalan, panjang_m, lebar_m_, 
+        tahun, kondisi, nilai, bobot, keterangan, 
+        kecamatan, desa, utm_x_awal, utm_y_awal, 
+        pngnl_awal, utm_x_akhi, utm_y_akhi, pngnl_akhi,
+        shape_leng, shape_le_1, shape_le_2, shape_le_3,
+        shape_le_4, shape_le_5,
+        ST_AsText(geom) as geom_wkt
+      FROM jalan_lingkungan_kubu_raya
+      ${whereClause}
+      ORDER BY id;
+    `;
+
+    const roads = await prisma.$queryRawUnsafe(query, ...params);
+
+    console.log(`Found ${roads.length} roads for download`);
+
+    // Convert to GeoJSON
+    const features = [];
+
+    for (const road of roads) {
+      if (!road.geom_wkt) continue;
+
+      try {
+        // Parse WKT geometry to coordinates
+        const geomStr = road.geom_wkt;
+
+        // Simple WKT parser for LINESTRING
+        let coordinates = [];
+        if (geomStr && geomStr.startsWith("LINESTRING")) {
+          const coordsStr = geomStr.replace("LINESTRING(", "").replace(")", "");
+          const pairs = coordsStr.split(",");
+          coordinates = pairs.map((pair) => {
+            const [lon, lat] = pair.trim().split(" ");
+            return [parseFloat(lon), parseFloat(lat)];
+          });
+        }
+
+        if (coordinates.length > 0) {
+          features.push({
+            type: "Feature",
+            id: road.id,
+            geometry: {
+              type: "LineString",
+              coordinates: coordinates,
+            },
+            properties: {
+              id: road.id,
+              fid: road.fid,
+              no_ruas: road.no_ruas,
+              no_prov: road.no_prov,
+              no_kab: road.no_kab,
+              no_kec: road.no_kec,
+              no_desa: road.no_desa,
+              no_jalan: road.no_jalan,
+              nama: road.nama,
+              nama_jalan: road.nama_jalan,
+              panjang_m: road.panjang_m,
+              lebar_m_: road.lebar_m_,
+              tahun: road.tahun,
+              kondisi: road.kondisi,
+              nilai: road.nilai,
+              bobot: road.bobot,
+              keterangan: road.keterangan,
+              kecamatan: road.kecamatan,
+              desa: road.desa,
+              utm_x_awal: road.utm_x_awal,
+              utm_y_awal: road.utm_y_awal,
+              pngnl_awal: road.pngnl_awal,
+              utm_x_akhi: road.utm_x_akhi,
+              utm_y_akhi: road.utm_y_akhi,
+              pngnl_akhi: road.pngnl_akhi,
+              shape_leng: road.shape_leng,
+              shape_le_1: road.shape_le_1,
+              shape_le_2: road.shape_le_2,
+              shape_le_3: road.shape_le_3,
+              shape_le_4: road.shape_le_4,
+              shape_le_5: road.shape_le_5,
+            },
+          });
+        }
+      } catch (parseError) {
+        console.error(
+          `Error parsing geometry for road ${road.id}:`,
+          parseError
+        );
+      }
+    }
+
+    const geojson = {
+      type: "FeatureCollection",
+      features: features,
+    };
+
+    // Generate filename based on filters
+    let filename = "jalan_lingkungan";
+    if (kecamatan) {
+      filename += `_${kecamatan.replace(/\s+/g, "_")}`;
+    }
+    if (desa) {
+      filename += `_${desa.replace(/\s+/g, "_")}`;
+    }
+    filename += ".geojson";
+
+    // Set headers for download
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+
+    console.log(`GeoJSON download ready: ${features.length} features`);
+
+    res.json(geojson);
+  } catch (error) {
+    console.error("Error downloading GeoJSON:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to download GeoJSON data",
+      message: error.message,
+    });
+  }
+});
+
+// POST /api/jalan/export/geojson - Export selected roads as GeoJSON
+router.post("/export/geojson", async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      console.log("❌ Export GeoJSON: No IDs provided");
+      return res.status(400).json({
+        success: false,
+        error: "IDs array is required",
+      });
+    }
+
+    console.log(`\n=== 📥 EXPORT GEOJSON REQUEST ===`);
+    console.log(`Selected IDs: ${ids.length} roads`);
+    console.log(
+      `IDs: ${ids.slice(0, 5).join(", ")}${ids.length > 5 ? "..." : ""}`
+    );
+    console.log(`=================================`);
+
+    // Build WHERE clause for selected IDs
+    const placeholders = ids.map((_, index) => `$${index + 1}`).join(", ");
+
+    const query = `
+      SELECT 
+        id, fid, no_ruas, no_prov, no_kab, no_kec, no_desa,
+        no_jalan, nama, nama_jalan, panjang_m, lebar_m_, 
+        tahun, kondisi, nilai, bobot, keterangan, 
+        kecamatan, desa, utm_x_awal, utm_y_awal, 
+        pngnl_awal, utm_x_akhi, utm_y_akhi, pngnl_akhi,
+        shape_leng, shape_le_1, shape_le_2, shape_le_3,
+        shape_le_4, shape_le_5,
+        ST_AsText(geom) as geom_wkt
+      FROM jalan_lingkungan_kubu_raya
+      WHERE id IN (${placeholders})
+      ORDER BY id;
+    `;
+
+    const roads = await prisma.$queryRawUnsafe(query, ...ids);
+
+    const features = [];
+    for (const road of roads) {
+      if (!road.geom_wkt) continue;
+
+      try {
+        const geomStr = road.geom_wkt;
+        let coordinates = [];
+
+        if (geomStr && geomStr.startsWith("LINESTRING")) {
+          const coordsStr = geomStr.replace("LINESTRING(", "").replace(")", "");
+          const pairs = coordsStr.split(",");
+          coordinates = pairs.map((pair) => {
+            const [lon, lat] = pair.trim().split(" ");
+            return [parseFloat(lon), parseFloat(lat)];
+          });
+        }
+
+        if (coordinates.length > 0) {
+          features.push({
+            type: "Feature",
+            id: road.id,
+            geometry: {
+              type: "LineString",
+              coordinates: coordinates,
+            },
+            properties: {
+              id: road.id,
+              fid: road.fid,
+              no_ruas: road.no_ruas,
+              no_prov: road.no_prov,
+              no_kab: road.no_kab,
+              no_kec: road.no_kec,
+              no_desa: road.no_desa,
+              no_jalan: road.no_jalan,
+              nama: road.nama,
+              nama_jalan: road.nama_jalan,
+              panjang_m: road.panjang_m,
+              lebar_m_: road.lebar_m_,
+              tahun: road.tahun,
+              kondisi: road.kondisi,
+              nilai: road.nilai,
+              bobot: road.bobot,
+              keterangan: road.keterangan,
+              kecamatan: road.kecamatan,
+              desa: road.desa,
+              utm_x_awal: road.utm_x_awal,
+              utm_y_awal: road.utm_y_awal,
+              pngnl_awal: road.pngnl_awal,
+              utm_x_akhi: road.utm_x_akhi,
+              utm_y_akhi: road.utm_y_akhi,
+              pngnl_akhi: road.pngnl_akhi,
+              shape_leng: road.shape_leng,
+              shape_le_1: road.shape_le_1,
+              shape_le_2: road.shape_le_2,
+              shape_le_3: road.shape_le_3,
+              shape_le_4: road.shape_le_4,
+              shape_le_5: road.shape_le_5,
+            },
+          });
+        }
+      } catch (parseError) {
+        console.error(
+          `Error parsing geometry for road ${road.id}:`,
+          parseError
+        );
+      }
+    }
+
+    const geojson = {
+      type: "FeatureCollection",
+      features: features,
+    };
+
+    console.log(
+      `✅ GeoJSON export ready: ${features.length} features with geometry`
+    );
+    console.log(
+      `Sample feature has geometry: ${features[0]?.geometry ? "YES ✓" : "NO ✗"}`
+    );
+    if (features[0]?.geometry) {
+      console.log(
+        `Coordinates count: ${features[0].geometry.coordinates.length} points`
+      );
+    }
+    console.log(`=================================\n`);
+
+    res.json({
+      success: true,
+      data: geojson,
+    });
+  } catch (error) {
+    console.error("Error exporting GeoJSON:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to export GeoJSON",
+      message: error.message,
+    });
+  }
+});
+
+// GET /api/jalan/download/shapefile - Download Shapefile (as ZIP) with filters
+router.get("/download/shapefile", async (req, res) => {
+  try {
+    const { kecamatan, desa } = req.query;
+
+    console.log("=== DOWNLOAD SHAPEFILE REQUEST ===");
+    console.log("Kecamatan:", kecamatan);
+    console.log("Desa:", desa);
+    console.log("==================================");
+
+    // Build WHERE clause
+    let whereConditions = [];
+    let params = [];
+
+    if (kecamatan) {
+      whereConditions.push(
+        `kecamatan ILIKE '%' || $${params.length + 1} || '%'`
+      );
+      params.push(kecamatan);
+    }
+
+    if (desa) {
+      whereConditions.push(`desa ILIKE '%' || $${params.length + 1} || '%'`);
+      params.push(desa);
+    }
+
+    const whereClause =
+      whereConditions.length > 0
+        ? `WHERE ${whereConditions.join(" AND ")}`
+        : "";
+
+    // Use raw SQL to get geometry in WKB format (Well-Known Binary)
+    const query = `
+      SELECT 
+        id, fid, no_ruas, no_prov, no_kab, no_kec, no_desa,
+        no_jalan, nama, nama_jalan, panjang_m, lebar_m_, 
+        tahun, kondisi, nilai, bobot, keterangan, 
+        kecamatan, desa, utm_x_awal, utm_y_awal, 
+        pngnl_awal, utm_x_akhi, utm_y_akhi, pngnl_akhi,
+        shape_leng, shape_le_1, shape_le_2, shape_le_3,
+        shape_le_4, shape_le_5,
+        ST_AsText(geom) as geom_wkt
+      FROM jalan_lingkungan_kubu_raya
+      ${whereClause}
+      ORDER BY id;
+    `;
+
+    const roads = await prisma.$queryRawUnsafe(query, ...params);
+
+    console.log(`Found ${roads.length} roads for shapefile download`);
+
+    // Convert to GeoJSON first (shapefile.js works with GeoJSON)
+    const features = [];
+
+    for (const road of roads) {
+      if (!road.geom_wkt) continue;
+
+      try {
+        const geomStr = road.geom_wkt;
+        let coordinates = [];
+
+        if (geomStr && geomStr.startsWith("LINESTRING")) {
+          const coordsStr = geomStr.replace("LINESTRING(", "").replace(")", "");
+          const pairs = coordsStr.split(",");
+          coordinates = pairs.map((pair) => {
+            const [lon, lat] = pair.trim().split(" ");
+            return [parseFloat(lon), parseFloat(lat)];
+          });
+        }
+
+        if (coordinates.length > 0) {
+          features.push({
+            type: "Feature",
+            geometry: {
+              type: "LineString",
+              coordinates: coordinates,
+            },
+            properties: {
+              id: road.id,
+              fid: road.fid,
+              no_ruas: road.no_ruas || "",
+              no_prov: road.no_prov,
+              no_kab: road.no_kab,
+              no_kec: road.no_kec,
+              no_desa: road.no_desa,
+              no_jalan: road.no_jalan || "",
+              nama: road.nama || "",
+              nama_jalan: road.nama_jalan || "",
+              panjang_m: road.panjang_m,
+              lebar_m_: road.lebar_m_,
+              tahun: road.tahun || "",
+              kondisi: road.kondisi || "",
+              nilai: road.nilai,
+              bobot: road.bobot,
+              keterangan: road.keterangan || "",
+              kecamatan: road.kecamatan || "",
+              desa: road.desa || "",
+              utm_x_awal: road.utm_x_awal,
+              utm_y_awal: road.utm_y_awal,
+              pngnl_awal: road.pngnl_awal || "",
+              utm_x_akhi: road.utm_x_akhi,
+              utm_y_akhi: road.utm_y_akhi,
+              pngnl_akhi: road.pngnl_akhi || "",
+              shape_leng: road.shape_leng,
+              shape_le_1: road.shape_le_1,
+              shape_le_2: road.shape_le_2,
+              shape_le_3: road.shape_le_3,
+              shape_le_4: road.shape_le_4,
+              shape_le_5: road.shape_le_5,
+            },
+          });
+        }
+      } catch (parseError) {
+        console.error(
+          `Error parsing geometry for road ${road.id}:`,
+          parseError
+        );
+      }
+    }
+
+    const geojson = {
+      type: "FeatureCollection",
+      features: features,
+    };
+
+    // Generate filename based on filters
+    let baseFilename = "jalan_lingkungan";
+    if (kecamatan) {
+      baseFilename += `_${kecamatan.replace(/\s+/g, "_")}`;
+    }
+    if (desa) {
+      baseFilename += `_${desa.replace(/\s+/g, "_")}`;
+    }
+
+    // Generate actual Shapefile using shp-write
+    console.log("Generating Shapefile components...");
+
+    const options = {
+      folder: baseFilename,
+      types: {
+        polyline: baseFilename,
+      },
+    };
+
+    // Use shp-write to generate shapefile buffers
+    const shpBuffer = shpwrite.zip(geojson, options);
+
+    // Create archive to add additional files
+    const archive = archiver("zip", {
+      zlib: { level: 9 },
+    });
+
+    // Set headers for download
+    res.setHeader("Content-Type", "application/zip");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${baseFilename}.zip"`
+    );
+
+    // Pipe archive to response
+    archive.pipe(res);
+
+    // Add the shapefile buffer as a nested zip
+    archive.append(shpBuffer, { name: `${baseFilename}.zip` });
+
+    // Add CPG file (character encoding)
+    const cpgContent = "UTF-8";
+    archive.append(cpgContent, { name: `${baseFilename}/${baseFilename}.cpg` });
+
+    // Add XML metadata file
+    const xmlMetadata = `<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <title>Jalan Lingkungan Kubu Raya</title>
+        <origin>SIJALI - Sistem Informasi Jalan Lingkungan</origin>
+        <pubdate>${new Date().toISOString().split("T")[0]}</pubdate>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>Data Jalan Lingkungan untuk Kecamatan ${
+        kecamatan || "All"
+      } dan Desa ${desa || "All"}</abstract>
+      <purpose>Geographic data for environmental roads in Kubu Raya</purpose>
+    </descript>
+    <spdom>
+      <bounding>
+        <westbc>109.0</westbc>
+        <eastbc>110.0</eastbc>
+        <northbc>0.0</northbc>
+        <southbc>-1.0</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>ISO 19115 Topic Categories</themekt>
+        <themekey>transportation</themekey>
+        <themekey>roads</themekey>
+      </theme>
+    </keywords>
+  </idinfo>
+  <dataqual>
+    <lineage>
+      <procstep>
+        <procdesc>Generated from SIJALI database</procdesc>
+        <procdate>${new Date().toISOString().split("T")[0]}</procdate>
+      </procstep>
+    </lineage>
+  </dataqual>
+</metadata>`;
+    archive.append(xmlMetadata, {
+      name: `${baseFilename}/${baseFilename}.shp.xml`,
+    });
+
+    // Finalize archive
+    await archive.finalize();
+
+    console.log(
+      `✅ Shapefile ZIP download ready: ${features.length} features with all components`
+    );
+  } catch (error) {
+    console.error("Error downloading shapefile:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to download shapefile data",
+      message: error.message,
     });
   }
 });

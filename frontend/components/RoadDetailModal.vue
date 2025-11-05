@@ -1875,6 +1875,7 @@ const loadAllMapData = async (
     const data = await response.json();
 
     if (data.success && data.data.features) {
+      console.log("🔍 Looking for road with ID:", props.road.id);
       console.log("🔍 Looking for road with noRuas:", props.road.noRuas);
       console.log("🔍 Props road data:", props.road);
       console.log(
@@ -1887,19 +1888,41 @@ const loadAllMapData = async (
       );
 
       // Find and show only the specific road
-      // Use the same approach as AduanDetailModal for consistency
-      const targetRoad = data.data.features.find(
-        (feature) =>
-          feature.properties.noRuas === props.road.noRuas ||
-          feature.properties.noRuas === String(props.road.noRuas) ||
-          feature.properties.noRuas === Number(props.road.noRuas) ||
-          String(feature.properties.noRuas) === String(props.road.noRuas) ||
-          // Also try with No_Ruas property from props.road for backward compatibility
-          feature.properties.noRuas === props.road.No_Ruas ||
-          feature.properties.noRuas === String(props.road.No_Ruas) ||
-          feature.properties.noRuas === Number(props.road.No_Ruas) ||
-          String(feature.properties.noRuas) === String(props.road.No_Ruas)
-      );
+      // PRIORITY 1: Search by ID first (most accurate - ensures each record with same noRuas shows its own coordinates)
+      let targetRoad = null;
+      
+      if (props.road.id) {
+        targetRoad = data.data.features.find(
+          (feature) =>
+            feature.properties.id === props.road.id ||
+            feature.properties.id === Number(props.road.id) ||
+            feature.id === props.road.id ||
+            feature.id === Number(props.road.id) ||
+            String(feature.properties.id) === String(props.road.id) ||
+            String(feature.id) === String(props.road.id)
+        );
+        
+        if (targetRoad) {
+          console.log("✅ Found road by ID:", targetRoad.properties.id);
+        }
+      }
+
+      // PRIORITY 2: If not found by ID, try by noRuas (for backward compatibility)
+      if (!targetRoad) {
+        console.log("⚠️ Road not found by ID, trying by noRuas...");
+        targetRoad = data.data.features.find(
+          (feature) =>
+            feature.properties.noRuas === props.road.noRuas ||
+            feature.properties.noRuas === String(props.road.noRuas) ||
+            feature.properties.noRuas === Number(props.road.noRuas) ||
+            String(feature.properties.noRuas) === String(props.road.noRuas) ||
+            // Also try with No_Ruas property from props.road for backward compatibility
+            feature.properties.noRuas === props.road.No_Ruas ||
+            feature.properties.noRuas === String(props.road.No_Ruas) ||
+            feature.properties.noRuas === Number(props.road.No_Ruas) ||
+            String(feature.properties.noRuas) === String(props.road.No_Ruas)
+        );
+      }
 
       console.log("🔍 Target road found:", targetRoad);
 
@@ -1909,7 +1932,7 @@ const loadAllMapData = async (
         await addSpecificRoadToMap(targetRoad, roadsLayer);
         await zoomToRoad(targetRoad);
       } else {
-        // Try alternative property names with robust comparison
+        // PRIORITY 3: Try alternative property names with robust comparison
         const alternativeRoad = data.data.features.find(
           (feature) =>
             feature.properties.nomor_ruas === props.road.noRuas ||
