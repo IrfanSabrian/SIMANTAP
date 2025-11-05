@@ -40,11 +40,7 @@
             <div
               class="inline-flex items-center px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-semibold mb-6"
             >
-              <svg
-                class="w-5 h-5 mr-2"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fill-rule="evenodd"
                   d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
@@ -60,8 +56,9 @@
             Halaman Sedang Dikembangkan
           </h2>
           <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Fitur Data Drainase Lingkungan saat ini sedang dalam tahap pengembangan. 
-            Halaman ini akan segera tersedia dengan data lengkap sistem drainase di Kabupaten Kubu Raya.
+            Fitur Data Drainase Lingkungan saat ini sedang dalam tahap
+            pengembangan. Halaman ini akan segera tersedia dengan data lengkap
+            sistem drainase di Kabupaten Kubu Raya.
           </p>
 
           <!-- Features Coming Soon -->
@@ -69,14 +66,25 @@
             <div class="bg-gray-50 rounded-lg p-6">
               <div class="flex items-start gap-4">
                 <div class="bg-teal-100 p-3 rounded-lg flex-shrink-0">
-                  <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <svg
+                    class="w-6 h-6 text-teal-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
                   </svg>
                 </div>
                 <div>
                   <h3 class="font-semibold text-gray-900 mb-2">Data Lengkap</h3>
                   <p class="text-sm text-gray-600">
-                    Informasi detail drainase termasuk dimensi, kondisi, dan lokasi
+                    Informasi detail drainase termasuk dimensi, kondisi, dan
+                    lokasi
                   </p>
                 </div>
               </div>
@@ -85,14 +93,24 @@
             <div class="bg-gray-50 rounded-lg p-6">
               <div class="flex items-start gap-4">
                 <div class="bg-teal-100 p-3 rounded-lg flex-shrink-0">
-                  <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  <svg
+                    class="w-6 h-6 text-teal-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                    />
                   </svg>
                 </div>
                 <div>
                   <h3 class="font-semibold text-gray-900 mb-2">Export Data</h3>
                   <p class="text-sm text-gray-600">
-                    Download data dalam format GeoJSON dan Shapefile
+                    Download data dalam format GeoJSON
                   </p>
                 </div>
               </div>
@@ -101,12 +119,24 @@
             <div class="bg-gray-50 rounded-lg p-6">
               <div class="flex items-start gap-4">
                 <div class="bg-teal-100 p-3 rounded-lg flex-shrink-0">
-                  <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                  <svg
+                    class="w-6 h-6 text-teal-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                    />
                   </svg>
                 </div>
                 <div>
-                  <h3 class="font-semibold text-gray-900 mb-2">Filter & Pencarian</h3>
+                  <h3 class="font-semibold text-gray-900 mb-2">
+                    Filter & Pencarian
+                  </h3>
                   <p class="text-sm text-gray-600">
                     Filter berdasarkan lokasi, kondisi, dan kriteria lainnya
                   </p>
@@ -117,9 +147,24 @@
             <div class="bg-gray-50 rounded-lg p-6">
               <div class="flex items-start gap-4">
                 <div class="bg-teal-100 p-3 rounded-lg flex-shrink-0">
-                  <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  <svg
+                    class="w-6 h-6 text-teal-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
                   </svg>
                 </div>
                 <div>
@@ -208,7 +253,8 @@ useHead({
   meta: [
     {
       name: "description",
-      content: "Data Drainase Lingkungan Kabupaten Kubu Raya - Halaman dalam pengembangan",
+      content:
+        "Data Drainase Lingkungan Kabupaten Kubu Raya - Halaman dalam pengembangan",
     },
   ],
 });

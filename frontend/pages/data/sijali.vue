@@ -141,12 +141,10 @@
               </button>
               <button
                 v-if="hasSelectedRoads"
-                @click="exportSelectedShapefile"
-                :disabled="isDownloading"
-                class="px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                @click="exportSelectedRoadsShapefile"
+                class="px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1"
               >
                 <svg
-                  v-if="!isDownloading"
                   class="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
@@ -159,27 +157,7 @@
                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                   />
                 </svg>
-                <svg
-                  v-else
-                  class="animate-spin w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                {{ isDownloading ? "Downloading..." : "Export Shapefile" }}
+                Export Shapefile
               </button>
             </div>
           </div>
@@ -908,124 +886,67 @@ const exportSelectedRoads = async () => {
   }
 };
 
-const exportSelectedShapefile = async () => {
-  if (!hasSelectedRoads.value) return;
+const exportSelectedRoadsShapefile = async () => {
+  console.log("🔵 DATA SIJALI - exportSelectedRoadsShapefile() called");
 
-  isDownloading.value = true;
+  if (!hasSelectedRoads.value) {
+    toast.warning("Pilih data terlebih dahulu");
+    return;
+  }
+
   try {
     const selectedRoadsList = roads.value.filter((road) =>
       selectedRoads.value.has(road.id)
     );
 
-    // Get unique kecamatan and desa from selected roads
-    const kecamatanSet = new Set();
-    const desaSet = new Set();
+    // Get IDs of selected roads
+    const selectedIds = selectedRoadsList.map((road) => road.id);
 
-    selectedRoadsList.forEach((road) => {
-      if (road.kecamatan) kecamatanSet.add(road.kecamatan);
-      if (road.desa) desaSet.add(road.desa);
+    console.log(
+      `📤 DATA SIJALI - Requesting Shapefile export for ${selectedIds.length} roads`
+    );
+    console.log(`📍 API URL: ${apiBaseUrl}/api/jalan/export/shapefile`);
+    console.log(`📋 Method: POST with IDs:`, selectedIds);
+
+    // Call API to get Shapefile ZIP
+    const response = await fetch(`${apiBaseUrl}/api/jalan/export/shapefile`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ids: selectedIds }),
     });
 
-    // If there's only one kecamatan and desa, use them for the download
-    // Otherwise, download all selected manually
-    if (kecamatanSet.size === 1 && desaSet.size === 1) {
-      const kecamatan = Array.from(kecamatanSet)[0];
-      const desa = Array.from(desaSet)[0];
-
-      const params = new URLSearchParams({
-        kecamatan: kecamatan,
-        desa: desa,
-      });
-
-      const response = await fetch(
-        `${apiBaseUrl}/api/jalan/download/shapefile?${params}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Download failed");
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-
-      // Get filename from Content-Disposition header or create default
-      const contentDisposition = response.headers.get("Content-Disposition");
-      let filename = "jalan_lingkungan.zip";
-      if (contentDisposition) {
-        const filenameMatch = contentDisposition.match(/filename="(.+)"/);
-        if (filenameMatch) {
-          filename = filenameMatch[1];
-        }
-      }
-
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-
-      // Cleanup after a short delay
-      setTimeout(() => {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      }, 100);
-
-      toast.success(
-        `Berhasil mengunduh Shapefile untuk ${selectedRoadsList.length} data jalan!`
-      );
-    } else {
-      // Multiple kecamatan/desa selected, export GeoJSON with geometry instead
-      const selectedIds = selectedRoadsList.map((road) => road.id);
-
-      // Call API to get GeoJSON with geometry
-      const geoResponse = await fetch(
-        `${apiBaseUrl}/api/jalan/export/geojson`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ids: selectedIds }),
-        }
-      );
-
-      if (!geoResponse.ok) {
-        throw new Error("Failed to export GeoJSON");
-      }
-
-      const geoResult = await geoResponse.json();
-
-      if (!geoResult.success) {
-        throw new Error(geoResult.error || "Failed to export GeoJSON");
-      }
-
-      const geojson = geoResult.data;
-
-      const blob = new Blob([JSON.stringify(geojson, null, 2)], {
-        type: "application/json",
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `jalan_lingkungan_multilocations_${new Date().getTime()}.geojson`;
-      document.body.appendChild(a);
-      a.click();
-
-      // Cleanup after a short delay
-      setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }, 100);
-
-      toast.info(
-        "Data dari berbagai lokasi dipilih. GeoJSON didownload sebagai gantinya. Anda dapat mengkonversi ke Shapefile menggunakan QGIS."
-      );
+    if (!response.ok) {
+      console.error(`❌ API Error: ${response.status} ${response.statusText}`);
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || "Failed to export Shapefile");
     }
+
+    // Get the blob from response
+    const blob = await response.blob();
+
+    // Create download link
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `jalan_lingkungan_${new Date().getTime()}.zip`;
+    document.body.appendChild(a);
+    a.click();
+
+    // Cleanup after a short delay
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 100);
+
+    console.log("✅ Shapefile download triggered successfully");
+    toast.success(
+      `Berhasil mengexport ${selectedRoadsList.length} data jalan sebagai Shapefile!`
+    );
   } catch (error) {
-    console.error("❌ Error downloading Shapefile:", error);
-    toast.error(`Gagal mengunduh Shapefile: ${error.message}`);
-  } finally {
-    isDownloading.value = false;
+    console.error("❌ Error exporting roads as Shapefile:", error);
+    toast.error(`Gagal mengexport Shapefile: ${error.message}`);
   }
 };
 

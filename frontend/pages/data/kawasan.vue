@@ -94,7 +94,7 @@
                 <div>
                   <h3 class="font-semibold text-gray-900 mb-2">Export Data</h3>
                   <p class="text-sm text-gray-600">
-                    Download data dalam format GeoJSON dan Shapefile
+                    Download data dalam format GeoJSON
                   </p>
                 </div>
               </div>
