@@ -33,7 +33,7 @@
                 class="relative transform transition-transform duration-300 hover:scale-110"
               >
                 <img
-                  src="~/assets/images/sijali-logo.svg"
+                  src="/simantap-logo.svg"
                   alt="SIMANTAP Logo"
                   class="h-20 w-20"
                 />
@@ -351,8 +351,8 @@ const handleLogin = async () => {
 
     if (result.success) {
       // Save token and user data to localStorage
-      localStorage.setItem("sijali_token", result.data.token);
-      localStorage.setItem("sijali_user", JSON.stringify(result.data.user));
+      localStorage.setItem("simantap_token", result.data.token);
+      localStorage.setItem("simantap_user", JSON.stringify(result.data.user));
 
       // Redirect to dashboard
       await router.push("/dashboard");
@@ -376,7 +376,7 @@ onMounted(() => {
     localStorage.setItem("preferredLanguage", "id");
   }
 
-  const token = localStorage.getItem("sijali_token");
+  const token = localStorage.getItem("simantap_token");
   if (token) {
     // Redirect to dashboard if already logged in
     router.push("/dashboard");

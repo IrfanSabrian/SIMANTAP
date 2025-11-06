@@ -301,7 +301,7 @@ const performSearch = async () => {
 
     // Save to localStorage
     localStorage.setItem(
-      "sijali_recent_searches",
+      "simantap_recent_searches",
       JSON.stringify(recentSearches.value)
     );
   } catch (error) {
@@ -349,7 +349,7 @@ const selectResult = (result) => {
     recentSearches.value.pop();
   }
   localStorage.setItem(
-    "sijali_recent_searches",
+    "simantap_recent_searches",
     JSON.stringify(recentSearches.value)
   );
 };
@@ -370,7 +370,7 @@ const goToCoordinates = () => {
 
 // Load recent searches from localStorage
 onMounted(() => {
-  const saved = localStorage.getItem("sijali_recent_searches");
+  const saved = localStorage.getItem("simantap_recent_searches");
   if (saved) {
     try {
       recentSearches.value = JSON.parse(saved);

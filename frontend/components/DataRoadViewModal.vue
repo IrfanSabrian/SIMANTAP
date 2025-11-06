@@ -533,7 +533,7 @@
                       <label
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                       >
-                        Penanganan Awal
+                        Pangkalan Awal
                       </label>
                       <p class="text-gray-900 dark:text-white">
                         {{ road.Pngnl_Awal || road.pngnlAwal || "-" }}
@@ -543,7 +543,7 @@
                       <label
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                       >
-                        Penanganan Akhir
+                        Pangkalan Akhir
                       </label>
                       <p class="text-gray-900 dark:text-white">
                         {{ road.Pngnl_Akhi || road.pngnlAkhi || "-" }}
@@ -556,12 +556,8 @@
           </div>
 
           <!-- Right Side - Map -->
-          <div class="w-full lg:w-1/2 relative order-1 lg:order-2 min-h-0">
-            <div
-              ref="mapContainer"
-              class="w-full h-64 lg:h-full relative"
-              style="min-height: 300px"
-            >
+          <div class="w-full lg:w-1/2 relative order-1 lg:order-2">
+            <div ref="mapContainer" class="w-full h-64 lg:h-full relative">
               <!-- Map Controls Container -->
               <div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
                 <!-- Zoom Controls -->
@@ -2088,6 +2084,9 @@ onUnmounted(() => {
   .modal-content {
     max-height: 95vh;
     overflow: hidden;
+    margin: 0 auto;
+    width: calc(100% - 1rem);
+    max-width: calc(100% - 1rem);
   }
 
   .scrollable-content {
@@ -2120,9 +2119,13 @@ onUnmounted(() => {
     /* Prevent body scroll when modal is open */
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
     bottom: 0;
+    margin: 0;
+    width: calc(100% - 1rem);
+    max-width: calc(100% - 1rem);
   }
 }
 
@@ -2134,8 +2137,13 @@ onUnmounted(() => {
   }
 
   .modal-content {
-    margin: 8px;
+    margin: 0;
     max-height: calc(100vh - 16px);
+    width: calc(100% - 1rem);
+    max-width: calc(100% - 1rem);
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
   }
 }
 </style>

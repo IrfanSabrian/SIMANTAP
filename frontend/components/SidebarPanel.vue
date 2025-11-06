@@ -6,7 +6,7 @@
         <div class="logo">
           <div class="logo-image">
             <img
-              src="/assets/images/sijali-logo.svg"
+              src="/simantap-logo.svg"
               alt="SIMANTAP Logo"
               class="w-12 h-12 object-contain"
             />
@@ -484,7 +484,9 @@ if (!config.public.apiUrl && !config.public.apiBaseUrl) {
   );
 }
 
-const apiUrl = config.public.apiUrl || (config.public.apiBaseUrl ? `${config.public.apiBaseUrl}/api` : "");
+const apiUrl =
+  config.public.apiUrl ||
+  (config.public.apiBaseUrl ? `${config.public.apiBaseUrl}/api` : "");
 
 // Fetch kecamatan options from API
 const fetchKecamatanOptions = async () => {

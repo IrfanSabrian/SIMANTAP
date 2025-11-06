@@ -44,37 +44,38 @@
         color="blue"
       />
 
-      <!-- Video Grid -->
+      <!-- Video Grid - 4 columns -->
       <div
         v-else
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
       >
         <div
           v-for="video in paginatedVideos"
           :key="video.id"
-          class="group relative bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+          class="group relative bg-white rounded-lg shadow-lg hover:shadow-xl overflow-hidden border-2 border-gray-200 hover:border-blue-500 transition-all duration-300"
         >
+          <!-- Thumbnail Container with Tech Style -->
           <div
             @click="video.youtubeUrl ? openYouTubeFancybox(video.youtubeUrl, video.title) : null"
             :class="[
-              'block relative aspect-video bg-gray-200',
+              'relative aspect-video bg-gray-900 overflow-hidden',
               video.youtubeUrl ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'
             ]"
           >
-            <!-- Thumbnail -->
+            <!-- Thumbnail Image -->
             <img
               v-if="video.thumbnail"
               :src="video.thumbnail"
               :alt="video.title"
-              class="w-full h-full object-cover"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125"
             />
             <div
               v-else
-              class="w-full h-full bg-gray-300 flex items-center justify-center"
+              class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900"
             >
               <div class="text-center">
                 <svg
-                  class="w-16 h-16 mx-auto text-gray-400 mb-2"
+                  class="w-12 h-12 mx-auto text-gray-400 mb-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -86,17 +87,32 @@
                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
                   />
                 </svg>
-                <p class="text-sm text-gray-500">Video tidak tersedia</p>
+                <p class="text-xs text-gray-400 font-medium">
+                  Video tidak tersedia
+                </p>
               </div>
             </div>
 
-            <!-- Play Button Overlay -->
+            <!-- Dark Overlay -->
             <div
-              v-if="video.thumbnail"
-              class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center"
+              class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
+            ></div>
+
+            <!-- Category Badge - Tech Style -->
+            <div class="absolute top-3 left-3 z-10">
+              <span
+                class="inline-flex items-center px-3 py-1 rounded-md text-xs font-bold bg-blue-600 text-white shadow-lg uppercase tracking-wide"
+              >
+                {{ video.category }}
+              </span>
+            </div>
+
+            <!-- Play Button - Prominent -->
+            <div
+              class="absolute inset-0 flex items-center justify-center"
             >
               <div
-                class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 hover:bg-red-700"
+                class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-2xl border-4 border-white/20 transform group-hover:scale-110 transition-transform duration-300"
               >
                 <svg
                   class="w-8 h-8 text-white ml-1"
@@ -108,32 +124,37 @@
               </div>
             </div>
 
-            <!-- Duration Badge -->
+            <!-- Video Badge - Bottom Right -->
             <div
-              v-if="video.thumbnail"
-              class="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded"
+              class="absolute bottom-3 right-3 bg-black/90 text-white text-xs px-2.5 py-1 rounded font-bold uppercase tracking-wide"
             >
-              {{ video.duration }}
+              Video
             </div>
           </div>
 
-          <!-- Video Info -->
-          <div class="p-4">
+          <!-- Content Section - Compact Tech Style -->
+          <div class="p-4 bg-white">
+            <!-- Title -->
             <h3
-              class="font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors"
+              class="font-bold text-gray-900 mb-2 line-clamp-2 text-sm leading-tight group-hover:text-blue-600 transition-colors duration-200"
             >
               {{ video.title }}
             </h3>
-            <p class="text-sm text-gray-600 line-clamp-2 mb-3">
+
+            <!-- Description -->
+            <p
+              class="text-xs text-gray-600 line-clamp-2 mb-3 leading-relaxed"
+            >
               {{ video.description }}
             </p>
-            <!-- Category and Time -->
+
+            <!-- Date Info - Single Line -->
             <div
-              class="mt-3 flex items-center justify-between text-xs text-gray-500"
+              class="flex items-center justify-between pt-2 border-t border-gray-200"
             >
-              <div class="flex items-center">
+              <div class="flex items-center text-xs text-gray-500">
                 <svg
-                  class="w-4 h-4 mr-1"
+                  class="w-3.5 h-3.5 mr-1.5 text-gray-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -142,14 +163,11 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                   />
                 </svg>
-                <span>{{ video.category }}</span>
+                <span class="font-semibold">{{ video.uploadDate || (video.diperbaruiPada ? formatRelativeDate(video.diperbaruiPada) : '') }}</span>
               </div>
-              <span v-if="video.diperbaruiPada" class="text-gray-400">
-                {{ formatRelativeDate(video.diperbaruiPada) }}
-              </span>
             </div>
           </div>
         </div>
@@ -256,7 +274,7 @@ const { formatRelativeDate } = useDateFormat();
 
 const selectedCategory = ref("Jalan_Lingkungan");
 const currentPage = ref(1);
-const perPage = 9;
+const perPage = 12; // 3 rows x 4 columns
 const loading = ref(false);
 const dokumentasiList = ref<any[]>([]);
 
@@ -340,6 +358,29 @@ const formatJenisInfrastruktur = (jenis: string) => {
   return jenis.replace(/_/g, " ");
 };
 
+// Helper function to format date
+const formatUploadDate = (dateString: string) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffTime = Math.abs(now.getTime() - date.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return "Hari ini";
+  if (diffDays === 1) return "Kemarin";
+  if (diffDays < 7) return `${diffDays} hari lalu`;
+  if (diffDays < 30) {
+    const weeks = Math.floor(diffDays / 7);
+    return `${weeks} minggu lalu`;
+  }
+  if (diffDays < 365) {
+    const months = Math.floor(diffDays / 30);
+    return `${months} bulan lalu`;
+  }
+  const years = Math.floor(diffDays / 365);
+  return `${years} tahun lalu`;
+};
+
 // Load data from API
 const loadDokumentasi = async () => {
   loading.value = true;
@@ -402,6 +443,7 @@ const filteredVideos = computed(() => {
       roadInfo: item.roadInfo || null,
       dibuatPada: item.dibuatPada || null,
       diperbaruiPada: item.diperbaruiPada || null,
+      uploadDate: formatUploadDate(item.dibuatPada || item.diperbaruiPada),
     };
   });
 });

@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app overflow-x-hidden">
     <Navbar @toggle-sidebar="handleToggleSidebar" />
 
     <!-- Hero Section -->
@@ -338,6 +338,9 @@
         </div>
       </div>
     </section>
+
+    <!-- Footer -->
+    <Footer />
   </div>
 </template>
 
@@ -348,6 +351,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 // Import components
 import Navbar from "~/components/Navbar.vue";
+import Footer from "~/components/Footer.vue";
 // import MapView from "~/components/MapView.vue"; // Disabled - Dalam Pengembangan
 
 // Halaman index tidak menggunakan layout default karena sudah punya Navbar sendiri
@@ -524,110 +528,23 @@ const startCounters = () => {
 };
 
 // Load hero stats from API
+// NOTE: Data belum tersedia, tidak request API, tetap tampilkan 0
 const loadHeroStats = async () => {
-  try {
-    // Get API URL from runtime config
-    const config = useRuntimeConfig();
-    const apiUrl = config.public.apiUrl;
+  // Set default values to 0 (data belum tersedia)
+  totalRoadLength.value = "0";
+  totalDistricts.value = 0;
+  totalVillages.value = 0;
+  goodConditionLength.value = "0";
 
-    // Fetch summary data for total road length and districts
-    const summaryResponse = await fetch(`${apiUrl}/jalan/stats/summary`);
-    if (summaryResponse.ok) {
-      const summaryResult = await summaryResponse.json();
-      if (summaryResult.success && summaryResult.data) {
-        // Calculate total road length in Km (API returns totalLength not totalPanjang)
-        const totalLengthM = summaryResult.data.totalLength || 0;
-        totalRoadLength.value = (totalLengthM / 1000).toFixed(2);
+  // Mark stats as loaded (but don't start animation yet)
+  statsLoaded.value = true;
 
-        // Count number of districts from kecamatanStats array
-        if (summaryResult.data.kecamatanStats) {
-          totalDistricts.value = summaryResult.data.kecamatanStats.length;
-        }
+  // Start counter animation immediately after data is loaded
+  setTimeout(() => {
+    startCounters();
+  }, 500); // Small delay to ensure DOM is ready
 
-        console.log("Total road length loaded:", totalRoadLength.value, "Km");
-        console.log("Total districts loaded:", totalDistricts.value);
-      }
-    }
-
-    // Fetch kondisi data for good condition roads
-    const kondisiResponse = await fetch(
-      `${apiUrl}/jalan/stats/kondisi-material-filtered`
-    );
-    if (kondisiResponse.ok) {
-      const kondisiResult = await kondisiResponse.json();
-      if (
-        kondisiResult.success &&
-        kondisiResult.data &&
-        kondisiResult.data.kondisiStats
-      ) {
-        // Find "Baik" condition and get the sum of panjangM
-        const baikCondition = kondisiResult.data.kondisiStats.find(
-          (stat) => stat.keterangan === "Baik"
-        );
-
-        if (
-          baikCondition &&
-          baikCondition._sum &&
-          baikCondition._sum.panjangM
-        ) {
-          const baikPanjangM = baikCondition._sum.panjangM;
-          goodConditionLength.value = (baikPanjangM / 1000).toFixed(2);
-          console.log(
-            "Good condition road length loaded:",
-            goodConditionLength.value,
-            "Km"
-          );
-        }
-      }
-    }
-
-    // Fetch unique desa/kelurahan count
-    try {
-      console.log("Fetching desa count from API...");
-      const desaResponse = await fetch(`${apiUrl}/jalan/filters/desa`);
-      console.log("Desa response status:", desaResponse.status);
-
-      if (desaResponse.ok) {
-        const desaResult = await desaResponse.json();
-        console.log("Desa result:", desaResult);
-
-        if (desaResult.success && desaResult.data) {
-          totalVillages.value = desaResult.data.length;
-          console.log("Total villages loaded:", totalVillages.value);
-        } else {
-          console.warn("Desa API returned no data, using fallback");
-          // Fallback: use a reasonable number based on typical Indonesian administrative structure
-          totalVillages.value = 117; // Based on the GeoJSON data we saw earlier
-        }
-      } else {
-        console.warn("Desa API failed, using fallback");
-        totalVillages.value = 117; // Fallback
-      }
-    } catch (err) {
-      console.error("Error fetching desa count:", err);
-      // Fallback
-      totalVillages.value = 117;
-    }
-
-    // Mark stats as loaded (but don't start animation yet)
-    statsLoaded.value = true;
-
-    // Start counter animation immediately after data is loaded
-    setTimeout(() => {
-      startCounters();
-    }, 500); // Small delay to ensure DOM is ready
-
-    // Load chart data after hero stats are loaded (lower priority)
-    setTimeout(async () => {
-      console.log("Hero stats loaded, loading charts...");
-      // Call initCharts from the component instance
-      if (window.initChartsComponent) {
-        await window.initChartsComponent.initCharts();
-      }
-    }, 1000);
-  } catch (error) {
-    console.error("Error loading hero stats:", error);
-  }
+  // Skip chart loading since data belum tersedia
 };
 
 // Setup Intersection Observer for stat cards
@@ -1163,6 +1080,9 @@ useHead({
 
 .map-container {
   @apply container mx-auto px-8;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Map Title Frame */
@@ -1183,6 +1103,8 @@ useHead({
 /* Map Canvas Wrapper */
 .map-canvas-wrapper {
   @apply rounded-b-xl overflow-hidden shadow-lg;
+  width: 100%;
+  max-width: 100%;
   border-top: none;
   min-height: 500px;
   position: relative;
@@ -1366,6 +1288,26 @@ useHead({
   .map-section {
     @apply py-12;
     min-height: 50vh;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .map-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .map-canvas-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   .map-title-text {

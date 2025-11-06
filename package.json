@@ -1,7 +1,7 @@
 {
-  "name": "sijali-web",
+  "name": "simantap-web",
   "version": "1.0.0",
-  "description": "SIJALI - Sistem Informasi Jalan Lingkungan Kab. Kubu Raya",
+  "description": "SIMANTAP - Sistem Informasi Manajemen Tata Permukiman Kab. Kubu Raya",
   "main": "backend/src/server.js",
   "scripts": {
     "start": "cd backend && npm start",
@@ -10,7 +10,7 @@
     "postinstall": "cd backend && npm install"
   },
   "keywords": [
-    "sijali",
+    "simantap",
     "jalan-lingkungan",
     "kubu-raya",
     "gis",

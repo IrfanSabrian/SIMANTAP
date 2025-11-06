@@ -1,5 +1,5 @@
 {
-  "name": "sijali-web-gis",
+  "name": "simantap-web-gis",
   "private": true,
   "scripts": {
     "build": "nuxt build",

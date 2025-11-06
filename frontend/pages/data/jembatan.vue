@@ -1,13 +1,19 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 pt-16">
+  <div
+    class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 pt-16"
+  >
     <div class="container mx-auto px-4 py-20">
       <div class="max-w-2xl mx-auto">
         <!-- Main Card -->
-        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-12 text-center">
+        <div
+          class="bg-white rounded-2xl shadow-xl border border-gray-100 p-12 text-center"
+        >
           <!-- Icon -->
           <div class="mb-8 flex justify-center">
             <div class="relative">
-              <div class="absolute inset-0 bg-cyan-100 rounded-full blur-xl opacity-50"></div>
+              <div
+                class="absolute inset-0 bg-cyan-100 rounded-full blur-xl opacity-50"
+              ></div>
               <div class="relative p-6 bg-cyan-50 rounded-full">
                 <svg
                   class="w-16 h-16 text-cyan-500"
@@ -44,14 +50,17 @@
           </h1>
 
           <!-- Description -->
-          <p class="text-lg text-gray-600 mb-10 max-w-md mx-auto leading-relaxed">
-            Halaman ini sedang dalam tahap pengembangan. Data lengkap akan segera tersedia.
+          <p
+            class="text-lg text-gray-600 mb-10 max-w-md mx-auto leading-relaxed"
+          >
+            Halaman ini sedang dalam tahap pengembangan. Data lengkap akan
+            segera tersedia.
           </p>
 
           <!-- Action Button -->
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <NuxtLink
-              to="/data/sijali"
+              to="/data/jalan-lingkungan"
               class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
             >
               <svg
@@ -86,7 +95,8 @@ useHead({
   meta: [
     {
       name: "description",
-      content: "Data Jembatan Lingkungan Kabupaten Kubu Raya - Halaman dalam pengembangan",
+      content:
+        "Data Jembatan Lingkungan Kabupaten Kubu Raya - Halaman dalam pengembangan",
     },
   ],
 });

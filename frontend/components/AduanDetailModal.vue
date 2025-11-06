@@ -512,7 +512,7 @@ const isAdmin = ref(false);
 onMounted(() => {
   // Check if user is admin
   if (typeof window !== "undefined") {
-    const user = JSON.parse(localStorage.getItem("sijali_user") || "{}");
+    const user = JSON.parse(localStorage.getItem("simantap_user") || "{}");
     isAdmin.value = user.role === "ADMIN";
   }
 });

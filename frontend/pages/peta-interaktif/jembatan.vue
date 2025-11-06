@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app overflow-x-hidden">
     <Navbar @toggle-sidebar="handleToggleSidebar" />
 
     <!-- Hero Section -->
@@ -24,112 +24,113 @@
           <h1 class="hero-title-main">Jembatan Lingkungan</h1>
           <h2 class="hero-subtitle">Sistem Informasi Jembatan Lingkungan</h2>
           <p class="hero-description-text">
-            Sistem informasi geografis yang menyediakan data dan peta interaktif mengenai 
-            jembatan lingkungan di Kabupaten Kubu Raya, termasuk informasi lokasi, kondisi, 
-            dan karakteristik jembatan untuk mendukung perawatan dan pengelolaan infrastruktur jembatan.
+            Sistem informasi geografis yang menyediakan data dan peta interaktif
+            mengenai jembatan lingkungan di Kabupaten Kubu Raya, termasuk
+            informasi lokasi, kondisi, dan karakteristik jembatan untuk
+            mendukung perawatan dan pengelolaan infrastruktur jembatan.
           </p>
         </div>
 
         <!-- Stats Cards -->
         <div class="hero-stats" data-aos="fade-up" data-aos-delay="200">
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-              ></path>
-            </svg>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                ></path>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">
+                <span id="roadLengthCounter">0</span> Km
+              </h3>
+              <p class="stat-label">Dipetakan</p>
+            </div>
           </div>
-          <div class="stat-content">
-            <h3 class="stat-number">
-              <span id="roadLengthCounter">0</span> Km
-            </h3>
-            <p class="stat-label">Dipetakan</p>
-          </div>
-        </div>
 
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              ></path>
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              ></path>
-            </svg>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                ></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                ></path>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number" id="districtsCounter">0</h3>
+              <p class="stat-label">Kecamatan</p>
+            </div>
           </div>
-          <div class="stat-content">
-            <h3 class="stat-number" id="districtsCounter">0</h3>
-            <p class="stat-label">Kecamatan</p>
-          </div>
-        </div>
 
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-              ></path>
-            </svg>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                ></path>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number" id="villagesCounter">0</h3>
+              <p class="stat-label">Desa/Kelurahan</p>
+            </div>
           </div>
-          <div class="stat-content">
-            <h3 class="stat-number" id="villagesCounter">0</h3>
-            <p class="stat-label">Desa/Kelurahan</p>
-          </div>
-        </div>
 
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-              ></path>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <h3 class="stat-number">
-              <span id="goodConditionCounter">0</span> Km
-            </h3>
-            <p class="stat-label">Jembatan Kondisi Baik</p>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                ></path>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">
+                <span id="goodConditionCounter">0</span> Km
+              </h3>
+              <p class="stat-label">Jembatan Kondisi Baik</p>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </section>
 
@@ -138,8 +139,8 @@
       <div class="section-header" data-aos="fade-up">
         <h2 class="section-title">Peta Interaktif</h2>
         <p class="section-description">
-          Jelajahi data jembatan lingkungan melalui peta interaktif dengan berbagai
-          layer informasi dan fitur analisis spasial.
+          Jelajahi data jembatan lingkungan melalui peta interaktif dengan
+          berbagai layer informasi dan fitur analisis spasial.
         </p>
       </div>
 
@@ -153,14 +154,31 @@
           </div>
         </div>
         <!-- Map Canvas -->
-        <div class="map-canvas-wrapper relative" style="pointer-events: none;">
-          <div class="absolute inset-0 bg-gray-100 flex items-center justify-center">
+        <div class="map-canvas-wrapper relative" style="pointer-events: none">
+          <div
+            class="absolute inset-0 bg-gray-100 flex items-center justify-center"
+          >
             <div class="text-center z-10">
-              <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+              <svg
+                class="w-16 h-16 mx-auto mb-4 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                ></path>
               </svg>
-              <p class="text-xl font-semibold text-gray-600">Dalam Pengembangan</p>
-              <p class="text-sm text-gray-500 mt-2">Fitur peta interaktif jembatan lingkungan sedang dalam pengembangan</p>
+              <p class="text-xl font-semibold text-gray-600">
+                Dalam Pengembangan
+              </p>
+              <p class="text-sm text-gray-500 mt-2">
+                Fitur peta interaktif jembatan lingkungan sedang dalam
+                pengembangan
+              </p>
             </div>
           </div>
         </div>
@@ -320,6 +338,9 @@
         </div>
       </div>
     </section>
+
+    <!-- Footer -->
+    <Footer />
   </div>
 </template>
 
@@ -330,6 +351,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 // Import components
 import Navbar from "~/components/Navbar.vue";
+import Footer from "~/components/Footer.vue";
 // import MapView from "~/components/MapView.vue"; // Disabled - Dalam Pengembangan
 
 // Halaman index tidak menggunakan layout default karena sudah punya Navbar sendiri
@@ -506,110 +528,23 @@ const startCounters = () => {
 };
 
 // Load hero stats from API
+// NOTE: Data belum tersedia, tidak request API, tetap tampilkan 0
 const loadHeroStats = async () => {
-  try {
-    // Get API URL from runtime config
-    const config = useRuntimeConfig();
-    const apiUrl = config.public.apiUrl;
+  // Set default values to 0 (data belum tersedia)
+  totalRoadLength.value = "0";
+  totalDistricts.value = 0;
+  totalVillages.value = 0;
+  goodConditionLength.value = "0";
 
-    // Fetch summary data for total road length and districts
-    const summaryResponse = await fetch(`${apiUrl}/jalan/stats/summary`);
-    if (summaryResponse.ok) {
-      const summaryResult = await summaryResponse.json();
-      if (summaryResult.success && summaryResult.data) {
-        // Calculate total road length in Km (API returns totalLength not totalPanjang)
-        const totalLengthM = summaryResult.data.totalLength || 0;
-        totalRoadLength.value = (totalLengthM / 1000).toFixed(2);
+  // Mark stats as loaded (but don't start animation yet)
+  statsLoaded.value = true;
 
-        // Count number of districts from kecamatanStats array
-        if (summaryResult.data.kecamatanStats) {
-          totalDistricts.value = summaryResult.data.kecamatanStats.length;
-        }
+  // Start counter animation immediately after data is loaded
+  setTimeout(() => {
+    startCounters();
+  }, 500); // Small delay to ensure DOM is ready
 
-        console.log("Total road length loaded:", totalRoadLength.value, "Km");
-        console.log("Total districts loaded:", totalDistricts.value);
-      }
-    }
-
-    // Fetch kondisi data for good condition roads
-    const kondisiResponse = await fetch(
-      `${apiUrl}/jalan/stats/kondisi-material-filtered`
-    );
-    if (kondisiResponse.ok) {
-      const kondisiResult = await kondisiResponse.json();
-      if (
-        kondisiResult.success &&
-        kondisiResult.data &&
-        kondisiResult.data.kondisiStats
-      ) {
-        // Find "Baik" condition and get the sum of panjangM
-        const baikCondition = kondisiResult.data.kondisiStats.find(
-          (stat) => stat.keterangan === "Baik"
-        );
-
-        if (
-          baikCondition &&
-          baikCondition._sum &&
-          baikCondition._sum.panjangM
-        ) {
-          const baikPanjangM = baikCondition._sum.panjangM;
-          goodConditionLength.value = (baikPanjangM / 1000).toFixed(2);
-          console.log(
-            "Good condition road length loaded:",
-            goodConditionLength.value,
-            "Km"
-          );
-        }
-      }
-    }
-
-    // Fetch unique desa/kelurahan count
-    try {
-      console.log("Fetching desa count from API...");
-      const desaResponse = await fetch(`${apiUrl}/jalan/filters/desa`);
-      console.log("Desa response status:", desaResponse.status);
-
-      if (desaResponse.ok) {
-        const desaResult = await desaResponse.json();
-        console.log("Desa result:", desaResult);
-
-        if (desaResult.success && desaResult.data) {
-          totalVillages.value = desaResult.data.length;
-          console.log("Total villages loaded:", totalVillages.value);
-        } else {
-          console.warn("Desa API returned no data, using fallback");
-          // Fallback: use a reasonable number based on typical Indonesian administrative structure
-          totalVillages.value = 117; // Based on the GeoJSON data we saw earlier
-        }
-      } else {
-        console.warn("Desa API failed, using fallback");
-        totalVillages.value = 117; // Fallback
-      }
-    } catch (err) {
-      console.error("Error fetching desa count:", err);
-      // Fallback
-      totalVillages.value = 117;
-    }
-
-    // Mark stats as loaded (but don't start animation yet)
-    statsLoaded.value = true;
-
-    // Start counter animation immediately after data is loaded
-    setTimeout(() => {
-      startCounters();
-    }, 500); // Small delay to ensure DOM is ready
-
-    // Load chart data after hero stats are loaded (lower priority)
-    setTimeout(async () => {
-      console.log("Hero stats loaded, loading charts...");
-      // Call initCharts from the component instance
-      if (window.initChartsComponent) {
-        await window.initChartsComponent.initCharts();
-      }
-    }, 1000);
-  } catch (error) {
-    console.error("Error loading hero stats:", error);
-  }
+  // Skip chart loading since data belum tersedia
 };
 
 // Setup Intersection Observer for stat cards
@@ -1145,6 +1080,9 @@ useHead({
 
 .map-container {
   @apply container mx-auto px-8;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Map Title Frame */
@@ -1168,6 +1106,8 @@ useHead({
   border-top: none;
   min-height: 500px;
   position: relative;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* Analisis Section */
@@ -1348,6 +1288,26 @@ useHead({
   .map-section {
     @apply py-12;
     min-height: 50vh;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .map-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .map-canvas-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   .map-title-text {

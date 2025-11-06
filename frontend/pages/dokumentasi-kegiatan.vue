@@ -23,10 +23,10 @@
         color="blue"
       />
 
-      <!-- Kegiatan Cards Grid -->
+      <!-- Kegiatan Cards Grid - 4 columns -->
       <div
         v-else
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
       >
         <div
           v-for="kegiatan in paginatedDokumentasi.data"
@@ -34,28 +34,37 @@
           @click="
             navigateTo(`/dokumentasi-kegiatan-detail?slug=${kegiatan.slug}`)
           "
-          class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group"
+          class="group relative bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden border border-gray-200 cursor-pointer transition-all duration-300 transform hover:-translate-y-2"
         >
-          <!-- Image dengan placeholder -->
-          <div class="relative h-48 overflow-hidden">
+          <!-- Image Container with Blue Style -->
+          <div
+            class="relative h-52 overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-cyan-50"
+          >
             <img
               :src="getThumbnail(kegiatan)"
               :alt="kegiatan.judul"
-              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               @error="handleImageError"
             />
+            <!-- Light Gradient Overlay -->
             <div
-              class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-semibold"
+              class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"
+            ></div>
+            <!-- Category Badge - Blue Style -->
+            <div class="absolute top-4 left-4 z-10">
+              <span
+                class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-white/95 backdrop-blur-sm text-blue-700 shadow-lg border border-blue-200/60"
             >
               {{ kegiatan.kategori || "Kegiatan" }}
+              </span>
             </div>
-          </div>
-
-          <!-- Content -->
-          <div class="p-6">
-            <div class="flex items-center text-sm text-gray-500 mb-2">
+            <!-- Date Badge - Blue Style -->
+            <div class="absolute bottom-4 right-4 z-10">
+              <div
+                class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-xs font-medium text-gray-700 shadow-lg"
+              >
               <svg
-                class="w-4 h-4 mr-2"
+                  class="w-3.5 h-3.5 text-blue-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -69,21 +78,32 @@
               </svg>
               <span>{{ formatRelativeDate(kegiatan.tanggal) }}</span>
             </div>
+            </div>
+          </div>
+
+          <!-- Content Section - Blue Style -->
+          <div class="p-5 bg-white">
+            <!-- Title -->
             <h3
-              class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-700 transition-colors"
+              class="font-bold text-gray-900 mb-2.5 line-clamp-2 text-sm leading-snug group-hover:text-blue-600 transition-colors duration-200"
             >
               {{ kegiatan.judul }}
             </h3>
-            <p class="text-gray-600 text-sm line-clamp-3 mb-3">
+
+            <!-- Description -->
+            <p
+              class="text-xs text-gray-600 line-clamp-2 mb-4 leading-relaxed"
+            >
               {{ kegiatan.deskripsi }}
             </p>
-            <!-- Tanggal Metadata -->
+
+            <!-- Upload Date Info -->
             <div
-              class="flex flex-col gap-1 text-xs text-gray-400 border-t border-gray-100 pt-3"
+              class="flex items-center justify-between pt-3 border-t border-gray-100"
             >
-              <div class="flex items-center" v-if="kegiatan.dibuatPada">
+              <div class="flex items-center text-xs text-gray-500">
                 <svg
-                  class="w-3 h-3 mr-1.5"
+                  class="w-3.5 h-3.5 mr-1.5 text-blue-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -92,16 +112,19 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M12 4v16m8-8H4"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span
-                  >Dibuat: {{ formatRelativeDate(kegiatan.dibuatPada) }}</span
-                >
+                <span class="font-medium">{{
+                  kegiatan.uploadDate || (kegiatan.dibuatPada ? formatRelativeDate(kegiatan.dibuatPada) : '')
+                }}</span>
               </div>
-              <div class="flex items-center" v-if="kegiatan.diperbaruiPada">
+              <div
+                class="flex items-center text-xs text-blue-600 font-semibold"
+              >
+                <span>Baca selengkapnya</span>
                 <svg
-                  class="w-3 h-3 mr-1.5"
+                  class="w-3.5 h-3.5 ml-1 transform group-hover:translate-x-1 transition-transform duration-200"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -110,13 +133,9 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    d="M9 5l7 7-7 7"
                   />
                 </svg>
-                <span
-                  >Diperbarui:
-                  {{ formatRelativeDate(kegiatan.diperbaruiPada) }}</span
-                >
               </div>
             </div>
           </div>
@@ -234,14 +253,41 @@ const { formatRelativeDate } = useDateFormat();
 const dokumentasiList = ref<any[]>([]);
 const loading = ref(false);
 const currentPage = ref(1);
-const perPage = 6;
+const perPage = 12; // 3 rows x 4 columns
+
+// Helper function to format date
+const formatUploadDate = (dateString: string) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffTime = Math.abs(now.getTime() - date.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return "Hari ini";
+  if (diffDays === 1) return "Kemarin";
+  if (diffDays < 7) return `${diffDays} hari lalu`;
+  if (diffDays < 30) {
+    const weeks = Math.floor(diffDays / 7);
+    return `${weeks} minggu lalu`;
+  }
+  if (diffDays < 365) {
+    const months = Math.floor(diffDays / 30);
+    return `${months} bulan lalu`;
+  }
+  const years = Math.floor(diffDays / 365);
+  return `${years} tahun lalu`;
+};
 
 // Fetch data
 onMounted(async () => {
   loading.value = true;
   const { data } = await getDokumentasiKegiatan();
   if (data && Array.isArray(data)) {
-    dokumentasiList.value = data;
+    // Add uploadDate to each item
+    dokumentasiList.value = data.map((item: any) => ({
+      ...item,
+      uploadDate: formatUploadDate(item.dibuatPada || item.diperbaruiPada),
+    }));
   }
   loading.value = false;
 });

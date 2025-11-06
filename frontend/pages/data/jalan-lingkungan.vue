@@ -663,26 +663,24 @@
               <div class="relative" ref="downloadMenuRef">
                 <button
                   @click.stop="showDownloadMenu = !showDownloadMenu"
-                  class="w-full px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-between text-sm font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700"
+                  class="w-full px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 relative"
                 >
-                  <div class="flex items-center gap-2">
-                    <svg
-                      class="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                      />
-                    </svg>
-                    <span>Download</span>
-                  </div>
                   <svg
-                    class="w-4 h-4 transition-transform"
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                    />
+                  </svg>
+                  <span>Download</span>
+                  <svg
+                    class="w-4 h-4 transition-transform absolute right-4"
                     :class="{ 'rotate-180': showDownloadMenu }"
                     fill="none"
                     stroke="currentColor"
@@ -1042,12 +1040,11 @@ definePageMeta({
 });
 
 useHead({
-  title: "Data Lingkungan SIJALI - SIMANTAP KUBU RAYA",
+  title: "Data Jalan Lingkungan - SIMANTAP KUBU RAYA",
   meta: [
     {
       name: "description",
-      content:
-        "Data lengkap jalan lingkungan Kabupaten Kubu Raya dengan fitur export GeoJSON",
+      content: "Data Jalan Lingkungan Kabupaten Kubu Raya",
     },
   ],
 });
@@ -1226,7 +1223,7 @@ const toggleSelectAll = () => {
 };
 
 const exportSelectedRoads = async () => {
-  console.log("DATA SIJALI - exportSelectedRoads() called");
+  console.log("DATA SIMANTAP - exportSelectedRoads() called");
   console.log("Using POST /api/jalan/export/geojson endpoint");
 
   if (!hasSelectedRoads.value) {
@@ -1537,7 +1534,7 @@ const handleScroll = (event) => {
 
 // Lifecycle
 onMounted(() => {
-  console.log("Data SIJALI Page Loaded");
+  console.log("Data SIMANTAP Page Loaded");
   console.log("Export endpoint: POST /api/jalan/export/geojson");
   fetchRoads();
   fetchKecamatanOptions();

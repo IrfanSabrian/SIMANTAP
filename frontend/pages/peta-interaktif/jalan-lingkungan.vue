@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app overflow-x-hidden">
     <Navbar @toggle-sidebar="handleToggleSidebar" />
 
     <!-- Hero Section -->
@@ -21,13 +21,13 @@
       <div class="hero-container">
         <!-- Hero Text Content -->
         <div class="hero-content-center" data-aos="fade-up">
-          <h1 class="hero-title-main">SIJALI</h1>
+          <h1 class="hero-title-main">Jalan Lingkungan</h1>
           <h2 class="hero-subtitle">Sistem Informasi Jalan Lingkungan</h2>
           <p class="hero-description-text">
-            Sijali adalah sistem informasi geografis yang menyediakan data dan
-            peta interaktif mengenai jalan lingkungan di Kabupaten Kubu Raya,
-            termasuk informasi kondisi, material, dan sebaran geografis untuk
-            mendukung perencanaan dan pengelolaan infrastruktur jalan.
+            Sistem informasi geografis yang menyediakan data dan peta interaktif
+            mengenai jalan lingkungan di Kabupaten Kubu Raya, termasuk informasi
+            kondisi, material, dan sebaran geografis untuk mendukung perencanaan
+            dan pengelolaan infrastruktur jalan.
           </p>
         </div>
 
@@ -177,7 +177,9 @@
           <div class="analisis-card" data-aos="fade-up" data-aos-delay="100">
             <div class="card-header">
               <h3 class="card-title">Analisis Kondisi & Material Jalan</h3>
-              <div class="flex items-center gap-3">
+              <div
+                class="flex flex-col md:flex-row md:items-center gap-3 mt-2 md:mt-0"
+              >
                 <select
                   id="kondisiMaterialFilter"
                   class="px-3 py-1 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -185,7 +187,7 @@
                   <option value="">Semua Kecamatan</option>
                 </select>
                 <svg
-                  class="w-5 h-5 text-gray-400"
+                  class="w-5 h-5 text-gray-400 hidden md:block"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -253,7 +255,9 @@
           <div class="analisis-card" data-aos="fade-up" data-aos-delay="300">
             <div class="card-header">
               <h3 class="card-title">Tingkat Kerusakan per Material</h3>
-              <div class="flex items-center gap-3">
+              <div
+                class="flex flex-col md:flex-row md:items-center gap-3 mt-2 md:mt-0"
+              >
                 <select
                   id="materialDamageFilter"
                   class="px-3 py-1 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -261,7 +265,7 @@
                   <option value="">Semua Kecamatan</option>
                 </select>
                 <svg
-                  class="w-5 h-5 text-gray-400"
+                  class="w-5 h-5 text-gray-400 hidden md:block"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -313,6 +317,9 @@
         </div>
       </div>
     </section>
+
+    <!-- Footer -->
+    <Footer />
   </div>
 </template>
 
@@ -323,6 +330,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 // Import components
 import Navbar from "~/components/Navbar.vue";
+import Footer from "~/components/Footer.vue";
 import MapView from "~/components/MapView.vue";
 
 // Halaman index tidak menggunakan layout default karena sudah punya Navbar sendiri
@@ -768,7 +776,7 @@ onUnmounted(() => {
 
 // Set page meta
 useHead({
-  title: "SIJALI Kab. Kubu Raya - Sistem Informasi Jalan Lingkungan",
+  title: "Sistem Informasi Jalan Lingkungan Kab. Kubu Raya",
   meta: [
     {
       name: "description",
@@ -1137,6 +1145,8 @@ useHead({
 
 .map-container {
   @apply container mx-auto px-8;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* Map Title Frame */
@@ -1158,6 +1168,8 @@ useHead({
 .map-canvas-wrapper {
   @apply rounded-b-xl overflow-hidden shadow-lg;
   border-top: none;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* Analisis Section */
@@ -1178,7 +1190,7 @@ useHead({
 }
 
 .card-header {
-  @apply flex items-center justify-between mb-6;
+  @apply flex flex-col md:flex-row md:items-center md:justify-between mb-6;
 }
 
 .card-title {
@@ -1338,6 +1350,26 @@ useHead({
   .map-section {
     @apply py-12;
     min-height: 50vh;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .map-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .map-canvas-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   .map-title-text {

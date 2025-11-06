@@ -44,7 +44,7 @@
               >
                 <!-- Left Side: Branding Text -->
                 <div
-                  class="w-full lg:max-w-lg lg:flex-shrink-0 order-2 lg:order-1"
+                  class="w-full lg:max-w-lg lg:flex-shrink-0 order-1 lg:order-1"
                 >
                   <div class="relative">
                     <h1
@@ -73,7 +73,7 @@
 
                 <!-- Right Side: Content with Thumbnail -->
                 <div
-                  class="w-full lg:w-auto lg:flex-shrink-0 order-1 lg:order-2 lg:max-w-[450px] lg:ml-auto"
+                  class="w-full lg:w-auto lg:flex-shrink-0 order-2 lg:order-2 lg:max-w-[450px] lg:ml-auto"
                 >
                   <div class="flex flex-col gap-4">
                     <!-- Content Text Block (Above Thumbnail) -->
@@ -186,10 +186,182 @@
       </div>
     </section>
 
+    <!-- Tentang Section -->
+    <section
+      id="tentang"
+      class="pt-12 sm:pt-16 lg:pt-20 pb-6 sm:pb-8 lg:pb-10 bg-white relative overflow-hidden"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="text-center mb-12" data-aos="fade-up">
+          <h2
+            class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4"
+          >
+            Tentang
+          </h2>
+          <p class="text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto">
+            Platform digital terintegrasi untuk manajemen dan perencanaan tata
+            permukiman di Kabupaten Kubu Raya.
+          </p>
+        </div>
+
+        <!-- Content: Text Left, Image Right -->
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 mb-12">
+          <!-- Left Column: Text Content and Statistics -->
+          <div
+            class="lg:col-span-3 flex flex-col justify-start space-y-8"
+            data-aos="fade-right"
+          >
+            <!-- Text Content -->
+            <div class="space-y-4 text-gray-700">
+              <p class="text-base sm:text-lg leading-relaxed">
+                SIMANTAP KUBU RAYA adalah Sistem Informasi Manajemen Tata
+                Permukiman yang dirancang untuk memberikan akses informasi
+                spasial yang komprehensif mengenai infrastruktur permukiman di
+                Kabupaten Kubu Raya. Platform ini memungkinkan pengguna untuk
+                mengakses data jalan lingkungan, jembatan, drainase, kawasan
+                permukiman, dan rumah tidak layak huni secara interaktif melalui
+                peta digital.
+              </p>
+              <p class="text-base sm:text-lg leading-relaxed">
+                Fokus utama sistem ini adalah menyediakan informasi yang akurat
+                dan terupdate untuk mendukung perencanaan pembangunan,
+                monitoring infrastruktur, serta memfasilitasi partisipasi
+                masyarakat dalam pengaduan dan aspirasi terkait tata permukiman.
+                Dengan teknologi geospasial yang terintegrasi, SIMANTAP membantu
+                mewujudkan tata permukiman yang lebih teratur, efisien, dan
+                berkelanjutan.
+              </p>
+            </div>
+
+            <!-- Statistics Row -->
+            <div
+              id="tentangStatsRow"
+              class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <!-- Stat 1: Panjang Jalan Lingkungan -->
+              <div class="text-center">
+                <div
+                  id="tentangRoadLengthCounter"
+                  class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-1"
+                >
+                  0
+                </div>
+                <div class="text-xs sm:text-sm text-gray-600 font-medium">
+                  Panjang Jalan Lingkungan (km)
+                </div>
+              </div>
+
+              <!-- Stat 2: Drainase Lingkungan -->
+              <div class="text-center">
+                <div
+                  id="tentangDrainaseCounter"
+                  class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-1"
+                >
+                  0
+                </div>
+                <div class="text-xs sm:text-sm text-gray-600 font-medium">
+                  Drainase Lingkungan
+                </div>
+              </div>
+
+              <!-- Stat 3: Jembatan Lingkungan -->
+              <div class="text-center">
+                <div
+                  id="tentangJembatanCounter"
+                  class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-1"
+                >
+                  0
+                </div>
+                <div class="text-xs sm:text-sm text-gray-600 font-medium">
+                  Jembatan Lingkungan
+                </div>
+              </div>
+
+              <!-- Stat 4: Perumahan -->
+              <div class="text-center">
+                <div
+                  id="tentangPerumahanCounter"
+                  class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-1"
+                >
+                  0
+                </div>
+                <div class="text-xs sm:text-sm text-gray-600 font-medium">
+                  Perumahan
+                </div>
+              </div>
+
+              <!-- Stat 5: Rumah Tidak Layak Huni -->
+              <div class="text-center">
+                <div
+                  id="tentangRumahCounter"
+                  class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-1"
+                >
+                  0
+                </div>
+                <div class="text-xs sm:text-sm text-gray-600 font-medium">
+                  Rumah Tidak Layak Huni
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Image with Overlay -->
+          <div class="lg:col-span-2 relative" data-aos="fade-left">
+            <!-- Container untuk gambar dan kotak teks -->
+            <div class="relative w-full h-full min-h-[350px] sm:min-h-[350px]">
+              <!-- Image positioned at top left -->
+              <div class="absolute top-0 left-0 w-[85%] sm:w-[80%]">
+                <div class="relative rounded-xl overflow-hidden shadow-2xl">
+                  <img
+                    src="/tentang.png"
+                    alt="SIMANTAP KUBU RAYA"
+                    class="w-full h-auto object-cover"
+                  />
+                </div>
+              </div>
+              <!-- Overlay Text Box positioned at bottom right -->
+              <div
+                class="absolute bottom-10 sm:bottom-8 right-0 bg-white/95 backdrop-blur-sm rounded-lg p-4 sm:p-6 max-w-xs shadow-xl z-10"
+              >
+                <p class="text-sm sm:text-base text-gray-800 leading-relaxed">
+                  "Mengoptimalkan pengelolaan infrastruktur permukiman melalui
+                  sistem informasi terpadu"
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dokumentasi Section Header -->
+    <section
+      id="dokumentasi-header"
+      class="pt-6 sm:pt-8 lg:pt-10 pb-6 sm:pb-8 lg:pb-10 bg-white relative overflow-hidden"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="text-center mb-12" data-aos="fade-up">
+          <h2
+            class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4"
+          >
+            Dokumentasi
+          </h2>
+          <p class="text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto">
+            Dokumentasi lengkap mengenai infrastruktur dan kegiatan yang
+            dilakukan dalam pengelolaan tata permukiman di Kabupaten Kubu Raya.
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- Dokumentasi Section (Infrastruktur & Kegiatan) -->
     <section
       id="dokumentasi"
-      class="py-16 sm:py-20 lg:py-24 bg-white relative overflow-hidden"
+      class="pt-6 sm:pt-8 lg:pt-10 pb-12 sm:pb-16 lg:pb-20 bg-white relative overflow-hidden"
     >
       <!-- Decorative background -->
       <div
@@ -200,9 +372,9 @@
       ></div>
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <!-- Left Column: Dokumentasi (75% width) -->
-          <div class="lg:col-span-3">
+        <div>
+          <!-- Dokumentasi Section -->
+          <div>
             <div
               class="mb-8 flex items-center justify-between"
               data-aos="fade-right"
@@ -239,36 +411,16 @@
               </NuxtLink>
             </div>
 
-            <!-- Category Tabs -->
-            <div class="mb-8 overflow-x-auto">
-              <div
-                class="flex space-x-2 justify-start sm:justify-center min-w-max sm:min-w-0 pb-2"
-              >
-                <button
-                  v-for="category in infraCategories"
-                  :key="category.id"
-                  @click="selectedCategory = category.id"
-                  :class="[
-                    'px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-300 whitespace-nowrap',
-                    selectedCategory === category.id
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
-                  ]"
-                >
-                  {{ category.name }}
-                </button>
-              </div>
-            </div>
-
-            <!-- Video Grid - Limit 3 for homepage -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dokumentasi Infrastruktur Grid - 4 columns, newest first -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <div
                 v-for="(video, index) in filteredVideos"
                 :key="video.id"
-                class="relative bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100"
+                class="group relative bg-white rounded-lg shadow-lg hover:shadow-xl overflow-hidden border-2 border-gray-200 hover:border-blue-500 transition-all duration-300"
                 data-aos="zoom-in"
-                :data-aos-delay="index * 100"
+                :data-aos-delay="index * 50"
               >
+                <!-- Thumbnail Container with Tech Style -->
                 <div
                   @click="
                     video.youtubeUrl
@@ -276,26 +428,26 @@
                       : null
                   "
                   :class="[
-                    'block relative aspect-video bg-gray-200',
+                    'relative aspect-video bg-gray-900 overflow-hidden',
                     video.youtubeUrl
                       ? 'cursor-pointer'
                       : 'cursor-not-allowed opacity-60',
                   ]"
                 >
-                  <!-- Thumbnail -->
+                  <!-- Thumbnail Image -->
                   <img
                     v-if="video.thumbnail"
                     :src="video.thumbnail"
                     :alt="video.title"
-                    class="w-full h-full object-cover"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125"
                   />
                   <div
                     v-else
-                    class="w-full h-full bg-gray-300 flex items-center justify-center"
+                    class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900"
                   >
                     <div class="text-center">
                       <svg
-                        class="w-16 h-16 mx-auto text-gray-400 mb-2"
+                        class="w-12 h-12 mx-auto text-gray-400 mb-2"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -307,16 +459,32 @@
                           d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
                         />
                       </svg>
-                      <p class="text-sm text-gray-500">Video tidak tersedia</p>
+                      <p class="text-xs text-gray-400 font-medium">
+                        Video tidak tersedia
+                      </p>
                     </div>
                   </div>
 
-                  <!-- Play Button Overlay -->
+                  <!-- Dark Overlay -->
                   <div
-                    class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center hover:bg-opacity-50 transition-all duration-200"
+                    class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
+                  ></div>
+
+                  <!-- Category Badge - Tech Style -->
+                  <div class="absolute top-3 left-3 z-10">
+                    <span
+                      class="inline-flex items-center px-3 py-1 rounded-md text-xs font-bold bg-blue-600 text-white shadow-lg uppercase tracking-wide"
+                    >
+                      {{ video.category }}
+                    </span>
+                  </div>
+
+                  <!-- Play Button - Prominent -->
+                  <div
+                    class="absolute inset-0 flex items-center justify-center"
                   >
                     <div
-                      class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors"
+                      class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-2xl border-4 border-white/20 transform group-hover:scale-110 transition-transform duration-300"
                     >
                       <svg
                         class="w-8 h-8 text-white ml-1"
@@ -328,37 +496,50 @@
                     </div>
                   </div>
 
-                  <!-- Duration Badge -->
+                  <!-- Video Badge - Bottom Right -->
                   <div
-                    class="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded"
+                    class="absolute bottom-3 right-3 bg-black/90 text-white text-xs px-2.5 py-1 rounded font-bold uppercase tracking-wide"
                   >
-                    {{ video.duration }}
+                    Video
                   </div>
                 </div>
 
-                <!-- Video Info -->
-                <div class="p-4">
-                  <h3 class="font-bold text-gray-900 mb-2 line-clamp-2">
+                <!-- Content Section - Compact Tech Style -->
+                <div class="p-4 bg-white">
+                  <!-- Title -->
+                  <h3
+                    class="font-bold text-gray-900 mb-2 line-clamp-2 text-sm leading-tight group-hover:text-blue-600 transition-colors duration-200"
+                  >
                     {{ video.title }}
                   </h3>
-                  <p class="text-sm text-gray-600 line-clamp-2">
+
+                  <!-- Description -->
+                  <p
+                    class="text-xs text-gray-600 line-clamp-2 mb-3 leading-relaxed"
+                  >
                     {{ video.description }}
                   </p>
-                  <div class="mt-3 flex items-center text-xs text-gray-500">
-                    <svg
-                      class="w-4 h-4 mr-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <span>{{ video.category }}</span>
+
+                  <!-- Date Info - Single Line -->
+                  <div
+                    class="flex items-center justify-between pt-2 border-t border-gray-200"
+                  >
+                    <div class="flex items-center text-xs text-gray-500">
+                      <svg
+                        class="w-3.5 h-3.5 mr-1.5 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <span class="font-semibold">{{ video.uploadDate }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -420,8 +601,8 @@
                 </NuxtLink>
               </div>
 
-              <!-- Kegiatan Cards Grid -->
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <!-- Kegiatan Cards Grid - 4 columns -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div
                   v-for="(kegiatan, index) in dokumentasiKegiatanHome"
                   :key="kegiatan.id"
@@ -430,51 +611,112 @@
                       `/dokumentasi-kegiatan-detail?slug=${kegiatan.slug}`
                     )
                   "
-                  class="bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer border border-gray-100"
+                  class="group relative bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden border border-gray-200 cursor-pointer transition-all duration-300 transform hover:-translate-y-2"
                   data-aos="fade-up"
-                  :data-aos-delay="index * 100"
+                  :data-aos-delay="index * 50"
                 >
-                  <!-- Image dengan placeholder -->
-                  <div class="relative h-48 overflow-hidden">
+                  <!-- Image Container with Blue Style -->
+                  <div
+                    class="relative h-52 overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-cyan-50"
+                  >
                     <img
                       :src="getThumbnail(kegiatan)"
                       :alt="kegiatan.judul"
-                      class="w-full h-full object-cover"
+                      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       @error="handleImageError"
                     />
+                    <!-- Light Gradient Overlay -->
                     <div
-                      class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-semibold"
-                    >
-                      {{ kegiatan.kategori || "Kegiatan" }}
+                      class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"
+                    ></div>
+                    <!-- Category Badge - Blue Style -->
+                    <div class="absolute top-4 left-4 z-10">
+                      <span
+                        class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-white/95 backdrop-blur-sm text-blue-700 shadow-lg border border-blue-200/60"
+                      >
+                        {{ kegiatan.kategori || "Kegiatan" }}
+                      </span>
+                    </div>
+                    <!-- Date Badge - Blue Style -->
+                    <div class="absolute bottom-4 right-4 z-10">
+                      <div
+                        class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-xs font-medium text-gray-700 shadow-lg"
+                      >
+                        <svg
+                          class="w-3.5 h-3.5 text-blue-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                        </svg>
+                        <span>{{ formatRelativeDate(kegiatan.tanggal) }}</span>
+                      </div>
                     </div>
                   </div>
 
-                  <!-- Content -->
-                  <div class="p-6">
-                    <div class="flex items-center text-sm text-gray-500 mb-2">
-                      <svg
-                        class="w-4 h-4 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                      <span>{{ formatRelativeDate(kegiatan.tanggal) }}</span>
-                    </div>
+                  <!-- Content Section - Blue Style -->
+                  <div class="p-5 bg-white">
+                    <!-- Title -->
                     <h3
-                      class="text-lg font-bold text-gray-900 mb-2 line-clamp-2"
+                      class="font-bold text-gray-900 mb-2.5 line-clamp-2 text-sm leading-snug group-hover:text-blue-600 transition-colors duration-200"
                     >
                       {{ kegiatan.judul }}
                     </h3>
-                    <p class="text-gray-600 text-sm line-clamp-3">
+
+                    <!-- Description -->
+                    <p
+                      class="text-xs text-gray-600 line-clamp-2 mb-4 leading-relaxed"
+                    >
                       {{ kegiatan.deskripsi }}
                     </p>
+
+                    <!-- Upload Date Info -->
+                    <div
+                      class="flex items-center justify-between pt-3 border-t border-gray-100"
+                    >
+                      <div class="flex items-center text-xs text-gray-500">
+                        <svg
+                          class="w-3.5 h-3.5 mr-1.5 text-blue-500"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        <span class="font-medium">{{
+                          kegiatan.uploadDate
+                        }}</span>
+                      </div>
+                      <div
+                        class="flex items-center text-xs text-blue-600 font-semibold"
+                      >
+                        <span>Baca selengkapnya</span>
+                        <svg
+                          class="w-3.5 h-3.5 ml-1 transform group-hover:translate-x-1 transition-transform duration-200"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -501,366 +743,6 @@
               </div>
             </div>
           </div>
-          <!-- End of Left Column -->
-
-          <!-- Right Column: Peta dan Aduan Infrastruktur (25% width) -->
-          <div class="lg:col-span-1">
-            <div class="mb-6 sticky top-24" data-aos="fade-left">
-              <h2
-                class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 relative inline-block"
-              >
-                Peta dan Aduan Infrastruktur
-                <div
-                  class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-500 to-transparent rounded-full"
-                ></div>
-              </h2>
-
-              <!-- Infrastructure Cards -->
-              <div class="space-y-4 mt-6">
-                <!-- Jalan Lingkungan -->
-                <div
-                  class="bg-white rounded-xl shadow-lg cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300"
-                  @click="openSijali('jalan')"
-                  data-aos="fade-up"
-                  data-aos-delay="100"
-                >
-                  <div class="p-4 flex items-center">
-                    <div
-                      class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-lg"
-                    >
-                      <img
-                        src="/assets/images/sijali-logo.svg"
-                        alt="Jalan Lingkungan"
-                        class="w-8 h-8"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-                      />
-                      <svg
-                        class="w-8 h-8 text-blue-600 hidden"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 10V3L4 14h7v7l9-11h-7z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="ml-3 flex-1">
-                      <h3 class="text-sm font-bold text-gray-900 mb-1">
-                        Jalan Lingkungan
-                      </h3>
-                      <p class="text-gray-600 text-xs leading-relaxed">
-                        Layanan pengaduan jalan
-                      </p>
-                    </div>
-                    <div class="flex-shrink-0 text-blue-600">
-                      <svg
-                        class="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 5l7 7-7 7"
-                        ></path>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Jembatan Lingkungan -->
-                <div
-                  class="bg-white rounded-xl shadow-lg cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300"
-                  @click="openSijali('jembatan')"
-                  data-aos="fade-up"
-                  data-aos-delay="200"
-                >
-                  <div class="p-4 flex items-center">
-                    <div
-                      class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-lg"
-                    >
-                      <img
-                        src="/assets/images/sijali-logo.svg"
-                        alt="Jembatan Lingkungan"
-                        class="w-8 h-8"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-                      />
-                      <svg
-                        class="w-8 h-8 text-blue-600 hidden"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 10V3L4 14h7v7l9-11h-7z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="ml-3 flex-1">
-                      <h3 class="text-sm font-bold text-gray-900 mb-1">
-                        Jembatan Lingkungan
-                      </h3>
-                      <p class="text-gray-600 text-xs leading-relaxed">
-                        Monitoring jembatan
-                      </p>
-                    </div>
-                    <div class="flex-shrink-0 text-blue-600">
-                      <svg
-                        class="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 5l7 7-7 7"
-                        ></path>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Drainase Lingkungan -->
-                <div
-                  class="bg-white rounded-xl shadow-lg cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300"
-                  @click="openSijali('drainase')"
-                  data-aos="fade-up"
-                  data-aos-delay="300"
-                >
-                  <div class="p-4 flex items-center">
-                    <div
-                      class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-lg"
-                    >
-                      <img
-                        src="/assets/images/sijali-logo.svg"
-                        alt="Drainase Lingkungan"
-                        class="w-8 h-8"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-                      />
-                      <svg
-                        class="w-8 h-8 text-blue-600 hidden"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 10V3L4 14h7v7l9-11h-7z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="ml-3 flex-1">
-                      <h3 class="text-sm font-bold text-gray-900 mb-1">
-                        Drainase Lingkungan
-                      </h3>
-                      <p class="text-gray-600 text-xs leading-relaxed">
-                        Sistem drainase
-                      </p>
-                    </div>
-                    <div class="flex-shrink-0 text-blue-600">
-                      <svg
-                        class="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 5l7 7-7 7"
-                        ></path>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Kawasan Permukiman -->
-                <div
-                  class="bg-white rounded-xl shadow-lg cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300"
-                  @click="openSijali('kawasan')"
-                  data-aos="fade-up"
-                  data-aos-delay="400"
-                >
-                  <div class="p-4 flex items-center">
-                    <div
-                      class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-lg"
-                    >
-                      <img
-                        src="/assets/images/sijali-logo.svg"
-                        alt="Kawasan Permukiman"
-                        class="w-8 h-8"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-                      />
-                      <svg
-                        class="w-8 h-8 text-blue-600 hidden"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 10V3L4 14h7v7l9-11h-7z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="ml-3 flex-1">
-                      <h3 class="text-sm font-bold text-gray-900 mb-1">
-                        Kawasan Permukiman
-                      </h3>
-                      <p class="text-gray-600 text-xs leading-relaxed">
-                        Pengelolaan kawasan
-                      </p>
-                    </div>
-                    <div class="flex-shrink-0 text-blue-600">
-                      <svg
-                        class="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 5l7 7-7 7"
-                        ></path>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Rumah Tidak Layak Huni -->
-                <div
-                  class="bg-white rounded-xl shadow-lg cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300"
-                  @click="openSijali('rumah')"
-                  data-aos="fade-up"
-                  data-aos-delay="500"
-                >
-                  <div class="p-4 flex items-center">
-                    <div
-                      class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-lg"
-                    >
-                      <img
-                        src="/assets/images/sijali-logo.svg"
-                        alt="Rumah Tidak Layak Huni"
-                        class="w-8 h-8"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-                      />
-                      <svg
-                        class="w-8 h-8 text-blue-600 hidden"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 10V3L4 14h7v7l9-11h-7z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="ml-3 flex-1">
-                      <h3 class="text-sm font-bold text-gray-900 mb-1">
-                        Rumah Tidak Layak Huni
-                      </h3>
-                      <p class="text-gray-600 text-xs leading-relaxed">
-                        Program perbaikan rumah
-                      </p>
-                    </div>
-                    <div class="flex-shrink-0 text-blue-600">
-                      <svg
-                        class="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 5l7 7-7 7"
-                        ></path>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Aspirasi Masyarakat -->
-                <div
-                  class="bg-white rounded-xl shadow-lg cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300"
-                  @click="openSijali('aspirasi')"
-                  data-aos="fade-up"
-                  data-aos-delay="600"
-                >
-                  <div class="p-4 flex items-center">
-                    <div
-                      class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-lg"
-                    >
-                      <img
-                        src="/assets/images/sijali-logo.svg"
-                        alt="Aspirasi Masyarakat"
-                        class="w-8 h-8"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-                      />
-                      <svg
-                        class="w-8 h-8 text-blue-600 hidden"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 10V3L4 14h7v7l9-11h-7z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="ml-3 flex-1">
-                      <h3 class="text-sm font-bold text-gray-900 mb-1">
-                        Aspirasi Masyarakat
-                      </h3>
-                      <p class="text-gray-600 text-xs leading-relaxed">
-                        Wadah aspirasi
-                      </p>
-                    </div>
-                    <div class="flex-shrink-0 text-blue-600">
-                      <svg
-                        class="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 5l7 7-7 7"
-                        ></path>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -877,6 +759,7 @@ import "swiper/css/autoplay";
 import "swiper/css/effect-fade";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { CountUp } from "countup.js";
 
 const config = useRuntimeConfig();
 // Use SIMANTAP's useContentApi instead of useWebProfilApi
@@ -999,7 +882,7 @@ const heroSlides = ref([
       "Data komprehensif infrastruktur jalan lingkungan di Kabupaten Kubu Raya.",
     brandingDescription:
       "Jalan lingkungan adalah infrastruktur jalan yang berada di dalam kawasan permukiman untuk melayani kebutuhan transportasi lokal masyarakat.",
-    link: "/peta-interaktif/sijali",
+    link: "/peta-interaktif/jalan-lingkungan",
   },
   {
     image: "/slider/jembatan_lingkungan.png",
@@ -1043,29 +926,40 @@ const heroSlides = ref([
 const statsData = ref<any>(null);
 const dokumentasiKegiatanHome = ref<any[]>([]);
 const dokumentasiInfrastrukturHome = ref<any[]>([]);
+const roadLengthKm = ref<string>("0");
 
-// Dokumentasi Infrastruktur data
-const selectedCategory = ref("Jalan_Lingkungan");
+// CountUp instances for Tentang section
+let tentangRoadLengthCounter: any = null;
+let tentangDrainaseCounter: any = null;
+let tentangJembatanCounter: any = null;
+let tentangPerumahanCounter: any = null;
+let tentangRumahCounter: any = null;
 
-const infraCategories = [
-  { id: "Jalan_Lingkungan", name: "Jalan Lingkungan", shortId: "jalan" },
-  {
-    id: "Jembatan_Lingkungan",
-    name: "Jembatan Lingkungan",
-    shortId: "jembatan",
-  },
-  {
-    id: "Drainase_Lingkungan",
-    name: "Drainase Lingkungan",
-    shortId: "drainase",
-  },
-  { id: "Kawasan_Permukiman", name: "Kawasan Permukiman", shortId: "kawasan" },
-  {
-    id: "Rumah_Tidak_Layak_Huni",
-    name: "Rumah Tidak Layak Huni",
-    shortId: "rumah",
-  },
-];
+// Flag to track if animation has been played
+const tentangAnimationPlayed = ref(false);
+
+// Helper function to format date
+const formatUploadDate = (dateString: string) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffTime = Math.abs(now.getTime() - date.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return "Hari ini";
+  if (diffDays === 1) return "Kemarin";
+  if (diffDays < 7) return `${diffDays} hari lalu`;
+  if (diffDays < 30) {
+    const weeks = Math.floor(diffDays / 7);
+    return `${weeks} minggu lalu`;
+  }
+  if (diffDays < 365) {
+    const months = Math.floor(diffDays / 30);
+    return `${months} bulan lalu`;
+  }
+  const years = Math.floor(diffDays / 365);
+  return `${years} tahun lalu`;
+};
 
 // Helper functions for YouTube
 const extractYouTubeVideoId = (url: string) => {
@@ -1127,13 +1021,12 @@ const formatJenisInfrastruktur = (jenis: string) => {
   return jenis.replace(/_/g, " ");
 };
 
-// Load dokumentasi infrastruktur from API
+// Load dokumentasi infrastruktur from API - all categories, newest first
 const loadDokumentasiInfrastruktur = async () => {
   try {
-    // Use the composable method instead of direct fetch
+    // Load all categories without filter, limit 4 (1 row x 4 columns)
     const { data, error } = await useContentApi().getDokumentasiInfrastruktur({
-      jenisInfrastruktur: selectedCategory.value,
-      limit: 3,
+      limit: 4,
     });
 
     if (error) {
@@ -1142,6 +1035,7 @@ const loadDokumentasiInfrastruktur = async () => {
       return;
     }
 
+    // Data is already sorted by dibuatPada desc from API
     dokumentasiInfrastrukturHome.value = (data as any[]) || [];
   } catch (error) {
     console.error("Error loading dokumentasi infrastruktur:", error);
@@ -1149,7 +1043,7 @@ const loadDokumentasiInfrastruktur = async () => {
   }
 };
 
-// Transform data for display
+// Transform data for display - already sorted by newest first from API
 const filteredVideos = computed(() => {
   if (
     !dokumentasiInfrastrukturHome.value ||
@@ -1158,48 +1052,42 @@ const filteredVideos = computed(() => {
     return [];
   }
 
-  return dokumentasiInfrastrukturHome.value
-    .map((item: any) => {
-      let title = formatJenisInfrastruktur(item.jenisInfrastruktur);
+  return dokumentasiInfrastrukturHome.value.map((item: any) => {
+    let title = formatJenisInfrastruktur(item.jenisInfrastruktur);
 
-      // Add road info for Jalan Lingkungan
-      if (item.roadInfo && item.roadInfo.namaJalan) {
-        title += ` - ${item.roadInfo.namaJalan}`;
-        if (item.roadInfo.kecamatan) {
-          title += ` - ${item.roadInfo.kecamatan}`;
-        }
-        if (item.roadInfo.desa) {
-          title += ` - ${item.roadInfo.desa}`;
-        }
-      } else if (item.noRuas) {
-        title += ` - ${item.noRuas}`;
+    // Add road info for Jalan Lingkungan
+    if (item.roadInfo && item.roadInfo.namaJalan) {
+      title += ` - ${item.roadInfo.namaJalan}`;
+      if (item.roadInfo.kecamatan) {
+        title += ` - ${item.roadInfo.kecamatan}`;
       }
+      if (item.roadInfo.desa) {
+        title += ` - ${item.roadInfo.desa}`;
+      }
+    } else if (item.noRuas) {
+      title += ` - ${item.noRuas}`;
+    }
 
-      return {
-        id: item.id,
-        category: formatJenisInfrastruktur(item.jenisInfrastruktur),
-        title,
-        description: `Video dokumentasi ${formatJenisInfrastruktur(
-          item.jenisInfrastruktur
-        ).toLowerCase()} dengan nomor ruas ${item.noRuas || ""}`,
-        youtubeUrl: item.linkYoutube || "",
-        thumbnail: getYouTubeThumbnail(item.linkYoutube || ""),
-        duration: "Video",
-        roadInfo: item.roadInfo || null,
-      };
-    })
-    .slice(0, 3); // Limit to 3 videos for homepage
-});
-
-// Watch for category changes
-watch(selectedCategory, () => {
-  loadDokumentasiInfrastruktur();
+    return {
+      id: item.id,
+      category: formatJenisInfrastruktur(item.jenisInfrastruktur),
+      title,
+      description: `Video dokumentasi ${formatJenisInfrastruktur(
+        item.jenisInfrastruktur
+      ).toLowerCase()} dengan nomor ruas ${item.noRuas || ""}`,
+      youtubeUrl: item.linkYoutube || "",
+      thumbnail: getYouTubeThumbnail(item.linkYoutube || ""),
+      duration: "Video",
+      roadInfo: item.roadInfo || null,
+      uploadDate: formatUploadDate(item.dibuatPada || item.diperbaruiPada),
+    };
+  });
 });
 
 // Function to open SIMANTAP pages
-const openSijali = (type: string) => {
+const openSimantap = (type: string) => {
   const routeMap: Record<string, string> = {
-    jalan: "/peta-interaktif/sijali",
+    jalan: "/peta-interaktif/jalan-lingkungan",
     jembatan: "/peta-interaktif/jembatan",
     drainase: "/peta-interaktif/drainase",
     kawasan: "/peta-interaktif/kawasan",
@@ -1207,8 +1095,152 @@ const openSijali = (type: string) => {
     aspirasi: "/peta-interaktif/aspirasi",
   };
 
-  const route = routeMap[type] || "/peta-interaktif/sijali";
+  const route = routeMap[type] || "/peta-interaktif/jalan-lingkungan";
   navigateTo(route);
+};
+
+// Initialize CountUp instances for Tentang section
+const initializeTentangCounters = () => {
+  if (typeof window !== "undefined") {
+    tentangRoadLengthCounter = new CountUp("tentangRoadLengthCounter", 0, {
+      duration: 1.2,
+      useEasing: true,
+      useGrouping: true,
+      separator: ",",
+    });
+
+    tentangDrainaseCounter = new CountUp("tentangDrainaseCounter", 0, {
+      duration: 1.2,
+      useEasing: true,
+      useGrouping: true,
+      separator: ",",
+    });
+
+    tentangJembatanCounter = new CountUp("tentangJembatanCounter", 0, {
+      duration: 1.2,
+      useEasing: true,
+      useGrouping: true,
+      separator: ",",
+    });
+
+    tentangPerumahanCounter = new CountUp("tentangPerumahanCounter", 0, {
+      duration: 1.2,
+      useEasing: true,
+      useGrouping: true,
+      separator: ",",
+    });
+
+    tentangRumahCounter = new CountUp("tentangRumahCounter", 0, {
+      duration: 1.2,
+      useEasing: true,
+      useGrouping: true,
+      separator: ",",
+    });
+  }
+};
+
+// Start counter animations sequentially
+const startTentangCounters = () => {
+  // Prevent animation from playing multiple times
+  if (tentangAnimationPlayed.value) return;
+
+  // Mark animation as played
+  tentangAnimationPlayed.value = true;
+
+  // Reset counters to 0 first
+  if (tentangRoadLengthCounter) tentangRoadLengthCounter.reset();
+  if (tentangDrainaseCounter) tentangDrainaseCounter.reset();
+  if (tentangJembatanCounter) tentangJembatanCounter.reset();
+  if (tentangPerumahanCounter) tentangPerumahanCounter.reset();
+  if (tentangRumahCounter) tentangRumahCounter.reset();
+
+  // Get road length value
+  const roadLengthValue = parseInt(roadLengthKm.value) || 0;
+
+  // Start animations sequentially with smooth transitions
+  // Stat 1: Start immediately (0ms)
+  setTimeout(() => {
+    if (tentangRoadLengthCounter && roadLengthValue > 0) {
+      tentangRoadLengthCounter.update(roadLengthValue);
+    }
+  }, 0);
+
+  // Stat 2: Start with slight overlap (300ms)
+  setTimeout(() => {
+    if (tentangDrainaseCounter) {
+      tentangDrainaseCounter.update(0);
+    }
+  }, 300);
+
+  // Stat 3: Start with slight overlap (600ms)
+  setTimeout(() => {
+    if (tentangJembatanCounter) {
+      tentangJembatanCounter.update(0);
+    }
+  }, 600);
+
+  // Stat 4: Start with slight overlap (900ms)
+  setTimeout(() => {
+    if (tentangPerumahanCounter) {
+      tentangPerumahanCounter.update(0);
+    }
+  }, 900);
+
+  // Stat 5: Start with slight overlap (1200ms)
+  setTimeout(() => {
+    if (tentangRumahCounter) {
+      tentangRumahCounter.update(0);
+    }
+  }, 1200);
+};
+
+// Setup Intersection Observer for Tentang stats
+const setupTentangStatsObserver = () => {
+  if (typeof window === "undefined") return;
+
+  const statsElement = document.querySelector(
+    "#tentangStatsRow"
+  ) as HTMLElement;
+  if (!statsElement) return;
+
+  // Create intersection observer
+  const options = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.3, // Trigger when 30% of the element is visible
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && !tentangAnimationPlayed.value) {
+        // Element is visible, start counter animation after AOS delay
+        // AOS delay is 200ms, so we wait a bit more to ensure AOS is done
+        setTimeout(() => {
+          startTentangCounters();
+        }, 500);
+      }
+    });
+  }, options);
+
+  // Start observing the stats element
+  observer.observe(statsElement);
+
+  // Check if element is already visible (for desktop)
+  setTimeout(() => {
+    if (!tentangAnimationPlayed.value) {
+      const rect = statsElement.getBoundingClientRect();
+      const isPartiallyVisible =
+        rect.top <
+          (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.bottom > 0;
+
+      if (isPartiallyVisible) {
+        setTimeout(() => {
+          startTentangCounters();
+        }, 500);
+      }
+    }
+  }, 1000);
 };
 
 // Initialize data
@@ -1223,19 +1255,37 @@ onMounted(async () => {
   });
 
   // Fetch stats for hero section
-  const { data: stats } = await getStats();
-  if (stats) {
-    statsData.value = stats;
-  }
+  // NOTE: Data belum tersedia untuk selain jalan lingkungan, tidak request API, tetap tampilkan 0
+  // Set default values to 0 (tidak request API karena data belum tersedia)
+  statsData.value = {
+    jalan: { totalPanjangKm: 0 },
+    jembatan: { totalPanjangKm: 0 },
+    drainase: { totalPanjangKm: 0 },
+    kawasan: { totalPanjangKm: 0 },
+    rumah: { totalPanjangKm: 0 },
+  };
+  roadLengthKm.value = "0";
 
-  // Fetch dokumentasi kegiatan (limit 3)
-  const { data: dokumentasi } = await getDokumentasiKegiatan({ limit: 3 });
+  // Fetch dokumentasi kegiatan (limit 16 for 4 rows x 4 columns)
+  const { data: dokumentasi } = await getDokumentasiKegiatan({ limit: 16 });
   if (dokumentasi && Array.isArray(dokumentasi)) {
-    dokumentasiKegiatanHome.value = dokumentasi;
+    // Add uploadDate to each item
+    dokumentasiKegiatanHome.value = dokumentasi.map((item: any) => ({
+      ...item,
+      uploadDate: formatUploadDate(item.dibuatPada || item.diperbaruiPada),
+    }));
   }
 
-  // Fetch dokumentasi infrastruktur (limit 3)
+  // Fetch dokumentasi infrastruktur (limit 4 for 1 row x 4 columns)
   await loadDokumentasiInfrastruktur();
+
+  // Initialize Tentang section counters
+  initializeTentangCounters();
+
+  // Setup intersection observer for Tentang stats (with delay to ensure DOM is ready)
+  setTimeout(() => {
+    setupTentangStatsObserver();
+  }, 500);
 
   // Wait for Fancybox to be loaded from CDN
   nextTick(() => {
@@ -1316,6 +1366,13 @@ onMounted(async () => {
   align-items: center;
   height: 64px;
   flex-wrap: nowrap;
+}
+
+@media (max-width: 1023px) {
+  .hero-thumbnail-container {
+    gap: 8px;
+    height: 48px;
+  }
 }
 
 .hero-title-text {
@@ -1407,6 +1464,13 @@ onMounted(async () => {
   display: inline-block;
   flex-shrink: 0;
   box-sizing: border-box;
+}
+
+@media (max-width: 1023px) {
+  .hero-thumbnail {
+    width: 60px;
+    height: 48px;
+  }
 }
 
 .hero-thumbnail img {

@@ -222,9 +222,9 @@ const handleLogin = async () => {
         loginTime: new Date().toISOString(),
       };
 
-      localStorage.setItem("sijali_user", JSON.stringify(userData));
+      localStorage.setItem("simantap_user", JSON.stringify(userData));
       localStorage.setItem(
-        "sijali_token",
+        "simantap_token",
         btoa(user.username + ":" + Date.now())
       );
 

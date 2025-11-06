@@ -124,9 +124,9 @@
               >
                 <div class="py-1">
                   <NuxtLink
-                    to="/peta-interaktif/sijali"
+                    to="/peta-interaktif/jalan-lingkungan"
                     class="block px-4 py-2 text-sm text-white hover:bg-white/20"
-                    >Jalan Lingkungan (SIJALI)</NuxtLink
+                    >Jalan Lingkungan</NuxtLink
                   >
                   <NuxtLink
                     to="/peta-interaktif/jembatan"
@@ -180,9 +180,9 @@
               >
                 <div class="py-1">
                   <NuxtLink
-                    to="/data/sijali"
+                    to="/data/jalan-lingkungan"
                     class="block px-4 py-2 text-sm text-white hover:bg-white/20"
-                    >Jalan Lingkungan (SIJALI)</NuxtLink
+                    >Jalan Lingkungan</NuxtLink
                   >
                   <NuxtLink
                     to="/data/jembatan"
@@ -395,10 +395,10 @@
           </button>
           <div v-show="petaInteraktifMenuOpen" class="pl-4 mt-2 space-y-2">
             <NuxtLink
-              to="/peta-interaktif/sijali"
+              to="/peta-interaktif/jalan-lingkungan"
               @click="closeMobileMenu"
               class="block px-3 py-2 rounded-md text-sm transition-colors text-white/80 hover:text-blue-400"
-              >Jalan Lingkungan (SIJALI)</NuxtLink
+              >Jalan Lingkungan</NuxtLink
             >
             <NuxtLink
               to="/peta-interaktif/jembatan"
@@ -451,10 +451,10 @@
           </button>
           <div v-show="dataMenuOpen" class="pl-4 mt-2 space-y-2">
             <NuxtLink
-              to="/data/sijali"
+              to="/data/jalan-lingkungan"
               @click="closeMobileMenu"
               class="block px-3 py-2 rounded-md text-sm transition-colors text-white/80 hover:text-blue-400"
-              >Jalan Lingkungan (SIJALI)</NuxtLink
+              >Jalan Lingkungan</NuxtLink
             >
             <NuxtLink
               to="/data/jembatan"

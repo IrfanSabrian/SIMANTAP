@@ -7,8 +7,8 @@ const isAuthenticated = ref(false);
 export const useAuth = () => {
   // Initialize auth state from localStorage
   const initAuth = () => {
-    const storedUser = localStorage.getItem("sijali_user");
-    const storedToken = localStorage.getItem("sijali_token");
+    const storedUser = localStorage.getItem("simantap_user");
+    const storedToken = localStorage.getItem("simantap_token");
 
     if (storedUser && storedToken) {
       try {
@@ -31,8 +31,8 @@ export const useAuth = () => {
   const logout = () => {
     user.value = null;
     isAuthenticated.value = false;
-    localStorage.removeItem("sijali_user");
-    localStorage.removeItem("sijali_token");
+    localStorage.removeItem("simantap_user");
+    localStorage.removeItem("simantap_token");
   };
 
   // Check if user has specific permission

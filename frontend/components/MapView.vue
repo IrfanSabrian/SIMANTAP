@@ -170,12 +170,14 @@
                 <path d="M3 6h18M3 12h18M3 18h18" />
               </svg>
               <img
-                src="/assets/images/sijali-logo.svg"
+                src="/simantap-logo.svg"
                 alt="SIMANTAP Logo"
                 class="h-12 w-12 object-contain flex-shrink-0"
               />
               <div class="leading-tight text-left">
-                <div class="text-base font-extrabold tracking-wide">SIMANTAP</div>
+                <div class="text-base font-extrabold tracking-wide">
+                  SIMANTAP
+                </div>
                 <div class="text-[11px] text-gray-500 dark:text-gray-400">
                   Kubu Raya
                 </div>
@@ -2894,7 +2896,7 @@ const printMap = () => {
     view.takeScreenshot().then((screenshot) => {
       const link = document.createElement("a");
       link.href = screenshot.dataUrl;
-      link.download = `peta-sijali-${
+      link.download = `peta-simantap-${
         new Date().toISOString().split("T")[0]
       }.png`;
       link.click();
@@ -2925,7 +2927,7 @@ const exportMap = () => {
         .then((screenshot) => {
           const link = document.createElement("a");
           link.href = screenshot.dataUrl;
-          link.download = `peta-sijali-${
+          link.download = `peta-simantap-${
             new Date().toISOString().split("T")[0]
           }.${selectedFormat.extension}`;
           link.click();
@@ -3233,7 +3235,7 @@ const handleExportGeoJSON = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "sijali-drawings.geojson";
+    a.download = "simantap-drawings.geojson";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

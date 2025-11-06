@@ -88,14 +88,15 @@ export default defineNuxtConfig({
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
           name: "description",
-          content: "Sistem Informasi Manajemen Tata Permukiman - Kabupaten Kubu Raya",
+          content:
+            "Sistem Informasi Manajemen Tata Permukiman - Kabupaten Kubu Raya",
         },
       ],
       link: [
         {
           rel: "icon",
           type: "image/svg+xml",
-          href: "/sijali-logo.svg",
+          href: "/simantap-logo.svg",
         },
         {
           rel: "preconnect",
