@@ -3,6 +3,9 @@ const { PrismaClient } = require("@prisma/client");
 const archiver = require("archiver");
 const stream = require("stream");
 const shpwrite = require("@mapbox/shp-write");
+const shpWrite = require("shp-write");
+const shapefile = require("shapefile");
+const nickShpWrite = require("@nickrsan/shp-write");
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -1434,58 +1437,170 @@ router.post("/export/geojson", async (req, res) => {
       if (!road.geom_wkt) continue;
 
       try {
-        const geomStr = road.geom_wkt;
+        const geomStr = road.geom_wkt.trim();
+        let geometryType = null;
         let coordinates = [];
 
-        if (geomStr && geomStr.startsWith("LINESTRING")) {
-          const coordsStr = geomStr.replace("LINESTRING(", "").replace(")", "");
+        // Handle LINESTRING
+        if (geomStr.toUpperCase().startsWith("LINESTRING")) {
+          geometryType = "LineString";
+          // Remove LINESTRING prefix and parentheses, handle Z/M if present
+          let coordsStr = geomStr
+            .replace(/^LINESTRING\s*Z?\s*M?\s*\(/i, "")
+            .replace(/\)$/, "");
+
           const pairs = coordsStr.split(",");
-          coordinates = pairs.map((pair) => {
-            const [lon, lat] = pair.trim().split(" ");
-            return [parseFloat(lon), parseFloat(lat)];
-          });
+          coordinates = pairs
+            .map((pair) => {
+              const parts = pair.trim().split(/\s+/);
+              const lon = parseFloat(parts[0]);
+              const lat = parseFloat(parts[1]);
+              // Only use lon and lat (ignore Z or M if present)
+              if (
+                !isNaN(lon) &&
+                !isNaN(lat) &&
+                isFinite(lon) &&
+                isFinite(lat)
+              ) {
+                return [lon, lat];
+              }
+              return null;
+            })
+            .filter((coord) => coord !== null);
+        }
+        // Handle MULTILINESTRING
+        else if (geomStr.toUpperCase().startsWith("MULTILINESTRING")) {
+          geometryType = "MultiLineString";
+          // Remove MULTILINESTRING prefix and outer parentheses
+          let coordsStr = geomStr
+            .replace(/^MULTILINESTRING\s*Z?\s*M?\s*\(/i, "")
+            .replace(/\)$/, "");
+
+          // Split by "), (" to get individual LineString parts
+          const lineStrings = coordsStr.split(/\),\s*\(/);
+
+          coordinates = lineStrings
+            .map((lineStr) => {
+              // Clean up parentheses
+              const cleanStr = lineStr.replace(/^\(/, "").replace(/\)$/, "");
+              const pairs = cleanStr.split(",");
+              return pairs
+                .map((pair) => {
+                  const parts = pair.trim().split(/\s+/);
+                  const lon = parseFloat(parts[0]);
+                  const lat = parseFloat(parts[1]);
+                  if (
+                    !isNaN(lon) &&
+                    !isNaN(lat) &&
+                    isFinite(lon) &&
+                    isFinite(lat)
+                  ) {
+                    return [lon, lat];
+                  }
+                  return null;
+                })
+                .filter((coord) => coord !== null);
+            })
+            .filter((line) => line.length > 0);
         }
 
-        if (coordinates.length > 0) {
+        if (geometryType && coordinates.length > 0) {
+          // Use fid as feature id, fallback to 0 if null
+          const featureId =
+            road.fid !== null && road.fid !== undefined ? road.fid : 0;
+
           features.push({
             type: "Feature",
-            id: road.id,
+            id: featureId,
             geometry: {
-              type: "LineString",
+              type: geometryType,
               coordinates: coordinates,
             },
             properties: {
-              id: road.id,
-              fid: road.fid,
-              no_ruas: road.no_ruas,
-              no_prov: road.no_prov,
-              no_kab: road.no_kab,
-              no_kec: road.no_kec,
-              no_desa: road.no_desa,
-              no_jalan: road.no_jalan,
-              nama: road.nama,
-              nama_jalan: road.nama_jalan,
-              panjang_m: road.panjang_m,
-              lebar_m_: road.lebar_m_,
-              tahun: road.tahun,
-              kondisi: road.kondisi,
-              nilai: road.nilai,
-              bobot: road.bobot,
-              keterangan: road.keterangan,
-              kecamatan: road.kecamatan,
-              desa: road.desa,
-              utm_x_awal: road.utm_x_awal,
-              utm_y_awal: road.utm_y_awal,
-              pngnl_awal: road.pngnl_awal,
-              utm_x_akhi: road.utm_x_akhi,
-              utm_y_akhi: road.utm_y_akhi,
-              pngnl_akhi: road.pngnl_akhi,
-              shape_leng: road.shape_leng,
-              shape_le_1: road.shape_le_1,
-              shape_le_2: road.shape_le_2,
-              shape_le_3: road.shape_le_3,
-              shape_le_4: road.shape_le_4,
-              shape_le_5: road.shape_le_5,
+              FID: road.fid !== null && road.fid !== undefined ? road.fid : 0,
+              No_Ruas: road.no_ruas || "",
+              No_Prov:
+                road.no_prov !== null && road.no_prov !== undefined
+                  ? road.no_prov
+                  : 0,
+              No_Kab:
+                road.no_kab !== null && road.no_kab !== undefined
+                  ? road.no_kab
+                  : 0,
+              No_Kec:
+                road.no_kec !== null && road.no_kec !== undefined
+                  ? road.no_kec
+                  : 0,
+              No_Desa:
+                road.no_desa !== null && road.no_desa !== undefined
+                  ? road.no_desa
+                  : 0,
+              No_Jalan: road.no_jalan || "",
+              Nama: road.nama || "",
+              Nama_Jalan: road.nama_jalan || "",
+              Panjang_M:
+                road.panjang_m !== null && road.panjang_m !== undefined
+                  ? road.panjang_m
+                  : 0,
+              Lebar_m_:
+                road.lebar_m_ !== null && road.lebar_m_ !== undefined
+                  ? road.lebar_m_
+                  : 0,
+              Tahun: road.tahun || "",
+              Kondisi: road.kondisi || "",
+              Nilai:
+                road.nilai !== null && road.nilai !== undefined
+                  ? road.nilai
+                  : 0,
+              Bobot:
+                road.bobot !== null && road.bobot !== undefined
+                  ? road.bobot
+                  : 0,
+              Keterangan: road.keterangan || "",
+              Kecamatan: road.kecamatan || "",
+              Desa: road.desa || "",
+              UTM_X_AWAL:
+                road.utm_x_awal !== null && road.utm_x_awal !== undefined
+                  ? road.utm_x_awal
+                  : 0,
+              UTM_Y_AWAL:
+                road.utm_y_awal !== null && road.utm_y_awal !== undefined
+                  ? road.utm_y_awal
+                  : 0,
+              Pngnl_Awal: road.pngnl_awal || "",
+              UTM_X_AKHI:
+                road.utm_x_akhi !== null && road.utm_x_akhi !== undefined
+                  ? road.utm_x_akhi
+                  : 0,
+              UTM_Y_AKHI:
+                road.utm_y_akhi !== null && road.utm_y_akhi !== undefined
+                  ? road.utm_y_akhi
+                  : 0,
+              Pngnl_Akhi: road.pngnl_akhi || "",
+              Shape_Leng:
+                road.shape_leng !== null && road.shape_leng !== undefined
+                  ? road.shape_leng
+                  : 0,
+              Shape_Le_1:
+                road.shape_le_1 !== null && road.shape_le_1 !== undefined
+                  ? road.shape_le_1
+                  : 0,
+              Shape_Le_2:
+                road.shape_le_2 !== null && road.shape_le_2 !== undefined
+                  ? road.shape_le_2
+                  : 0,
+              Shape_Le_3:
+                road.shape_le_3 !== null && road.shape_le_3 !== undefined
+                  ? road.shape_le_3
+                  : 0,
+              Shape_Le_4:
+                road.shape_le_4 !== null && road.shape_le_4 !== undefined
+                  ? road.shape_le_4
+                  : 0,
+              Shape_Le_5:
+                road.shape_le_5 !== null && road.shape_le_5 !== undefined
+                  ? road.shape_le_5
+                  : 0,
             },
           });
         }
@@ -1529,7 +1644,8 @@ router.post("/export/geojson", async (req, res) => {
   }
 });
 
-// POST /api/jalan/export/shapefile - Export selected roads as Shapefile
+// POST /api/jalan/export/shapefile - REMOVED: Feature disabled due to issues
+/*
 router.post("/export/shapefile", async (req, res) => {
   try {
     const { ids } = req.body;
@@ -1569,22 +1685,116 @@ router.post("/export/shapefile", async (req, res) => {
 
     const roads = await prisma.$queryRawUnsafe(query, ...ids);
 
+    // Define field mapping once - ALL features must have the SAME field names
+    // Shapefile requires field names max 10 chars, alphanumeric + underscore only
+    const fieldMapping = {
+      id: "id",
+      fid: "fid",
+      no_ruas: "no_ruas",
+      no_prov: "no_prov",
+      no_kab: "no_kab",
+      no_kec: "no_kec",
+      no_desa: "no_desa",
+      no_jalan: "no_jalan",
+      nama: "nama",
+      nama_jalan: "nama_jln", // truncated to 10 chars
+      panjang_m: "panjang_m",
+      lebar_m_: "lebar_m",
+      tahun: "tahun",
+      kondisi: "kondisi",
+      nilai: "nilai",
+      bobot: "bobot",
+      keterangan: "ket",
+      kecamatan: "kecamatan",
+      desa: "desa",
+      utm_x_awal: "utm_x_aw",
+      utm_y_awal: "utm_y_aw",
+      utm_x_akhi: "utm_x_ak",
+      utm_y_akhi: "utm_y_ak",
+      shape_leng: "shape_lng",
+    };
+
+    // Helper function to sanitize value for DBF format
+    // CRITICAL: DBF format is very strict - must return proper types
+    const sanitizeValue = (value, defaultValue = "") => {
+      if (value === null || value === undefined) {
+        return defaultValue;
+      }
+      if (typeof value === "number") {
+        // Ensure number is finite and valid
+        if (!isFinite(value)) {
+          return defaultValue === "" ? 0 : defaultValue;
+        }
+        return value;
+      }
+      if (typeof value === "string") {
+        // Limit string length to 254 characters (DBF limit)
+        // Remove null bytes and control characters that can break DBF
+        const cleaned = value
+          .replace(/\0/g, "") // Remove null bytes
+          .replace(/[\x00-\x1F\x7F]/g, "") // Remove control characters
+          .trim();
+        return cleaned.length > 254 ? cleaned.substring(0, 254) : cleaned;
+      }
+      if (typeof value === "boolean") {
+        return value ? 1 : 0;
+      }
+      // Convert other types to string, but ensure it's safe
+      const strValue = String(value)
+        .replace(/\0/g, "")
+        .replace(/[\x00-\x1F\x7F]/g, "")
+        .trim();
+      return strValue.length > 254 ? strValue.substring(0, 254) : strValue;
+    };
+
+    // Define expected property keys in fixed order - CRITICAL for shapefile sync
+    const expectedPropertyKeys = [
+      fieldMapping.id,
+      fieldMapping.fid,
+      fieldMapping.no_ruas,
+      fieldMapping.no_prov,
+      fieldMapping.no_kab,
+      fieldMapping.no_kec,
+      fieldMapping.no_desa,
+      fieldMapping.no_jalan,
+      fieldMapping.nama,
+      fieldMapping.nama_jalan,
+      fieldMapping.panjang_m,
+      fieldMapping.lebar_m_,
+      fieldMapping.tahun,
+      fieldMapping.kondisi,
+      fieldMapping.nilai,
+      fieldMapping.bobot,
+      fieldMapping.keterangan,
+      fieldMapping.kecamatan,
+      fieldMapping.desa,
+      fieldMapping.utm_x_awal,
+      fieldMapping.utm_y_awal,
+      fieldMapping.utm_x_akhi,
+      fieldMapping.utm_y_akhi,
+      fieldMapping.shape_leng,
+    ];
+
     const features = [];
     for (const road of roads) {
-      if (!road.geom_wkt) continue;
+      if (!road.geom_wkt) {
+        console.warn(`⚠️ Road ${road.id}: Missing geometry, skipping`);
+        continue;
+      }
 
       try {
-        const geomStr = road.geom_wkt;
+        const geomStr = road.geom_wkt.trim();
+        let geometryType = null;
         let coordinates = [];
 
-        if (geomStr && geomStr.startsWith("LINESTRING")) {
-          // Handle LINESTRING and LINESTRING Z/M formats
-          // Remove LINESTRING prefix and extract coordinates
+        // Handle LINESTRING
+        if (geomStr && geomStr.toUpperCase().startsWith("LINESTRING")) {
+          geometryType = "LineString";
+          // Remove LINESTRING prefix and parentheses, handle Z/M if present
           let coordsStr = geomStr
             .replace(/^LINESTRING\s*Z?\s*M?\s*\(/i, "")
             .replace(/\)$/, "");
 
-          // Split by comma and parse each coordinate pair
           const pairs = coordsStr.split(",");
           coordinates = pairs
             .map((pair) => {
@@ -1602,89 +1812,208 @@ router.post("/export/shapefile", async (req, res) => {
               }
               return null;
             })
-            .filter((coord) => coord !== null); // Remove invalid coordinates
+            .filter((coord) => coord !== null);
+        }
+        // Handle MULTILINESTRING
+        else if (
+          geomStr &&
+          geomStr.toUpperCase().startsWith("MULTILINESTRING")
+        ) {
+          geometryType = "MultiLineString";
+          // Remove MULTILINESTRING prefix and outer parentheses
+          let coordsStr = geomStr
+            .replace(/^MULTILINESTRING\s*Z?\s*M?\s*\(/i, "")
+            .replace(/\)$/, "");
+
+          // Split by "), (" to get individual LineString parts
+          const lineStrings = coordsStr.split(/\),\s*\(/);
+
+          coordinates = lineStrings
+            .map((lineStr) => {
+              // Clean up parentheses
+              const cleanStr = lineStr.replace(/^\(/, "").replace(/\)$/, "");
+              const pairs = cleanStr.split(",");
+              return pairs
+                .map((pair) => {
+                  const parts = pair.trim().split(/\s+/);
+                  const lon = parseFloat(parts[0]);
+                  const lat = parseFloat(parts[1]);
+                  if (
+                    !isNaN(lon) &&
+                    !isNaN(lat) &&
+                    isFinite(lon) &&
+                    isFinite(lat)
+                  ) {
+                    return [lon, lat];
+                  }
+                  return null;
+                })
+                .filter((coord) => coord !== null);
+            })
+            .filter((line) => line.length > 0);
         }
 
-        // Validate coordinates
-        const validCoordinates = coordinates.filter(
-          (coord) =>
-            Array.isArray(coord) &&
-            coord.length === 2 &&
-            !isNaN(coord[0]) &&
-            !isNaN(coord[1]) &&
-            isFinite(coord[0]) &&
-            isFinite(coord[1])
-        );
+        // Validate coordinates based on geometry type
+        let validCoordinates = [];
+        let isValid = false;
 
-        if (validCoordinates.length >= 2) {
-          // Create properties object for shapefile
-          // Shapefile field names are limited to 10 characters and must be valid
-          // Also, we need to clean up null values and ensure proper types
-          const properties = {};
-
-          // Helper function to add property with proper type and field name
-          // Shapefile requires field names max 10 chars and no null values
-          const addProp = (key, value, maxLength = 10) => {
-            // Only add if value is not null/undefined
-            if (value !== null && value !== undefined) {
-              // Truncate field name to max 10 characters for shapefile compatibility
-              const fieldName = key.substring(0, maxLength);
-              // Convert to appropriate type - shapefile doesn't like null
-              if (typeof value === "number") {
-                properties[fieldName] = isFinite(value) ? value : 0;
-              } else if (typeof value === "string") {
-                // Empty string is OK, but we'll use it as is
-                properties[fieldName] = value;
-              } else if (typeof value === "boolean") {
-                properties[fieldName] = value ? 1 : 0;
-              } else {
-                properties[fieldName] = String(value);
-              }
-            }
-          };
-
-          addProp("id", road.id);
-          addProp("fid", road.fid);
-          addProp("no_ruas", road.no_ruas);
-          addProp("no_prov", road.no_prov);
-          addProp("no_kab", road.no_kab);
-          addProp("no_kec", road.no_kec);
-          addProp("no_desa", road.no_desa);
-          addProp("no_jalan", road.no_jalan);
-          addProp("nama", road.nama);
-          addProp("nama_jln", road.nama_jalan); // truncated to 10 chars
-          addProp("panjang_m", road.panjang_m);
-          addProp("lebar_m", road.lebar_m_);
-          addProp("tahun", road.tahun);
-          addProp("kondisi", road.kondisi);
-          addProp("nilai", road.nilai);
-          addProp("bobot", road.bobot);
-          // Skip null values - only add if exists
-          if (road.keterangan) {
-            addProp("ket", road.keterangan.substring(0, 254));
-          }
-          addProp("kecamatan", road.kecamatan);
-          addProp("desa", road.desa);
-          addProp("utm_x_aw", road.utm_x_awal);
-          addProp("utm_y_aw", road.utm_y_awal);
-          addProp("utm_x_ak", road.utm_x_akhi);
-          addProp("utm_y_ak", road.utm_y_akhi);
-          addProp("shape_lng", road.shape_leng);
-
-          features.push({
-            type: "Feature",
-            geometry: {
-              type: "LineString",
-              coordinates: validCoordinates,
-            },
-            properties: properties,
+        if (geometryType === "LineString") {
+          validCoordinates = coordinates.filter(
+            (coord) =>
+              Array.isArray(coord) &&
+              coord.length === 2 &&
+              !isNaN(coord[0]) &&
+              !isNaN(coord[1]) &&
+              isFinite(coord[0]) &&
+              isFinite(coord[1])
+          );
+          isValid = validCoordinates.length >= 2;
+        } else if (geometryType === "MultiLineString") {
+          // For MultiLineString, validate each LineString part
+          validCoordinates = coordinates.filter((line) => {
+            if (!Array.isArray(line) || line.length === 0) return false;
+            return line.every(
+              (coord) =>
+                Array.isArray(coord) &&
+                coord.length === 2 &&
+                !isNaN(coord[0]) &&
+                !isNaN(coord[1]) &&
+                isFinite(coord[0]) &&
+                isFinite(coord[1])
+            );
           });
+          isValid =
+            validCoordinates.length > 0 &&
+            validCoordinates.some((line) => line.length >= 2);
+        }
+
+        if (!isValid || !geometryType) {
+          console.warn(
+            `⚠️ Road ${road.id}: Invalid geometry (type: ${geometryType}, coords: ${coordinates.length}), skipping`
+          );
+          continue;
+        }
+
+        // Create properties object with ALL fields in FIXED ORDER
+        // This ensures .shp and .dbf files stay perfectly synchronized
+        const properties = {};
+
+        // Always include all fields in the exact same order, even if null
+        for (const key of expectedPropertyKeys) {
+          // Map back to original field name
+          let originalKey = null;
+          for (const [orig, mapped] of Object.entries(fieldMapping)) {
+            if (mapped === key) {
+              originalKey = orig;
+              break;
+            }
+          }
+          if (originalKey) {
+            properties[key] = sanitizeValue(
+              road[originalKey],
+              /^(id|fid|no_|panjang|lebar|nilai|bobot|utm_|shape_)/i.test(key)
+                ? 0
+                : ""
+            );
+          } else {
+            // Fallback - should not happen but ensures consistency
+            properties[key] =
+              /^(id|fid|no_|panjang|lebar|nilai|bobot|utm_|shape_)/i.test(key)
+                ? 0
+                : "";
+          }
+        }
+
+        // Verify all expected keys are present
+        const missingKeys = expectedPropertyKeys.filter(
+          (k) => !(k in properties)
+        );
+        if (missingKeys.length > 0) {
+          console.error(
+            `❌ Road ${road.id}: Missing property keys: ${missingKeys.join(
+              ", "
+            )}`
+          );
+          // Fill missing keys to ensure consistency
+          for (const key of missingKeys) {
+            properties[key] =
+              /^(id|fid|no_|panjang|lebar|nilai|bobot|utm_|shape_)/i.test(key)
+                ? 0
+                : "";
+          }
+        }
+
+        // Ensure coordinates are properly formatted (exactly [lon, lat] pairs)
+        // Keep original geometry types - @nickrsan/shp-write should handle them correctly
+        if (geometryType === "LineString") {
+          const finalCoordinates = validCoordinates.map((coord) => [
+            parseFloat(coord[0]),
+            parseFloat(coord[1]),
+          ]);
+
+          // Verify coordinates are valid
+          if (finalCoordinates.length >= 2) {
+            features.push({
+              type: "Feature",
+              geometry: {
+                type: "LineString",
+                coordinates: finalCoordinates,
+              },
+              properties: properties,
+            });
+          } else {
+            console.warn(
+              `⚠️ Road ${road.id}: LineString has < 2 valid coordinates, skipping`
+            );
+          }
+        } else if (geometryType === "MultiLineString") {
+          // Keep MultiLineString but ensure all parts have valid coordinates
+          const lineStrings = validCoordinates
+            .map((line) => {
+              if (!Array.isArray(line) || line.length < 2) {
+                return null; // Skip invalid line parts
+              }
+              const coords = line.map((coord) => [
+                parseFloat(coord[0]),
+                parseFloat(coord[1]),
+              ]);
+              // Verify all coordinates are valid
+              const allValid = coords.every(
+                (c) =>
+                  !isNaN(c[0]) &&
+                  !isNaN(c[1]) &&
+                  isFinite(c[0]) &&
+                  isFinite(c[1])
+              );
+              if (allValid && coords.length >= 2) {
+                return coords;
+              }
+              return null;
+            })
+            .filter((line) => line !== null); // Remove invalid parts
+
+          // Only add if at least one valid LineString part exists
+          if (lineStrings.length > 0) {
+            features.push({
+              type: "Feature",
+              geometry: {
+                type: "MultiLineString",
+                coordinates: lineStrings,
+              },
+              properties: properties,
+            });
+          } else {
+            console.warn(
+              `⚠️ Road ${road.id}: MultiLineString has no valid LineString parts, skipping`
+            );
+          }
         }
       } catch (parseError) {
         console.error(
-          `Error parsing geometry for road ${road.id}:`,
+          `❌ Error parsing geometry for road ${road.id}:`,
           parseError
         );
+        // Skip this road - don't add to features to maintain sync
       }
     }
 
@@ -1700,42 +2029,24 @@ router.post("/export/shapefile", async (req, res) => {
       features: features,
     };
 
+    // Count geometry types
+    const geometryTypes = {};
+    features.forEach((f) => {
+      const type = f.geometry?.type || "Unknown";
+      geometryTypes[type] = (geometryTypes[type] || 0) + 1;
+    });
+
     console.log(
       `✅ Shapefile export ready: ${features.length} features with geometry`
     );
+    console.log(`📊 Geometry types:`, geometryTypes);
 
-    // Set headers for ZIP download (must be set before piping)
+    // Set headers for ZIP download
     res.setHeader("Content-Type", "application/zip");
     res.setHeader(
       "Content-Disposition",
       `attachment; filename="jalan_lingkungan_${new Date().getTime()}.zip"`
     );
-
-    // Create ZIP archive
-    const archive = archiver("zip", {
-      zlib: { level: 9 }, // Maximum compression
-    });
-
-    // Handle archive errors
-    archive.on("error", (err) => {
-      console.error("❌ Archive error:", err);
-      console.error("Error stack:", err.stack);
-      if (!res.headersSent) {
-        res.status(500).json({
-          success: false,
-          error: "Failed to create shapefile archive",
-          message: err.message,
-        });
-      }
-    });
-
-    // Handle archive finish
-    archive.on("end", () => {
-      console.log(`✅ Archive finalized. Total bytes: ${archive.pointer()}`);
-    });
-
-    // Pipe archive to response
-    archive.pipe(res);
 
     // Convert GeoJSON to shapefile using @mapbox/shp-write
     try {
@@ -1762,46 +2073,101 @@ router.post("/export/shapefile", async (req, res) => {
         throw new Error("No features in GeoJSON");
       }
 
-      // Validate that all features have valid geometry
-      // For LineString, we need at least 2 coordinates
-      const validFeatures = geojson.features.filter((f) => {
-        if (!f.geometry || !f.geometry.coordinates) return false;
-        if (!Array.isArray(f.geometry.coordinates)) return false;
-        if (
-          f.geometry.type === "LineString" &&
-          f.geometry.coordinates.length < 2
-        ) {
-          console.warn(`⚠️ LineString with less than 2 coordinates skipped`);
-          return false;
+      // All features should already be validated and have consistent structure
+      // Just ensure properties are normalized using the predefined keys
+      // DO NOT filter features here - this causes .shp/.dbf mismatch
+      console.log(
+        `📋 Normalizing ${geojson.features.length} features with predefined property keys`
+      );
+
+      // Normalize each feature to have EXACTLY the same properties in the same order
+      // Use the predefined expectedPropertyKeys to ensure consistency
+      const normalizedFeatures = geojson.features.map((feature, idx) => {
+        // Ensure properties exist
+        if (!feature.properties) {
+          feature.properties = {};
         }
-        // Ensure all coordinates are valid arrays with 2 elements
-        const allValid = f.geometry.coordinates.every(
-          (coord) =>
-            Array.isArray(coord) &&
-            coord.length >= 2 &&
-            !isNaN(coord[0]) &&
-            !isNaN(coord[1])
+
+        const normalizedProps = {};
+
+        // Add all expected properties in the exact same order
+        for (const key of expectedPropertyKeys) {
+          const value = feature.properties[key];
+          // Ensure no null/undefined - use appropriate default
+          if (value === null || value === undefined) {
+            // Determine default based on key pattern
+            const isNumeric =
+              /^(id|fid|no_|panjang|lebar|nilai|bobot|utm_|shape_)/i.test(key);
+            normalizedProps[key] = isNumeric ? 0 : "";
+          } else {
+            normalizedProps[key] = value;
+          }
+        }
+
+        // Verify all expected keys are present
+        const missingKeys = expectedPropertyKeys.filter(
+          (k) => !(k in normalizedProps)
         );
-        return allValid && f.geometry.coordinates.length > 0;
+        if (missingKeys.length > 0) {
+          console.warn(
+            `⚠️ Feature ${idx}: Missing keys, filling defaults: ${missingKeys.join(
+              ", "
+            )}`
+          );
+          for (const key of missingKeys) {
+            const isNumeric =
+              /^(id|fid|no_|panjang|lebar|nilai|bobot|utm_|shape_)/i.test(key);
+            normalizedProps[key] = isNumeric ? 0 : "";
+          }
+        }
+
+        // Create normalized feature - ensure geometry is valid
+        return {
+          type: "Feature",
+          geometry: feature.geometry, // Already validated, use as-is
+          properties: normalizedProps,
+        };
       });
 
-      if (validFeatures.length === 0) {
-        throw new Error("No features with valid geometry");
+      // Verify all normalized features have identical structure
+      const allConsistent = normalizedFeatures.every((f, idx) => {
+        const propKeys = Object.keys(f.properties);
+        if (propKeys.length !== expectedPropertyKeys.length) {
+          console.error(
+            `❌ Feature ${idx}: Properties count mismatch! Expected ${expectedPropertyKeys.length}, got ${propKeys.length}`
+          );
+          return false;
+        }
+        // Check that all expected keys are present (order doesn't matter for object keys)
+        const allKeysPresent = expectedPropertyKeys.every(
+          (k) => k in f.properties
+        );
+        if (!allKeysPresent) {
+          console.error(`❌ Feature ${idx}: Missing expected property keys!`);
+          return false;
+        }
+        return true;
+      });
+
+      if (!allConsistent) {
+        throw new Error(
+          "Failed to normalize features - structure inconsistency detected"
+        );
       }
+
+      console.log(
+        `✅ Normalized ${normalizedFeatures.length} features with identical structure`
+      );
 
       const validGeoJSON = {
         type: "FeatureCollection",
-        features: validFeatures,
+        features: normalizedFeatures,
       };
 
-      console.log(
-        `✅ Validated GeoJSON: ${validFeatures.length} valid features`
-      );
-
       // Log first feature structure for debugging
-      if (validFeatures.length > 0) {
-        const firstFeature = validFeatures[0];
-        console.log("📋 First feature structure:", {
+      if (normalizedFeatures.length > 0) {
+        const firstFeature = normalizedFeatures[0];
+        console.log("📋 First normalized feature structure:", {
           type: firstFeature.type,
           geometry: {
             type: firstFeature.geometry.type,
@@ -1813,185 +2179,370 @@ router.post("/export/shapefile", async (req, res) => {
               ],
           },
           properties_count: Object.keys(firstFeature.properties || {}).length,
+          properties_keys: Object.keys(firstFeature.properties || {}).sort(),
         });
       }
 
-      // @mapbox/shp-write library expects features to be organized by geometry type
-      // The library groups features internally, but we need to ensure the structure is correct
-      // Try using zip() method first which handles everything internally
-      console.log("🔄 Trying @mapbox/shp-write.zip() method first...");
+      // All validation and normalization is done above
+      // Now we'll use shp-write library (not @mapbox/shp-write) for better reliability
 
-      try {
-        // zip() method returns a Promise or Buffer directly depending on version
-        console.log("📦 Calling shpwrite.zip()...");
-        const zipResult = shpwrite.zip(validGeoJSON);
-
-        console.log(
-          "📊 zip() result type:",
-          typeof zipResult,
-          zipResult instanceof Promise ? "Promise" : "Not Promise",
-          Buffer.isBuffer(zipResult) ? "Buffer" : "Not Buffer"
-        );
-
-        if (zipResult instanceof Promise) {
-          // If it returns a Promise, wait for it
-          console.log("⏳ zip() returned Promise, waiting...");
-          zipResult
-            .then((zipResult) => {
-              console.log(
-                "✅ Promise resolved, result type:",
-                typeof zipResult,
-                Buffer.isBuffer(zipResult) ? "Buffer" : "Not Buffer"
-              );
-
-              let zipBuffer;
-              if (Buffer.isBuffer(zipResult)) {
-                zipBuffer = zipResult;
-              } else if (typeof zipResult === "string") {
-                // If it's a string, might be base64 encoded
-                console.log("⚠️ zip() returned string, trying to convert...");
-                try {
-                  // Try base64 decode
-                  zipBuffer = Buffer.from(zipResult, "base64");
-                  console.log(
-                    "✅ Converted from base64, size:",
-                    zipBuffer.length
-                  );
-                } catch (e) {
-                  // If not base64, try as binary string
-                  zipBuffer = Buffer.from(zipResult, "binary");
-                  console.log(
-                    "✅ Converted from binary string, size:",
-                    zipBuffer.length
-                  );
-                }
-              } else {
-                console.error(
-                  "❌ zip() Promise resolved but result is not a Buffer or string"
-                );
-                throw new Error("zip() returned invalid result");
-              }
-
-              if (zipBuffer && zipBuffer.length > 0) {
-                console.log(
-                  `✅ Shapefile ZIP created. Size: ${zipBuffer.length} bytes`
-                );
-                res.send(zipBuffer);
-                console.log(`✅ Shapefile ZIP sent to client`);
-                console.log(`====================================\n`);
-              } else {
-                throw new Error("zip() returned empty buffer");
-              }
-            })
-            .catch((zipError) => {
-              console.error("❌ Error with zip() Promise:", zipError);
-              // Fall through to write() method
-              useWriteMethod();
-            });
-          return; // Exit early, response will be sent in Promise
-        } else if (Buffer.isBuffer(zipResult)) {
-          // Direct buffer result
-          console.log(
-            `✅ Shapefile ZIP created directly. Size: ${zipResult.length} bytes`
-          );
-          res.send(zipResult);
-          console.log(`✅ Shapefile ZIP sent to client`);
-          console.log(`====================================\n`);
-          return; // Exit early
-        } else {
-          console.warn("⚠️ zip() returned unexpected type:", typeof zipResult);
-          throw new Error("zip() returned unexpected type");
-        }
-      } catch (zipError) {
-        console.error("❌ Error with zip() method:", zipError);
-        console.error("Error stack:", zipError.stack);
-        console.log("⚠️ Falling back to write() method...");
-        // Continue to write() method below
+      // Verify GeoJSON structure before sending to library
+      if (!validGeoJSON.type || validGeoJSON.type !== "FeatureCollection") {
+        throw new Error("Invalid GeoJSON type - must be FeatureCollection");
+      }
+      if (!Array.isArray(validGeoJSON.features)) {
+        throw new Error("Invalid GeoJSON features - must be an array");
+      }
+      if (validGeoJSON.features.length === 0) {
+        throw new Error("No features in GeoJSON");
       }
 
-      // Fallback to write() method
-      function useWriteMethod() {
-        try {
-          console.log("🔄 Using @mapbox/shp-write.write() method...");
+      // Verify first feature structure
+      const firstFeature = validGeoJSON.features[0];
+      if (!firstFeature.geometry || !firstFeature.geometry.type) {
+        throw new Error("First feature missing geometry or geometry type");
+      }
+      if (!Array.isArray(firstFeature.geometry.coordinates)) {
+        throw new Error("First feature geometry coordinates must be an array");
+      }
 
-          // @mapbox/shp-write might need features grouped by geometry type
-          // Let's ensure all features have the same geometry type
-          const geometryTypes = [
-            ...new Set(validGeoJSON.features.map((f) => f.geometry.type)),
-          ];
-          console.log("📊 Geometry types in features:", geometryTypes);
+      console.log("✅ GeoJSON structure validated before sending to shpwrite");
 
-          if (geometryTypes.length > 1) {
-            console.warn(
-              "⚠️ Multiple geometry types detected, this might cause issues"
+      // CRITICAL: All features should already be validated and normalized
+      // Just ensure coordinates are in the exact format library expects [lon, lat]
+      // DO NOT filter features - this will cause .shp/.dbf mismatch
+      // All features passed here should be valid
+      console.log(
+        `📋 Final validation: ${validGeoJSON.features.length} features ready for shapefile conversion`
+      );
+
+      // Double-check that all features have valid geometry (should already be validated)
+      const finalFeatures = validGeoJSON.features.map((feature, idx) => {
+        // Verify geometry exists (should already be validated)
+        if (!feature.geometry || !feature.geometry.coordinates) {
+          throw new Error(
+            `Feature ${idx}: Missing geometry - this should not happen after validation`
+          );
+        }
+
+        const geometryType = feature.geometry.type;
+        const coords = feature.geometry.coordinates;
+
+        // Ensure coordinates are in correct format [lon, lat] pairs
+        // Handle both LineString and MultiLineString (keep original types)
+        let finalCoords;
+
+        if (geometryType === "LineString") {
+          // Verify and format LineString coordinates
+          if (!Array.isArray(coords) || coords.length < 2) {
+            throw new Error(`Feature ${idx}: Invalid LineString coordinates`);
+          }
+
+          finalCoords = coords.map((coord, coordIdx) => {
+            if (!Array.isArray(coord) || coord.length < 2) {
+              throw new Error(
+                `Feature ${idx}, coordinate ${coordIdx}: Invalid format`
+              );
+            }
+            const lon = parseFloat(coord[0]);
+            const lat = parseFloat(coord[1]);
+            if (isNaN(lon) || isNaN(lat) || !isFinite(lon) || !isFinite(lat)) {
+              throw new Error(
+                `Feature ${idx}, coordinate ${coordIdx}: Invalid values`
+              );
+            }
+            return [lon, lat];
+          });
+        } else if (geometryType === "MultiLineString") {
+          // Verify and format MultiLineString coordinates
+          if (!Array.isArray(coords) || coords.length === 0) {
+            throw new Error(
+              `Feature ${idx}: Invalid MultiLineString coordinates`
             );
           }
 
-          // Try to write - if it fails, the error will be caught
-          const shapefile = shpwrite.write(validGeoJSON);
+          finalCoords = coords
+            .map((line, lineIdx) => {
+              if (!Array.isArray(line) || line.length < 2) {
+                console.warn(
+                  `⚠️ Feature ${idx}, LineString ${lineIdx}: Invalid or too short, skipping this part`
+                );
+                return null;
+              }
 
-          if (!shapefile || typeof shapefile !== "object") {
-            throw new Error("shp-write returned invalid result");
+              const validLine = line
+                .map((coord, coordIdx) => {
+                  if (!Array.isArray(coord) || coord.length < 2) {
+                    return null;
+                  }
+                  const lon = parseFloat(coord[0]);
+                  const lat = parseFloat(coord[1]);
+                  if (
+                    isNaN(lon) ||
+                    isNaN(lat) ||
+                    !isFinite(lon) ||
+                    !isFinite(lat)
+                  ) {
+                    return null;
+                  }
+                  return [lon, lat];
+                })
+                .filter((c) => c !== null); // Remove invalid coordinates
+
+              // Only return line if it has at least 2 valid coordinates
+              return validLine.length >= 2 ? validLine : null;
+            })
+            .filter((line) => line !== null); // Remove invalid line parts
+
+          // Ensure at least one valid LineString part exists
+          if (finalCoords.length === 0) {
+            throw new Error(
+              `Feature ${idx}: MultiLineString has no valid LineString parts`
+            );
           }
-
-          const fileKeys = Object.keys(shapefile);
-          console.log(
-            `✅ Shapefile conversion successful. Files: ${fileKeys.length}`,
-            fileKeys
+        } else {
+          throw new Error(
+            `Feature ${idx}: Unsupported geometry type ${geometryType}`
           );
+        }
 
-          if (fileKeys.length === 0) {
-            throw new Error("Shapefile conversion returned no files");
-          }
-
-          // Add all shapefile components to archive
-          console.log(`📦 Adding ${fileKeys.length} files to archive...`);
-
-          for (const filename of fileKeys) {
-            const data = shapefile[filename];
-
-            if (Buffer.isBuffer(data)) {
-              archive.append(data, { name: filename });
-              console.log(`  ✓ Added ${filename} (${data.length} bytes)`);
+        // Ensure properties are normalized and sanitized for DBF format
+        const normalizedProps = {};
+        for (const key of expectedPropertyKeys) {
+          const value = feature.properties?.[key];
+          if (value === null || value === undefined) {
+            const isNumeric =
+              /^(id|fid|no_|panjang|lebar|nilai|bobot|utm_|shape_)/i.test(key);
+            normalizedProps[key] = isNumeric ? 0 : "";
+          } else {
+            // Sanitize value to ensure DBF compatibility
+            if (typeof value === "string") {
+              // Remove null bytes and control characters
+              normalizedProps[key] = value
+                .replace(/\0/g, "")
+                .replace(/[\x00-\x1F\x7F]/g, "")
+                .trim()
+                .substring(0, 254); // DBF string limit
+            } else if (typeof value === "number") {
+              normalizedProps[key] = isFinite(value) ? value : 0;
             } else {
-              // Try to convert to buffer
-              const buffer = Buffer.isBuffer(data)
-                ? data
-                : Buffer.from(String(data || ""));
-              archive.append(buffer, { name: filename });
-              console.log(
-                `  ✓ Added ${filename} (converted, ${buffer.length} bytes)`
-              );
+              // Convert to string and sanitize
+              normalizedProps[key] = String(value)
+                .replace(/\0/g, "")
+                .replace(/[\x00-\x1F\x7F]/g, "")
+                .trim()
+                .substring(0, 254);
             }
           }
-
-          console.log(`✅ All files added to archive`);
-
-          // Finalize the archive
-          archive
-            .finalize()
-            .then(() => {
-              console.log(`✅ Archive finalized successfully`);
-              console.log(`====================================\n`);
-            })
-            .catch((finalizeError) => {
-              console.error("❌ Error finalizing archive:", finalizeError);
-              console.error("Error stack:", finalizeError.stack);
-              if (!res.headersSent) {
-                res.status(500).json({
-                  success: false,
-                  error: "Failed to finalize archive",
-                  message: finalizeError.message,
-                });
-              }
-            });
-        } catch (writeError) {
-          throw writeError;
         }
+
+        return {
+          type: "Feature",
+          geometry: {
+            type: geometryType, // Keep original geometry type
+            coordinates: finalCoords,
+          },
+          properties: normalizedProps,
+        };
+      });
+
+      console.log(
+        `✅ All ${finalFeatures.length} features validated and formatted for shapefile`
+      );
+
+      const sanitizedGeoJSON = {
+        type: "FeatureCollection",
+        features: finalFeatures,
+      };
+
+      console.log(
+        `✅ Sanitized ${finalFeatures.length} features with validated coordinates`
+      );
+
+      // CRITICAL: Final validation - filter out any features that might be rejected by library
+      // Library @mapbox/shp-write may silently skip features with invalid geometry
+      const finalValidFeatures = sanitizedGeoJSON.features.filter(
+        (feature, idx) => {
+          // Ensure geometry exists and is valid
+          if (!feature.geometry || !feature.geometry.coordinates) {
+            console.warn(`⚠️ Feature ${idx}: Missing geometry, filtering out`);
+            return false;
+          }
+
+          // Ensure LineString has at least 2 coordinates
+          if (feature.geometry.type === "LineString") {
+            const coords = feature.geometry.coordinates;
+            if (!Array.isArray(coords) || coords.length < 2) {
+              console.warn(
+                `⚠️ Feature ${idx}: LineString has < 2 coordinates, filtering out`
+              );
+              return false;
+            }
+
+            // Verify all coordinates are valid
+            const allValid = coords.every((coord) => {
+              return (
+                Array.isArray(coord) &&
+                coord.length >= 2 &&
+                !isNaN(coord[0]) &&
+                !isNaN(coord[1]) &&
+                isFinite(coord[0]) &&
+                isFinite(coord[1])
+              );
+            });
+
+            if (!allValid) {
+              console.warn(
+                `⚠️ Feature ${idx}: Invalid coordinates, filtering out`
+              );
+              return false;
+            }
+          } else {
+            console.warn(
+              `⚠️ Feature ${idx}: Unexpected geometry type ${feature.geometry.type}, filtering out`
+            );
+            return false;
+          }
+
+          // Ensure properties exist and have all required keys
+          if (!feature.properties) {
+            console.warn(
+              `⚠️ Feature ${idx}: Missing properties, filtering out`
+            );
+            return false;
+          }
+
+          const propKeys = Object.keys(feature.properties);
+          if (propKeys.length !== expectedPropertyKeys.length) {
+            console.warn(
+              `⚠️ Feature ${idx}: Properties count mismatch (${propKeys.length} vs ${expectedPropertyKeys.length}), filtering out`
+            );
+            return false;
+          }
+
+          return true;
+        }
+      );
+
+      if (finalValidFeatures.length !== sanitizedGeoJSON.features.length) {
+        console.warn(
+          `⚠️ Filtered ${
+            sanitizedGeoJSON.features.length - finalValidFeatures.length
+          } invalid features before sending to library`
+        );
       }
 
-      // Call write method if zip() didn't work
-      useWriteMethod();
+      if (finalValidFeatures.length === 0) {
+        throw new Error("No valid features after final validation");
+      }
+
+      const finalGeoJSON = {
+        type: "FeatureCollection",
+        features: finalValidFeatures,
+      };
+
+      // CRITICAL: Log feature count before sending to library
+      console.log(
+        `📊 Sending ${finalGeoJSON.features.length} validated features to @mapbox/shp-write library`
+      );
+      console.log(
+        `📋 First feature properties keys: ${Object.keys(
+          finalGeoJSON.features[0]?.properties || {}
+        ).join(", ")}`
+      );
+
+      // Try using @nickrsan/shp-write first - more reliable and fixes dbf/shp sync issues
+      console.log(
+        "🔄 Trying @nickrsan/shp-write library (fixes dbf/shp sync issues)..."
+      );
+
+      let zipBuffer;
+      try {
+        // Use @nickrsan/shp-write which fixes the dbf/shp mismatch issue
+        const zipResult = await nickShpWrite.zip(finalGeoJSON);
+
+        if (Buffer.isBuffer(zipResult)) {
+          zipBuffer = zipResult;
+        } else if (typeof zipResult === "string") {
+          try {
+            zipBuffer = Buffer.from(zipResult, "base64");
+          } catch (e) {
+            zipBuffer = Buffer.from(zipResult, "binary");
+          }
+        } else {
+          throw new Error(
+            `@nickrsan/shp-write returned unexpected type: ${typeof zipResult}`
+          );
+        }
+
+        if (!zipBuffer || zipBuffer.length === 0) {
+          throw new Error("@nickrsan/shp-write returned empty buffer");
+        }
+
+        console.log(
+          `✅ Shapefile ZIP created using @nickrsan/shp-write. Size: ${zipBuffer.length} bytes, Features: ${finalGeoJSON.features.length}`
+        );
+
+        res.send(zipBuffer);
+        console.log(`✅ Shapefile ZIP sent to client`);
+        console.log(`====================================\n`);
+        return; // Exit early on success
+      } catch (nickError) {
+        console.error("❌ Error with @nickrsan/shp-write:", nickError.message);
+        console.log("⚠️ Falling back to @mapbox/shp-write.zip()...");
+
+        // Fallback to @mapbox/shp-write
+        try {
+          // Use zip() method which handles everything internally
+          const zipResult = await shpwrite.zip(finalGeoJSON);
+
+          // Handle zip() result
+          if (Buffer.isBuffer(zipResult)) {
+            zipBuffer = zipResult;
+          } else if (typeof zipResult === "string") {
+            try {
+              zipBuffer = Buffer.from(zipResult, "base64");
+            } catch (e) {
+              zipBuffer = Buffer.from(zipResult, "binary");
+            }
+          } else {
+            throw new Error(
+              `zip() returned unexpected type: ${typeof zipResult}`
+            );
+          }
+
+          if (!zipBuffer || zipBuffer.length === 0) {
+            throw new Error("zip() returned empty buffer");
+          }
+
+          console.log(
+            `✅ Shapefile ZIP created using @mapbox/shp-write fallback. Size: ${zipBuffer.length} bytes, Features: ${finalGeoJSON.features.length}`
+          );
+
+          res.send(zipBuffer);
+          console.log(`✅ Shapefile ZIP sent to client`);
+          console.log(`====================================\n`);
+          return; // Exit early on success
+        } catch (fallbackError) {
+          console.error(
+            "❌ Error with @mapbox/shp-write.zip() fallback:",
+            fallbackError.message
+          );
+          console.error("Error details:", {
+            message: fallbackError.message,
+            name: fallbackError.name,
+            stack: fallbackError.stack,
+          });
+
+          if (!res.headersSent) {
+            res.status(500).json({
+              success: false,
+              error: "Failed to create Shapefile",
+              message: fallbackError.message,
+            });
+          }
+        }
+      }
     } catch (shpError) {
       console.error("❌ Error creating shapefile:", shpError);
       console.error("Error stack:", shpError.stack);
@@ -2000,13 +2551,6 @@ router.post("/export/shapefile", async (req, res) => {
         name: shpError.name,
         constructor: shpError.constructor.name,
       });
-
-      // Try to finalize archive even if there's an error
-      try {
-        archive.finalize();
-      } catch (e) {
-        // Ignore finalize errors
-      }
 
       if (!res.headersSent) {
         return res.status(500).json({
@@ -2028,6 +2572,8 @@ router.post("/export/shapefile", async (req, res) => {
     }
   }
 });
+*/
+// End of commented shapefile export endpoint
 
 // DELETE /api/jalan/:id - Delete road (if needed for admin)
 router.delete("/:id", async (req, res) => {

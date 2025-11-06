@@ -67,7 +67,7 @@
           <div class="form-group">
             <label class="form-label">Pilih Kecamatan</label>
             <select v-model="selectedKecamatan" class="form-select">
-              <option value="">-- Semua Kecamatan --</option>
+              <option value="">Semua Kecamatan</option>
               <option
                 v-for="kecamatan in kecamatanOptions"
                 :key="kecamatan"
@@ -84,9 +84,8 @@
               v-model="selectedDesa"
               class="form-select"
               :disabled="!selectedKecamatan"
-              :class="{ 'opacity-50 cursor-not-allowed': !selectedKecamatan }"
             >
-              <option value="">-- Semua Desa --</option>
+              <option value="">Semua Desa</option>
               <option v-for="desa in desaOptions" :key="desa" :value="desa">
                 {{ desa }}
               </option>
@@ -99,7 +98,7 @@
           <div class="form-group">
             <label class="form-label">Pilih Tahun/Periode</label>
             <select v-model="selectedTahun" class="form-select">
-              <option value="">-- Semua Tahun --</option>
+              <option value="">Semua Tahun</option>
               <option v-for="tahun in tahunOptions" :key="tahun" :value="tahun">
                 {{ tahun }}
               </option>
@@ -109,7 +108,7 @@
           <div class="form-group">
             <label class="form-label">Pilih Kondisi Material</label>
             <select v-model="selectedKondisi" class="form-select">
-              <option value="">-- Semua Kondisi --</option>
+              <option value="">Semua Kondisi</option>
               <option
                 v-for="kondisi in kondisiOptions"
                 :key="kondisi"
@@ -809,7 +808,7 @@ const resolveThumbnail = (thumbnailUrl) => {
 }
 
 .form-select {
-  @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  @apply w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all text-sm font-medium bg-white hover:border-gray-300 disabled:bg-gray-50 disabled:cursor-not-allowed disabled:text-gray-400;
 }
 
 .apply-button {

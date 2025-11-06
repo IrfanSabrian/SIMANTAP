@@ -614,368 +614,219 @@
                 </p>
               </div>
 
-              <div
-                class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6"
-              >
-                <div class="flex justify-between items-center mb-6">
-                  <h3
-                    class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white"
+              <div class="flex flex-col lg:flex-row gap-6">
+                <!-- Main Content Area (Table) -->
+                <div class="flex-1 min-w-0">
+                  <!-- Data Table -->
+                  <div
+                    class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden"
                   >
-                    Jalan Lingkungan
-                  </h3>
-                </div>
-
-                <!-- Search, Filter and Actions -->
-                <div class="mb-4 flex flex-col lg:flex-row gap-4">
-                  <!-- Search Input with Icon -->
-                  <div class="flex-1 relative">
+                    <!-- Table Header with Summary -->
                     <div
-                      class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                      class="px-6 py-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 border-b border-gray-200 dark:border-gray-600"
                     >
-                      <svg
-                        class="h-5 w-5 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
+                      <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-bold text-gray-800 dark:text-white">
+                          Daftar Data Jalan Lingkungan
+                        </h2>
+                        <div class="text-sm text-gray-600 dark:text-gray-300">
+                          <span class="font-semibold text-gray-800 dark:text-white">{{
+                            filteredRoads.length.toLocaleString("id-ID")
+                          }}</span>
+                          data ditemukan
+                        </div>
+                      </div>
                     </div>
-                    <input
-                      v-model="searchQuery"
-                      type="text"
-                      placeholder="Cari nama jalan atau nomor ruas..."
-                      class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                    />
-                  </div>
 
-                  <!-- Filter Kecamatan -->
-                  <div class="relative min-w-[200px]">
-                    <select
-                      v-model="filterKecamatan"
-                      class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white w-full"
-                      :disabled="!kecamatanList.length"
-                    >
-                      <option value="">Semua Kecamatan</option>
-                      <option
-                        v-for="kec in kecamatanList"
-                        :key="kec"
-                        :value="kec"
-                      >
-                        {{ kec }}
-                      </option>
-                    </select>
+                    <!-- Loading State -->
+                    <div v-if="loadingRoads" class="p-12 text-center">
+                      <div class="flex flex-col items-center justify-center">
+                        <div
+                          class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"
+                        ></div>
+                        <p class="text-gray-600 dark:text-gray-400 font-medium">
+                          Memuat data...
+                        </p>
+                        <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">
+                          Mohon tunggu sebentar
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Table -->
                     <div
-                      v-if="!kecamatanList.length"
-                      class="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-lg"
+                      v-else
+                      class="overflow-x-auto max-h-[calc(100vh-350px)] min-h-[450px]"
                     >
-                      <div
-                        class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"
-                      ></div>
-                    </div>
-                  </div>
-
-                  <!-- Action Buttons -->
-                  <div class="flex gap-2">
-                    <button
-                      @click="showGeoJSONImportModal = true"
-                      class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 min-w-[140px]"
-                    >
-                      <svg
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
-                        />
-                      </svg>
-                      <span>Import GeoJSON</span>
-                    </button>
-                    <button
-                      @click="toggleSelectMode"
-                      :class="[
-                        'px-4 py-2 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 min-w-[100px]',
-                        selectMode
-                          ? 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700'
-                          : 'bg-gradient-to-r from-gray-500 to-gray-600 text-white hover:from-gray-600 hover:to-gray-700',
-                      ]"
-                    >
-                      <svg
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <span>{{ selectMode ? "Kembali" : "Select" }}</span>
-                    </button>
-                  </div>
-                </div>
-
-                <!-- Select Mode Info and Actions -->
-                <div
-                  v-if="selectMode"
-                  class="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700"
-                >
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                      <span
-                        class="text-sm font-medium text-blue-800 dark:text-blue-200"
-                      >
-                        {{ selectedRoadsCount }} data dipilih
-                      </span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                      <button
-                        v-if="hasSelectedRoads"
-                        @click="exportSelectedRoads"
-                        class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors flex items-center space-x-1"
-                      >
-                        <svg
-                          class="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+                      <table class="min-w-full divide-y divide-gray-200 table-auto">
+                        <thead
+                          class="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-600 sticky top-0 z-20 shadow-lg"
                         >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                          />
-                        </svg>
-                        <span>Export GeoJSON</span>
-                      </button>
-                      <button
-                        v-if="hasSelectedRoads"
-                        @click="exportSelectedRoadsShapefile"
-                        class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors flex items-center space-x-1"
-                      >
-                        <svg
-                          class="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                          />
-                        </svg>
-                        <span>Export Shapefile</span>
-                      </button>
-                      <button
-                        v-if="hasSelectedRoads"
-                        @click="deleteSelectedRoads"
-                        class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors flex items-center space-x-1"
-                      >
-                        <svg
-                          class="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                        <span>Hapus</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Roads Table -->
-                <div
-                  class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700"
-                >
-                  <table
-                    class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
-                    style="table-layout: fixed"
-                  >
-                    <thead class="bg-gray-50 dark:bg-gray-700">
-                      <tr>
-                        <th
-                          v-if="selectMode"
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap sticky left-0 bg-gray-50 dark:bg-gray-700 z-10"
-                          style="width: 50px; min-width: 50px"
-                        >
-                          <input
-                            type="checkbox"
-                            :checked="isAllSelected"
-                            @change="toggleSelectAll"
-                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                          />
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          No
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          FID
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          No Ruas
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          No Prov
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          No Kab
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          No Kec
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          No Desa
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          No Jalan
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider min-w-[200px]"
-                        >
-                          Nama Jalan
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          Kecamatan
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          Desa
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          Panjang (m)
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          Lebar (m)
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          Tahun
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          Kondisi
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          Nilai
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          Bobot
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          UTM X Awal
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          UTM Y Awal
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          Pangkalan Awal
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          UTM X Akhir
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          UTM Y Akhir
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          Pangkalan Akhir
-                        </th>
-                        <th
-                          class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider min-w-[200px]"
-                        >
-                          Keterangan
-                        </th>
+                          <tr>
+                            <th
+                              v-if="selectMode"
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap sticky left-0 bg-gradient-to-r from-blue-600 to-indigo-600 z-30 border-r border-white/20 w-[60px] min-w-[60px]"
+                            >
+                            <input
+                              type="checkbox"
+                              :checked="isAllSelected"
+                              @change="toggleSelectAll"
+                              class="h-5 w-5 text-white focus:ring-2 focus:ring-white border-white/50 rounded cursor-pointer bg-white/20"
+                            />
+                          </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[60px]"
+                            >
+                              No
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[80px]"
+                            >
+                              FID
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[120px]"
+                            >
+                              No Ruas
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[80px]"
+                            >
+                              No Prov
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[80px]"
+                            >
+                              No Kab
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[80px]"
+                            >
+                              No Kec
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[80px]"
+                            >
+                              No Desa
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[100px]"
+                            >
+                              No Jalan
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider w-[250px] min-w-[200px]"
+                            >
+                              Nama Jalan
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[150px]"
+                            >
+                              Kecamatan
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[150px]"
+                            >
+                              Desa
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[100px]"
+                            >
+                              Panjang (m)
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[100px]"
+                            >
+                              Lebar (m)
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[80px]"
+                            >
+                              Tahun
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[120px]"
+                            >
+                              Kondisi
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[100px]"
+                            >
+                              Nilai
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[80px]"
+                            >
+                              Bobot
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[120px]"
+                            >
+                              UTM X Awal
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[120px]"
+                            >
+                              UTM Y Awal
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[130px]"
+                            >
+                              Pangkalan Awal
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[120px]"
+                            >
+                              UTM X Akhir
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[120px]"
+                            >
+                              UTM Y Akhir
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider whitespace-nowrap w-[130px]"
+                            >
+                              Pangkalan Akhir
+                            </th>
+                            <th
+                              class="px-4 py-4 text-left text-xs font-bold text-white uppercase tracking-wider w-[200px] min-w-[150px]"
+                            >
+                              Keterangan
+                            </th>
                       </tr>
                     </thead>
-                    <tbody
-                      class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
-                    >
-                      <tr v-if="loadingRoads">
-                        <td
-                          colspan="25"
-                          class="px-6 py-8 text-center text-gray-500 dark:text-gray-400"
-                        >
-                          <div
-                            class="flex items-center justify-center space-x-2"
-                          >
-                            <div
-                              class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"
-                            ></div>
-                            <span>Memuat data...</span>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr v-else-if="filteredRoads.length === 0">
-                        <td
-                          colspan="24"
-                          class="px-6 py-8 text-center text-gray-500 dark:text-gray-400"
-                        >
-                          Tidak ada data
-                        </td>
-                      </tr>
+                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
+                          <tr v-if="filteredRoads.length === 0">
+                            <td
+                              :colspan="selectMode ? 26 : 25"
+                              class="px-6 py-20 text-center"
+                            >
+                              <div class="flex flex-col items-center justify-center">
+                                <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-full mb-4">
+                                  <svg
+                                    class="w-16 h-16 text-gray-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                                    />
+                                  </svg>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-400 font-bold text-xl mb-2">
+                                  Tidak ada data ditemukan
+                                </p>
+                                <p class="text-gray-500 dark:text-gray-500 text-sm">
+                                  Coba ubah filter atau kata kunci pencarian Anda
+                                </p>
+                              </div>
+                            </td>
+                          </tr>
                       <tr
                         v-else
                         v-for="(road, index) in paginatedRoads"
@@ -985,88 +836,87 @@
                             ? toggleRoadSelection(road.id)
                             : viewRoad(road)
                         "
-                        :class="[
-                          'hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors',
-                          selectMode ? 'cursor-pointer' : 'cursor-pointer',
-                          selectedRoads.has(road.id)
-                            ? 'bg-blue-50 dark:bg-blue-900/20'
-                            : '',
-                        ]"
-                      >
-                        <!-- Checkbox -->
-                        <td
-                          v-if="selectMode"
                           :class="[
-                            'px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 sticky left-0 z-10',
+                            'hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors cursor-pointer',
                             selectedRoads.has(road.id)
                               ? 'bg-blue-50 dark:bg-blue-900/20'
-                              : 'bg-white dark:bg-gray-800',
+                              : '',
                           ]"
-                          style="width: 50px; min-width: 50px"
-                        >
-                          <input
-                            type="checkbox"
-                            :checked="selectedRoads.has(road.id)"
-                            @click.stop="toggleRoadSelection(road.id)"
-                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                          />
-                        </td>
-                        <!-- No -->
-                        <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 font-medium"
-                        >
+                      >
+                          <!-- Checkbox -->
+                          <td
+                            v-if="selectMode"
+                            :class="[
+                              'px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 sticky left-0 z-30 border-r border-gray-200 dark:border-gray-600',
+                              selectedRoads.has(road.id)
+                                ? 'bg-blue-50 dark:bg-blue-900/20'
+                                : 'bg-white dark:bg-gray-800',
+                            ]"
+                            style="width: 60px; min-width: 60px"
+                          >
+                            <input
+                              type="checkbox"
+                              :checked="selectedRoads.has(road.id)"
+                              @click.stop="toggleRoadSelection(road.id)"
+                              class="h-5 w-5 text-blue-600 focus:ring-2 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
+                            />
+                          </td>
+                          <!-- No -->
+                          <td
+                            class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 font-medium"
+                          >
                           {{ (currentPage - 1) * itemsPerPage + index + 1 }}
                         </td>
-                        <!-- FID -->
-                        <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
-                        >
+                          <!-- FID -->
+                          <td
+                            class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
+                          >
                           {{
                             road.fid !== undefined && road.fid !== null
                               ? road.fid
                               : "-"
                           }}
                         </td>
-                        <!-- No Ruas -->
-                        <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
-                        >
-                          {{ road.No_Ruas || road.noRuas || "-" }}
-                        </td>
-                        <!-- No Prov -->
-                        <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-center"
-                        >
-                          {{ road.No_Prov || road.noProv || "-" }}
-                        </td>
-                        <!-- No Kab -->
-                        <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-center"
-                        >
-                          {{ road.No_Kab || road.noKab || "-" }}
-                        </td>
-                        <!-- No Kec -->
-                        <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-center"
-                        >
-                          {{ road.No_Kec || road.noKec || "-" }}
-                        </td>
-                        <!-- No Desa -->
-                        <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-center"
-                        >
-                          {{ road.No_Desa || road.noDesa || "-" }}
-                        </td>
-                        <!-- No Jalan -->
-                        <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
-                        >
-                          {{ road.No_Jalan || road.noJalan || "-" }}
-                        </td>
-                        <!-- Nama Jalan -->
-                        <td
-                          class="px-3 py-3 text-sm text-gray-900 dark:text-gray-300 font-medium"
-                        >
+                          <!-- No Ruas -->
+                          <td
+                            class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
+                          >
+                            {{ road.No_Ruas || road.noRuas || "-" }}
+                          </td>
+                          <!-- No Prov -->
+                          <td
+                            class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-center"
+                          >
+                            {{ road.No_Prov || road.noProv || "-" }}
+                          </td>
+                          <!-- No Kab -->
+                          <td
+                            class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-center"
+                          >
+                            {{ road.No_Kab || road.noKab || "-" }}
+                          </td>
+                          <!-- No Kec -->
+                          <td
+                            class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-center"
+                          >
+                            {{ road.No_Kec || road.noKec || "-" }}
+                          </td>
+                          <!-- No Desa -->
+                          <td
+                            class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-center"
+                          >
+                            {{ road.No_Desa || road.noDesa || "-" }}
+                          </td>
+                          <!-- No Jalan -->
+                          <td
+                            class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
+                          >
+                            {{ road.No_Jalan || road.noJalan || "-" }}
+                          </td>
+                          <!-- Nama Jalan -->
+                          <td
+                            class="px-4 py-3 text-sm text-gray-900 dark:text-gray-300 font-medium"
+                          >
                           {{
                             road.Nama_Jalan ||
                             road.namaJalan ||
@@ -1077,19 +927,19 @@
                         </td>
                         <!-- Kecamatan -->
                         <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
+                          class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
                         >
                           {{ road.kecamatan || "-" }}
                         </td>
                         <!-- Desa -->
                         <td
-                          class="px-3 py-3 text-sm text-gray-900 dark:text-gray-300"
+                          class="px-4 py-3 text-sm text-gray-900 dark:text-gray-300"
                         >
                           {{ road.desa || "-" }}
                         </td>
                         <!-- Panjang -->
                         <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right"
+                          class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right"
                         >
                           {{
                             road.Panjang_M?.toFixed(2) ||
@@ -1099,7 +949,7 @@
                         </td>
                         <!-- Lebar -->
                         <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right"
+                          class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right"
                         >
                           {{
                             road.Lebar_m_?.toFixed(2) ||
@@ -1109,12 +959,12 @@
                         </td>
                         <!-- Tahun -->
                         <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-center"
+                          class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-center"
                         >
                           {{ road.Tahun || road.tahun || "-" }}
                         </td>
                         <!-- Kondisi -->
-                        <td class="px-3 py-3 whitespace-nowrap">
+                        <td class="px-4 py-3 whitespace-nowrap">
                           <span
                             :class="
                               getKondisiBadge(
@@ -1137,7 +987,7 @@
                         </td>
                         <!-- Nilai -->
                         <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right"
+                          class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right"
                         >
                           {{
                             road.Nilai?.toFixed(2) ||
@@ -1147,13 +997,13 @@
                         </td>
                         <!-- Bobot -->
                         <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-center"
+                          class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-center"
                         >
                           {{ road.Bobot || road.bobot || "-" }}
                         </td>
                         <!-- UTM X Awal -->
                         <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right font-mono"
+                          class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right font-mono"
                         >
                           {{
                             road.UTM_X_AWAL?.toFixed(4) ||
@@ -1163,7 +1013,7 @@
                         </td>
                         <!-- UTM Y Awal -->
                         <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right font-mono"
+                          class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right font-mono"
                         >
                           {{
                             road.UTM_Y_AWAL?.toFixed(4) ||
@@ -1173,13 +1023,13 @@
                         </td>
                         <!-- Pangkalan Awal -->
                         <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
+                          class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
                         >
                           {{ road.Pngnl_Awal || road.pngnlAwal || "-" }}
                         </td>
                         <!-- UTM X Akhir -->
                         <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right font-mono"
+                          class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right font-mono"
                         >
                           {{
                             road.UTM_X_AKHI?.toFixed(4) ||
@@ -1189,7 +1039,7 @@
                         </td>
                         <!-- UTM Y Akhir -->
                         <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right font-mono"
+                          class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right font-mono"
                         >
                           {{
                             road.UTM_Y_AKHI?.toFixed(4) ||
@@ -1199,12 +1049,12 @@
                         </td>
                         <!-- Pangkalan Akhir -->
                         <td
-                          class="px-3 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
+                          class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
                         >
                           {{ road.Pngnl_Akhi || road.pngnlAkhi || "-" }}
                         </td>
                         <!-- Keterangan -->
-                        <td class="px-3 py-3 whitespace-nowrap">
+                        <td class="px-4 py-3 whitespace-nowrap">
                           <span
                             v-if="road.Keterangan || road.keterangan"
                             :class="
@@ -1221,34 +1071,315 @@
                           >
                         </td>
                       </tr>
-                    </tbody>
-                  </table>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div
+                      class="px-6 py-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row items-center justify-between gap-4"
+                    >
+                      <div class="text-sm text-gray-700 dark:text-gray-300">
+                        Menampilkan
+                        <span class="font-semibold">{{
+                          (currentPage - 1) * itemsPerPage + 1
+                        }}</span>
+                        -
+                        <span class="font-semibold">{{
+                          Math.min(
+                            currentPage * itemsPerPage,
+                            filteredRoads.length
+                          )
+                        }}</span>
+                        dari
+                        <span class="font-semibold">{{
+                          filteredRoads.length.toLocaleString("id-ID")
+                        }}</span>
+                        data
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <button
+                          @click="currentPage--"
+                          :disabled="currentPage === 1"
+                          class="px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-xl hover:bg-white hover:border-blue-500 hover:text-blue-600 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-gray-300 disabled:hover:text-gray-500 transition-all font-semibold shadow-sm hover:shadow-md dark:text-white dark:border-gray-600 dark:hover:border-blue-500"
+                        >
+                          <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M15 19l-7-7 7-7"
+                            />
+                          </svg>
+                        </button>
+                        <span
+                          class="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
+                        >
+                          Halaman {{ currentPage }} dari {{ totalPages }}
+                        </span>
+                        <button
+                          @click="currentPage++"
+                          :disabled="currentPage >= totalPages"
+                          class="px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-xl hover:bg-white hover:border-blue-500 hover:text-blue-600 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-gray-300 disabled:hover:text-gray-500 transition-all font-semibold shadow-sm hover:shadow-md dark:text-white dark:border-gray-600 dark:hover:border-blue-500"
+                        >
+                          <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Pagination -->
-                <div class="flex items-center justify-between">
-                  <div class="text-sm text-gray-700 dark:text-gray-300">
-                    Menampilkan {{ (currentPage - 1) * itemsPerPage + 1 }} -
-                    {{
-                      Math.min(currentPage * itemsPerPage, filteredRoads.length)
-                    }}
-                    dari {{ filteredRoads.length }} data
-                  </div>
-                  <div class="flex space-x-2">
-                    <button
-                      @click="currentPage--"
-                      :disabled="currentPage === 1"
-                      class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                <!-- Sidebar: Filters and Actions -->
+                <div class="w-full lg:w-80 flex-shrink-0">
+                  <div
+                    class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-5 sticky top-20"
+                  >
+                    <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4">
+                      Filter & Aksi
+                    </h2>
+
+                    <!-- Filters -->
+                    <div class="space-y-4 mb-6">
+                      <!-- Kecamatan Filter -->
+                      <div>
+                        <label
+                          class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide"
+                        >
+                          <div class="flex items-center gap-2">
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                              />
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                              />
+                            </svg>
+                            Kecamatan
+                          </div>
+                        </label>
+                        <select
+                          v-model="filterKecamatan"
+                          class="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all text-sm font-medium bg-white dark:bg-gray-700 dark:text-white hover:border-gray-300 disabled:bg-gray-50 dark:disabled:bg-gray-800 disabled:cursor-not-allowed disabled:text-gray-400"
+                          :disabled="!kecamatanList.length"
+                        >
+                          <option value="">Semua Kecamatan</option>
+                          <option
+                            v-for="kec in kecamatanList"
+                            :key="kec"
+                            :value="kec"
+                          >
+                            {{ kec }}
+                          </option>
+                        </select>
+                        <div
+                          v-if="!kecamatanList.length"
+                          class="mt-2 flex items-center justify-center"
+                        >
+                          <div
+                            class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"
+                          ></div>
+                        </div>
+                      </div>
+
+                      <!-- Search -->
+                      <div>
+                        <label
+                          class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide"
+                        >
+                          <div class="flex items-center gap-2">
+                            <svg
+                              class="w-4 h-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                              />
+                            </svg>
+                            Cari Data
+                          </div>
+                        </label>
+                        <div class="relative">
+                          <input
+                            v-model="searchQuery"
+                            type="text"
+                            placeholder="Cari data..."
+                            class="w-full px-3 py-2 pl-10 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all text-sm font-medium bg-white dark:bg-gray-700 dark:text-white hover:border-gray-300"
+                          />
+                          <svg
+                            class="absolute left-3 top-2.5 w-4 h-4 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="space-y-3">
+                      <!-- Import GeoJSON Button -->
+                      <button
+                        @click="showGeoJSONImportModal = true"
+                        class="w-full px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700"
+                      >
+                        <svg
+                          class="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+                          />
+                        </svg>
+                        <span>Import GeoJSON</span>
+                      </button>
+
+                      <button
+                        @click="toggleSelectMode"
+                        :class="[
+                          'w-full px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm font-semibold',
+                          selectMode
+                            ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-600 hover:to-emerald-700'
+                            : 'bg-gradient-to-r from-gray-600 to-gray-700 text-white hover:from-gray-700 hover:to-gray-800',
+                        ]"
+                      >
+                        <svg
+                          class="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        {{ selectMode ? "Kembali" : "Pilih Data" }}
+                      </button>
+                    </div>
+
+                    <!-- Select Mode Actions -->
+                    <div
+                      v-if="selectMode"
+                      class="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg border-2 border-blue-200 dark:border-blue-700"
                     >
-                      Previous
-                    </button>
-                    <button
-                      @click="currentPage++"
-                      :disabled="currentPage >= totalPages"
-                      class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                    >
-                      Next
-                    </button>
+                      <div class="space-y-3">
+                        <div class="flex items-center gap-3">
+                          <div class="p-2 bg-blue-500 rounded-lg text-white">
+                            <svg
+                              class="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                          </div>
+                          <div>
+                            <div class="text-sm font-semibold text-blue-900 dark:text-blue-200">
+                              {{ selectedRoadsCount.toLocaleString("id-ID") }} data
+                              dipilih
+                            </div>
+                            <div class="text-xs text-blue-700 dark:text-blue-300">
+                              Dari
+                              {{ filteredRoads.length.toLocaleString("id-ID") }} data
+                              tersaring
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          v-if="hasSelectedRoads"
+                          @click="exportSelectedRoads"
+                          class="w-full px-4 py-2.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                        >
+                          <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                            />
+                          </svg>
+                          Export GeoJSON
+                        </button>
+                        <button
+                          v-if="hasSelectedRoads"
+                          @click="deleteSelectedRoads"
+                          class="w-full px-4 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-semibold rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                        >
+                          <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                          Hapus Data
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -3273,66 +3404,7 @@ const exportSelectedRoads = async () => {
   }
 };
 
-const exportSelectedRoadsShapefile = async () => {
-  console.log("🟢 DASHBOARD - exportSelectedRoadsShapefile() called");
-
-  if (!hasSelectedRoads.value) return;
-
-  try {
-    const selectedRoadsList = roads.value.filter((road) =>
-      selectedRoads.value.has(road.id)
-    );
-
-    // Get IDs of selected roads
-    const selectedIds = selectedRoadsList.map((road) => road.id);
-
-    const config = useRuntimeConfig();
-    const API_BASE = config.public.apiBaseUrl || "http://localhost:3001";
-
-    console.log(
-      `📤 DASHBOARD - Requesting Shapefile export for ${selectedIds.length} roads`
-    );
-    console.log(`📍 API URL: ${API_BASE}/api/jalan/export/shapefile`);
-    console.log(`📋 Method: POST with IDs:`, selectedIds);
-
-    // Call API to get Shapefile ZIP
-    const response = await fetch(`${API_BASE}/api/jalan/export/shapefile`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ids: selectedIds }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || "Failed to export Shapefile");
-    }
-
-    // Get the blob from response
-    const blob = await response.blob();
-
-    // Create download link
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `jalan_lingkungan_${new Date().getTime()}.zip`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    console.log(`✅ DASHBOARD - Shapefile download triggered successfully`);
-    toast.success(
-      `Berhasil mengexport ${selectedRoadsList.length} data jalan sebagai Shapefile!`
-    );
-  } catch (error) {
-    console.error("Error exporting roads as Shapefile:", error);
-    toast.error(
-      `Terjadi kesalahan saat mengexport Shapefile: ${error.message}`
-    );
-  }
-};
+// REMOVED: exportSelectedRoadsShapefile - Feature disabled due to issues
 
 const deleteSelectedRoads = async () => {
   if (!hasSelectedRoads.value) return;

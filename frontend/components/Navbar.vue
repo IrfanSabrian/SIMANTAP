@@ -2,9 +2,9 @@
   <nav
     :class="[
       'fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-[10px] border-b shadow-[0_8px_32px_0_rgba(0,0,0,0.1)]',
-      isScrolled && isHomePage
-        ? 'bg-[#0f1931]/90 border-gray-700/50'
-        : 'bg-white/10 border-white/20',
+      shouldBeTransparent && !isScrolled
+        ? 'bg-white/10 border-white/20'
+        : 'bg-[#0f1931]/90 border-gray-700/50',
     ]"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -76,9 +76,9 @@
               <div
                 :class="[
                   'absolute left-0 mt-2 w-64 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 backdrop-blur-[10px] border',
-                  isScrolled && isHomePage
-                    ? 'bg-[#0f1931]/90 border-gray-700/50'
-                    : 'bg-[rgba(15,25,49,0.9)] border-white/20',
+                  shouldBeTransparent && !isScrolled
+                    ? 'bg-[rgba(15,25,49,0.9)] border-white/20'
+                    : 'bg-[#0f1931]/90 border-gray-700/50',
                 ]"
               >
                 <div class="py-1">
@@ -117,9 +117,9 @@
               <div
                 :class="[
                   'absolute left-0 mt-2 w-64 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 backdrop-blur-[10px] border',
-                  isScrolled && isHomePage
-                    ? 'bg-[#0f1931]/90 border-gray-700/50'
-                    : 'bg-[rgba(15,25,49,0.9)] border-white/20',
+                  shouldBeTransparent && !isScrolled
+                    ? 'bg-[rgba(15,25,49,0.9)] border-white/20'
+                    : 'bg-[#0f1931]/90 border-gray-700/50',
                 ]"
               >
                 <div class="py-1">
@@ -173,9 +173,9 @@
               <div
                 :class="[
                   'absolute left-0 mt-2 w-64 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 backdrop-blur-[10px] border',
-                  isScrolled && isHomePage
-                    ? 'bg-[#0f1931]/90 border-gray-700/50'
-                    : 'bg-[rgba(15,25,49,0.9)] border-white/20',
+                  shouldBeTransparent && !isScrolled
+                    ? 'bg-[rgba(15,25,49,0.9)] border-white/20'
+                    : 'bg-[#0f1931]/90 border-gray-700/50',
                 ]"
               >
                 <div class="py-1">
@@ -310,9 +310,9 @@
       <div
         :class="[
           'px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t transition-all duration-300 backdrop-blur-[10px]',
-          isScrolled && isHomePage
-            ? 'bg-[#0f1931]/90 border-gray-700/50'
-            : 'bg-[rgba(15,25,49,0.85)] border-white/20',
+          shouldBeTransparent && !isScrolled
+            ? 'bg-[rgba(15,25,49,0.85)] border-white/20'
+            : 'bg-[#0f1931]/90 border-gray-700/50',
         ]"
       >
         <a
@@ -503,6 +503,12 @@ const isChangingLanguage = ref(false);
 // Check if current page is home page
 const isHomePage = computed(() => route.path === "/");
 
+// Check if current page is peta interaktif
+const isPetaInteraktif = computed(() => route.path.startsWith("/peta-interaktif"));
+
+// Check if current page should have transparent navbar (beranda or peta interaktif)
+const shouldBeTransparent = computed(() => isHomePage.value || isPetaInteraktif.value);
+
 // Google Translate functionality
 const { currentLanguage, initGoogleTranslate, toggleLanguage } =
   useGoogleTranslate();
@@ -526,12 +532,13 @@ const closeMobileMenu = () => {
 };
 
 const handleScroll = () => {
-  // Detect when user scrolls past the hero section (100vh)
-  if (isHomePage.value) {
+  // Detect when user scrolls past the hero section
+  if (shouldBeTransparent.value) {
+    // For beranda and peta interaktif: detect scroll past hero section (90% of viewport height)
     isScrolled.value = window.scrollY > window.innerHeight * 0.9;
   } else {
-    // For non-home pages, always show scrolled style
-    isScrolled.value = window.scrollY > 50;
+    // For other pages: always show scrolled style (blue background)
+    isScrolled.value = true;
   }
 };
 
@@ -554,8 +561,13 @@ const scrollToSection = (sectionId: string) => {
 };
 
 onMounted(() => {
-  // Check initial scroll position
-  handleScroll();
+  // For non-transparent pages, set scrolled state immediately
+  if (!shouldBeTransparent.value) {
+    isScrolled.value = true;
+  } else {
+    // Check initial scroll position for transparent pages
+    handleScroll();
+  }
 
   window.addEventListener("scroll", handleScroll);
 
