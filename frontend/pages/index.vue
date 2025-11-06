@@ -1099,6 +1099,38 @@ const openSimantap = (type: string) => {
   navigateTo(route);
 };
 
+// Load road length stats from API (same as peta interaktif)
+const loadRoadLengthStats = async () => {
+  try {
+    // Get API URL from runtime config
+    const config = useRuntimeConfig();
+    const apiUrl = config.public.apiUrl;
+
+    // Fetch summary data for total road length
+    const summaryResponse = await fetch(`${apiUrl}/jalan/stats/summary`);
+    if (summaryResponse.ok) {
+      const summaryResult = await summaryResponse.json();
+      if (summaryResult.success && summaryResult.data) {
+        // Calculate total road length in Km (API returns totalLength in meters)
+        const totalLengthM = summaryResult.data.totalLength || 0;
+        roadLengthKm.value = (totalLengthM / 1000).toFixed(2);
+        console.log(
+          "Road length loaded for Tentang section:",
+          roadLengthKm.value,
+          "Km"
+        );
+      } else {
+        roadLengthKm.value = "0";
+      }
+    } else {
+      roadLengthKm.value = "0";
+    }
+  } catch (error) {
+    console.error("Error loading road length stats:", error);
+    roadLengthKm.value = "0";
+  }
+};
+
 // Initialize CountUp instances for Tentang section
 const initializeTentangCounters = () => {
   if (typeof window !== "undefined") {
@@ -1154,8 +1186,8 @@ const startTentangCounters = () => {
   if (tentangPerumahanCounter) tentangPerumahanCounter.reset();
   if (tentangRumahCounter) tentangRumahCounter.reset();
 
-  // Get road length value
-  const roadLengthValue = parseInt(roadLengthKm.value) || 0;
+  // Get road length value (parse as float to handle decimals)
+  const roadLengthValue = parseFloat(roadLengthKm.value) || 0;
 
   // Start animations sequentially with smooth transitions
   // Stat 1: Start immediately (0ms)
@@ -1264,7 +1296,9 @@ onMounted(async () => {
     kawasan: { totalPanjangKm: 0 },
     rumah: { totalPanjangKm: 0 },
   };
-  roadLengthKm.value = "0";
+
+  // Load road length data from API (same as peta interaktif)
+  await loadRoadLengthStats();
 
   // Fetch dokumentasi kegiatan (limit 16 for 4 rows x 4 columns)
   const { data: dokumentasi } = await getDokumentasiKegiatan({ limit: 16 });
