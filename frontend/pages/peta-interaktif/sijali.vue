@@ -14,83 +14,121 @@
         class="absolute inset-0 bg-cover bg-center bg-no-repeat hero-background"
         :style="getBackgroundStyle('/slider/jalan_lingkungan.png')"
       >
-        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="absolute inset-0 hero-gradient-overlay"></div>
       </div>
 
-      <div class="hero-content relative z-10">
-        <div class="hero-text">
-          <h1 class="hero-title">
-            <span
-              class="title-line-1"
-              data-aos="fade-right"
-              data-aos-delay="100"
-              >Sistem Informasi</span
-            >
-            <span
-              class="title-line-2"
-              data-aos="fade-right"
-              data-aos-delay="200"
-              >Jalan Lingkungan</span
-            >
-            <span
-              class="title-highlight"
-              data-aos="fade-right"
-              data-aos-delay="300"
-              >Kabupaten Kubu Raya</span
-            >
-          </h1>
-
-          <p class="hero-description" data-aos="fade-up" data-aos-delay="400">
-            Platform WebGIS untuk pengelolaan data jalan lingkungan di Kabupaten
-            Kubu Raya. Menyajikan informasi kondisi jalan, material perkerasan,
-            dan analisis kerusakan untuk mendukung pengambilan keputusan dalam
-            pemeliharaan infrastruktur.
+      <!-- Hero Content Container -->
+      <div class="hero-container">
+        <!-- Hero Text Content -->
+        <div class="hero-content-center" data-aos="fade-up">
+          <h1 class="hero-title-main">SIJALI</h1>
+          <h2 class="hero-subtitle">Sistem Informasi Jalan Lingkungan</h2>
+          <p class="hero-description-text">
+            Sijali adalah sistem informasi geografis yang menyediakan data dan
+            peta interaktif mengenai jalan lingkungan di Kabupaten Kubu Raya,
+            termasuk informasi kondisi, material, dan sebaran geografis untuk
+            mendukung perencanaan dan pengelolaan infrastruktur jalan.
           </p>
+        </div>
 
-          <div class="hero-buttons" data-aos="fade-up" data-aos-delay="500">
-            <button @click="openMap" class="btn-primary">
-              <div class="btn-icon">
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-                  ></path>
-                </svg>
-              </div>
-              <div class="btn-content">
-                <span class="btn-title">Lihat Peta Interaktif</span>
-                <span class="btn-subtitle">Akses peta & data spasial</span>
-              </div>
-            </button>
+        <!-- Stats Cards -->
+        <div class="hero-stats" data-aos="fade-up" data-aos-delay="200">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                ></path>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">
+                <span id="roadLengthCounter">0</span> Km
+              </h3>
+              <p class="stat-label">Dipetakan</p>
+            </div>
+          </div>
 
-            <button @click="scrollToSection('analisis')" class="btn-secondary">
-              <div class="btn-icon">
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  ></path>
-                </svg>
-              </div>
-              <div class="btn-content">
-                <span class="btn-title">Analisis Data</span>
-                <span class="btn-subtitle">Visualisasi & statistik</span>
-              </div>
-            </button>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                ></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                ></path>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number" id="districtsCounter">0</h3>
+              <p class="stat-label">Kecamatan</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                ></path>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number" id="villagesCounter">0</h3>
+              <p class="stat-label">Desa/Kelurahan</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                ></path>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <h3 class="stat-number">
+                <span id="goodConditionCounter">0</span> Km
+              </h3>
+              <p class="stat-label">Jalan Kondisi Baik</p>
+            </div>
           </div>
         </div>
       </div>
@@ -98,107 +136,6 @@
 
     <!-- Map Section -->
     <section id="map" class="map-section">
-      <!-- Stats Cards -->
-      <div class="hero-stats" data-aos="fade-up">
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-              ></path>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <h3 class="stat-number">
-              <span id="roadLengthCounter">0</span> Km
-            </h3>
-            <p class="stat-label">Dipetakan</p>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              ></path>
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              ></path>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <h3 class="stat-number" id="districtsCounter">0</h3>
-            <p class="stat-label">Kecamatan</p>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-              ></path>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <h3 class="stat-number" id="villagesCounter">0</h3>
-            <p class="stat-label">Desa/Kelurahan</p>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-              ></path>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <h3 class="stat-number">
-              <span id="goodConditionCounter">0</span> Km
-            </h3>
-            <p class="stat-label">Jalan Kondisi Baik</p>
-          </div>
-        </div>
-      </div>
-
       <div class="section-header" data-aos="fade-up">
         <h2 class="section-title">Peta Interaktif</h2>
         <p class="section-description">
@@ -206,6 +143,7 @@
           layer informasi dan fitur analisis spasial.
         </p>
       </div>
+
       <div class="map-container" data-aos="zoom-in" data-aos-delay="200">
         <!-- Map Title Frame -->
         <div id="map-canvas" class="map-title-frame">
@@ -850,13 +788,74 @@ useHead({
 .hero-section {
   @apply text-white flex flex-col justify-center relative overflow-hidden;
   min-height: 100vh;
-  padding-top: 10vh;
+  padding: 8vh 0 6vh;
+}
+
+/* Hero Container */
+.hero-container {
+  @apply relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Hero Content Center */
+.hero-content-center {
+  @apply text-center px-4 max-w-5xl mx-auto;
+  animation: fadeInUp 0.8s ease-out;
+  margin-bottom: 0.5rem;
+}
+
+.hero-title-main {
+  @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal mb-2 text-white font-sans;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.hero-subtitle {
+  @apply text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-3 text-white/95 font-sans;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+  font-weight: 600;
+}
+
+.hero-description-text {
+  @apply text-xs sm:text-sm md:text-base lg:text-lg text-white/90 leading-relaxed font-sans;
+  line-height: 1.6;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  max-width: 40rem;
+  margin: 0 auto;
+  font-weight: 400;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Parallax Background */
 .hero-background {
   will-change: transform;
   transition: transform 0.3s ease-out;
+}
+
+/* Hero Gradient Overlay */
+.hero-gradient-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
 }
 
 .hero-content {
@@ -1042,29 +1041,77 @@ useHead({
 }
 
 .hero-stats {
-  @apply w-full relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6;
-  padding: 3vh 10vw;
+  @apply w-full relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
 }
 
 .stat-card {
-  @apply bg-white/15 backdrop-blur-sm rounded-xl p-6 border border-white/30 flex items-center space-x-4 shadow-lg;
+  @apply backdrop-blur-md bg-white/10 rounded-2xl border border-white/20 flex flex-col sm:flex-row items-center gap-3 shadow-2xl;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  padding: 1.25rem 1.5rem;
+  min-height: 90px;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .stat-icon {
-  @apply bg-blue-600/20 p-3 rounded-lg;
+  @apply bg-white/20 backdrop-blur-sm rounded-xl text-white flex-shrink-0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  padding: 0.75rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.stat-card:hover .stat-icon {
+  @apply bg-white/30;
+  transform: scale(1.05);
 }
 
 .stat-content {
-  @apply flex-1;
+  @apply flex-1 text-center sm:text-left;
+  min-width: 0;
 }
 
 .stat-number {
-  @apply text-2xl font-bold text-white drop-shadow-lg;
+  @apply text-xl lg:text-2xl font-bold text-white mb-0.5 font-sans;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 .hero-stats .stat-label {
-  @apply text-sm font-medium drop-shadow-md;
-  color: rgba(255, 255, 255, 0.8) !important;
+  @apply text-xs font-medium text-white/75 font-sans;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 /* Section Headers */
@@ -1188,18 +1235,24 @@ useHead({
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-  .hero-content {
-    @apply flex-col text-center;
-    padding: 4vh 6vw;
+  .hero-section {
+    min-height: 100vh;
+    padding: 6vh 0 4vh;
   }
 
-  .hero-visual {
-    @apply ml-0 mt-8 max-w-full;
+  .hero-container {
+    gap: 2rem;
   }
 
   .hero-stats {
     @apply grid-cols-2;
-    padding: 3vh 6vw;
+    gap: 0.875rem;
+    max-width: 100%;
+  }
+
+  .stat-card {
+    padding: 1.125rem 1.375rem;
+    min-height: 85px;
   }
 
   .analisis-grid {
@@ -1213,47 +1266,64 @@ useHead({
 
 @media (max-width: 768px) {
   .hero-section {
-    padding-top: 8vh;
+    padding: 6vh 0 4vh;
     min-height: 100vh;
   }
 
-  .hero-content {
-    @apply flex-col text-center;
-    padding: 3vh 5vw;
+  .hero-container {
+    gap: 1.75rem;
+    padding: 0 1rem;
+  }
+
+  .hero-content-center {
+    padding: 0;
+    margin-bottom: 0.25rem;
+  }
+
+  .hero-title-main {
+    @apply text-2xl sm:text-3xl;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-subtitle {
+    @apply text-sm sm:text-base;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-description-text {
+    @apply text-xs sm:text-sm;
+    line-height: 1.5;
   }
 
   .hero-stats {
-    @apply grid-cols-1 gap-4;
-    padding: 2vh 5vw;
+    @apply grid-cols-1 gap-2.5;
+    padding: 0;
+    width: 100%;
   }
 
-  .hero-visual {
-    @apply ml-0 mt-8 max-w-full;
+  .stat-card {
+    padding: 1rem 1.25rem;
+    min-height: 80px;
+    flex-direction: row;
   }
 
-  .title-line-1 {
-    @apply text-2xl;
+  .stat-icon {
+    padding: 0.625rem;
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
-  .title-line-2 {
-    @apply text-3xl;
+  .stat-icon svg {
+    width: 1.125rem;
+    height: 1.125rem;
   }
 
-  .title-highlight {
-    @apply text-xl;
+  .stat-number {
+    @apply text-lg sm:text-xl;
   }
 
-  .hero-description {
-    @apply text-base max-w-full;
-  }
-
-  .hero-buttons {
-    @apply flex-col items-center gap-4;
-  }
-
-  .btn-primary,
-  .btn-secondary {
-    @apply w-full max-w-sm;
+  .hero-stats .stat-label {
+    @apply text-xs;
   }
 
   .analisis-grid {
@@ -1285,13 +1355,57 @@ useHead({
   .card-title {
     @apply text-lg;
   }
+}
+
+@media (max-width: 640px) {
+  .hero-section {
+    padding: 5vh 0 3vh;
+    min-height: 100vh;
+  }
+
+  .hero-container {
+    gap: 1.5rem;
+  }
+
+  .hero-title-main {
+    @apply text-xl sm:text-2xl;
+    margin-bottom: 0.375rem;
+  }
+
+  .hero-subtitle {
+    @apply text-xs sm:text-sm;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-description-text {
+    @apply text-xs;
+    line-height: 1.4;
+  }
 
   .stat-card {
-    @apply p-4;
+    padding: 0.875rem 1rem;
+    min-height: 75px;
+    gap: 0.75rem;
+  }
+
+  .stat-icon {
+    padding: 0.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .stat-icon svg {
+    width: 1rem;
+    height: 1rem;
   }
 
   .stat-number {
-    @apply text-xl;
+    @apply text-base sm:text-lg;
+  }
+
+  .hero-stats .stat-label {
+    @apply text-xs;
+    font-size: 0.625rem;
   }
 }
 </style>

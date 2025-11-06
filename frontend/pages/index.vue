@@ -31,7 +31,7 @@
             class="absolute inset-0 bg-cover bg-center bg-no-repeat hero-background"
             :style="getBackgroundStyle(slide.image)"
           >
-            <div class="absolute inset-0 bg-black/50"></div>
+            <div class="absolute inset-0 hero-gradient-overlay"></div>
           </div>
 
           <!-- Content Overlay -->
@@ -1292,6 +1292,15 @@ onMounted(async () => {
 .hero-background {
   will-change: transform;
   transition: transform 0.3s ease-out;
+}
+
+/* Hero Gradient Overlay */
+.hero-gradient-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
 }
 
 /* Hero Content Animations */
