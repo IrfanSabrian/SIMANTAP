@@ -506,8 +506,19 @@ const isHomePage = computed(() => route.path === "/");
 // Check if current page is peta interaktif
 const isPetaInteraktif = computed(() => route.path.startsWith("/peta-interaktif"));
 
+// Props
+const props = defineProps({
+  forceBlue: {
+    type: Boolean,
+    default: false,
+  },
+});
+
 // Check if current page should have transparent navbar (beranda or peta interaktif)
-const shouldBeTransparent = computed(() => isHomePage.value || isPetaInteraktif.value);
+const shouldBeTransparent = computed(() => {
+  if (props.forceBlue) return false;
+  return isHomePage.value || isPetaInteraktif.value;
+});
 
 // Google Translate functionality
 const { currentLanguage, initGoogleTranslate, toggleLanguage } =
@@ -533,7 +544,10 @@ const closeMobileMenu = () => {
 
 const handleScroll = () => {
   // Detect when user scrolls past the hero section
-  if (shouldBeTransparent.value) {
+  if (props.forceBlue) {
+    // Force blue background
+    isScrolled.value = true;
+  } else if (shouldBeTransparent.value) {
     // For beranda and peta interaktif: detect scroll past hero section (90% of viewport height)
     isScrolled.value = window.scrollY > window.innerHeight * 0.9;
   } else {
@@ -561,8 +575,8 @@ const scrollToSection = (sectionId: string) => {
 };
 
 onMounted(() => {
-  // For non-transparent pages, set scrolled state immediately
-  if (!shouldBeTransparent.value) {
+  // For force blue or non-transparent pages, set scrolled state immediately
+  if (props.forceBlue || !shouldBeTransparent.value) {
     isScrolled.value = true;
   } else {
     // Check initial scroll position for transparent pages

@@ -6,24 +6,11 @@
         <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-12 text-center">
           <!-- Icon -->
           <div class="mb-8 flex justify-center">
-            <div class="relative">
-              <div class="absolute inset-0 bg-teal-100 rounded-full blur-xl opacity-50"></div>
-              <div class="relative p-6 bg-teal-50 rounded-full">
-                <svg
-                  class="w-16 h-16 text-teal-500"
-                  viewBox="0 0 256 256"
-                  fill="currentColor"
-                >
-                  <path d="M10,210.5h236v16.8H10V210.5L10,210.5z" />
-                  <path
-                    d="M90.8,28.8H18v9.9h60.1v70.4H18v9.9h72.8L90.8,28.8L90.8,28.8z"
-                  />
-                  <path
-                    d="M106.2,119.1c-0.4,20.8,0,87.4,0,87.4h67c0,0-2.2-76.5-9.5-96.9c-7.3-20.4-28.8-59.7-69.6-65.5v60.4C94.1,104.5,106.9,105.2,106.2,119.1z"
-                  />
-                </svg>
-              </div>
-            </div>
+            <img
+              src="/simantap-logo.svg"
+              alt="SIMANTAP Logo"
+              class="w-40 h-40 object-contain"
+            />
           </div>
 
           <!-- Badge -->

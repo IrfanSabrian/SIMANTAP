@@ -10,22 +10,11 @@
         >
           <!-- Icon -->
           <div class="mb-8 flex justify-center">
-            <div class="relative">
-              <div
-                class="absolute inset-0 bg-cyan-100 rounded-full blur-xl opacity-50"
-              ></div>
-              <div class="relative p-6 bg-cyan-50 rounded-full">
-                <svg
-                  class="w-16 h-16 text-cyan-500"
-                  viewBox="0 0 256 256"
-                  fill="currentColor"
-                >
-                  <path
-                    d="M238.6,201.7c-1,0-5.3,0-7.4,0h-19.9c-12.2-34.4-44.8-59-83.4-59c-38.5,0-71.2,24.7-83.4,59H24.8c-2.1,0-6.4,0-7.4,0c-4.1,0-7.4-3.3-7.4-7.4V187v-73.7c0-8.1,6.6-14.8,14.8-14.8h7.4V69H17.4c-4.1,0-7.4-3.3-7.4-7.4c0-4.1,3.3-7.4,7.4-7.4h221.2c4.1,0,7.4,3.3,7.4,7.4c0,4.1-3.3,7.4-7.4,7.4h-14.7v29.5h7.4c8.1,0,14.8,6.6,14.8,14.8V187v7.4C246,198.4,242.7,201.7,238.6,201.7z M76.4,69H46.9v29.5h29.5V69z M120.6,69H91.1v29.5h29.5V69z M164.9,69h-29.5v29.5h29.5V69z M209.1,69h-29.5v29.5h29.5V69z"
-                  />
-                </svg>
-              </div>
-            </div>
+            <img
+              src="/simantap-logo.svg"
+              alt="SIMANTAP Logo"
+              class="w-40 h-40 object-contain"
+            />
           </div>
 
           <!-- Badge -->
