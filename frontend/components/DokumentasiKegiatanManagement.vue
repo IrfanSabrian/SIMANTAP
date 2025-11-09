@@ -1,148 +1,27 @@
 <template>
-  <div class="p-3 sm:p-4 md:p-6 space-y-4 md:space-y-6">
-    <!-- Header -->
+  <div>
+    <!-- Header Banner -->
     <div
-      class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
+      class="bg-gradient-to-r from-pink-50 to-pink-100 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-pink-500 mb-6"
     >
       <div>
-        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+        <h2
+          class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+        >
           Dokumentasi Kegiatan
         </h2>
-        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
+        <p class="text-gray-600 dark:text-gray-400">
           Kelola dokumentasi kegiatan dinas
         </p>
       </div>
-      <div class="flex flex-wrap gap-2">
-        <button
-          v-if="!selectMode"
-          @click="openFormModal()"
-          class="inline-flex items-center px-3 sm:px-4 py-2 text-sm sm:text-base bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-lg hover:from-pink-600 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-        >
-          <svg
-            class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            />
-          </svg>
-          <span class="hidden sm:inline">Tambah Dokumentasi</span>
-          <span class="sm:hidden">Tambah</span>
-        </button>
-        <button
-          v-if="!selectMode"
-          @click="toggleSelectMode"
-          class="inline-flex items-center px-3 sm:px-4 py-2 text-sm sm:text-base bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200"
-        >
-          <svg
-            class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            />
-          </svg>
-          <span class="hidden sm:inline">Hapus</span>
-        </button>
-        <div v-else class="flex flex-wrap gap-2">
-          <button
-            @click="confirmDeleteSelected"
-            :disabled="selectedItems.size === 0"
-            class="inline-flex items-center px-3 sm:px-4 py-2 text-sm sm:text-base bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white rounded-lg transition-all duration-200"
-          >
-            <svg
-              class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
-            <span class="hidden sm:inline"
-              >Hapus ({{ selectedItems.size }})</span
-            >
-            <span class="sm:hidden">({{ selectedItems.size }})</span>
-          </button>
-          <button
-            @click="cancelSelectMode"
-            class="inline-flex items-center px-3 sm:px-4 py-2 text-sm sm:text-base bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-all duration-200"
-          >
-            <svg
-              class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-            <span class="hidden sm:inline">Batal</span>
-          </button>
-        </div>
-      </div>
     </div>
 
-    <!-- Filters -->
-    <div
-      class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow"
-    >
-      <div>
-        <label
-          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-        >
-          Cari Dokumentasi
-        </label>
-        <input
-          v-model="filters.search"
-          type="text"
-          placeholder="Cari judul..."
-          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white"
-          @input="debouncedSearch"
-        />
-      </div>
-      <div>
-        <label
-          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-        >
-          Kategori
-        </label>
-        <select
-          v-model="filters.kategori"
-          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white"
-          @change="loadDokumentasi"
-        >
-          <option value="">Semua Kategori</option>
-          <option value="Rapat Koordinasi">Rapat Koordinasi</option>
-          <option value="Kunjungan Lapangan">Kunjungan Lapangan</option>
-          <option value="Monitoring & Evaluasi (Monev)">Monitoring & Evaluasi (Monev)</option>
-          <option value="Sosialisasi Program">Sosialisasi Program</option>
-          <option value="Pelatihan Teknis">Pelatihan Teknis</option>
-          <option value="Serah Terima / Peresmian">Serah Terima / Peresmian</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Table -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+    <!-- Main Content -->
+    <div class="flex flex-col lg:flex-row gap-6">
+      <!-- Table Area -->
+      <div class="flex-1 min-w-0">
+        <!-- Table -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead class="bg-gray-50 dark:bg-gray-900">
@@ -217,11 +96,11 @@
               v-else
               v-for="item in dokumentasiList"
               :key="item.id"
-              @click="
-                selectMode ? toggleItemSelection(item.id) : openFormModal(item)
-              "
+              @click="canEdit ? (selectMode ? toggleItemSelection(item.id) : openFormModal(item)) : null"
               :class="[
-                'hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer',
+                canEdit
+                  ? 'hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer'
+                  : '',
                 selectedItems.has(item.id)
                   ? 'bg-blue-50 dark:bg-blue-900/20'
                   : '',
@@ -231,6 +110,7 @@
                 v-if="selectMode"
                 class="px-3 py-4 whitespace-nowrap"
                 style="width: 50px"
+                @click.stop
               >
                 <input
                   type="checkbox"
@@ -319,6 +199,205 @@
           >
             Next
           </button>
+        </div>
+      </div>
+        </div>
+      </div>
+
+      <!-- Sidebar: Filters and Actions -->
+      <div class="w-full lg:w-80 flex-shrink-0">
+        <div
+          class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-5 sticky top-20"
+        >
+          <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Aksi & Filter</h2>
+
+          <!-- Action Buttons -->
+          <div v-if="canEdit" class="space-y-3 mb-6">
+            <button
+              v-if="!selectMode"
+              @click="openFormModal()"
+              class="w-full px-4 py-2.5 bg-gradient-to-r from-pink-500 to-pink-600 text-white text-sm font-semibold rounded-lg hover:from-pink-600 hover:to-pink-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
+              </svg>
+              Tambah Dokumentasi
+            </button>
+            <button
+              @click="toggleSelectMode"
+              :class="[
+                'w-full px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm font-semibold',
+                selectMode
+                  ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-600 hover:to-emerald-700'
+                  : 'bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700',
+              ]"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+              {{ selectMode ? "Kembali" : "Hapus Data" }}
+            </button>
+          </div>
+
+          <!-- Select Mode Actions -->
+          <div
+            v-if="selectMode && canEdit"
+            class="mb-6 p-4 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-gray-700 dark:to-gray-600 rounded-lg border-2 border-pink-200 dark:border-pink-600"
+          >
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="p-2 bg-pink-500 rounded-lg text-white">
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-sm font-semibold text-pink-900 dark:text-white">
+                    {{ selectedItems.size }} data dipilih
+                  </div>
+                  <div class="text-xs text-pink-700 dark:text-pink-200">
+                    Dari {{ dokumentasiList.length }} data
+                  </div>
+                </div>
+              </div>
+              <button
+                @click="confirmDeleteSelected"
+                :disabled="selectedItems.size === 0"
+                class="w-full px-4 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-semibold rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+                Hapus ({{ selectedItems.size }})
+              </button>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="space-y-4">
+            <!-- Search -->
+            <div>
+              <label
+                class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide"
+              >
+                <div class="flex items-center gap-2">
+                  <svg
+                    class="w-4 h-4 text-pink-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  Cari Dokumentasi
+                </div>
+              </label>
+              <div class="relative">
+                <input
+                  v-model="filters.search"
+                  type="text"
+                  placeholder="Cari judul..."
+                  class="w-full px-3 py-2 pl-10 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:border-pink-500 focus:ring-2 focus:ring-pink-100 dark:focus:ring-pink-900 transition-all text-sm font-medium bg-white dark:bg-gray-700 dark:text-white hover:border-gray-300"
+                  @input="debouncedSearch"
+                />
+                <svg
+                  class="absolute left-3 top-2.5 w-4 h-4 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Kategori Filter -->
+            <div>
+              <label
+                class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide"
+              >
+                <div class="flex items-center gap-2">
+                  <svg
+                    class="w-4 h-4 text-pink-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                    />
+                  </svg>
+                  Kategori
+                </div>
+              </label>
+              <select
+                v-model="filters.kategori"
+                class="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:border-pink-500 focus:ring-2 focus:ring-pink-100 dark:focus:ring-pink-900 transition-all text-sm font-medium bg-white dark:bg-gray-700 dark:text-white hover:border-gray-300"
+                @change="loadDokumentasi"
+              >
+                <option value="">Semua Kategori</option>
+                <option value="Rapat Koordinasi">Rapat Koordinasi</option>
+                <option value="Kunjungan Lapangan">Kunjungan Lapangan</option>
+                <option value="Monitoring & Evaluasi (Monev)">Monitoring & Evaluasi (Monev)</option>
+                <option value="Sosialisasi Program">Sosialisasi Program</option>
+                <option value="Pelatihan Teknis">Pelatihan Teknis</option>
+                <option value="Serah Terima / Peresmian">Serah Terima / Peresmian</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -458,7 +537,7 @@
                   />
                   <img
                     v-if="formData.thumbnail"
-                    :src="formData.thumbnail"
+                    :src="typeof formData.thumbnail === 'string' ? formData.thumbnail : formData.thumbnail.url || formData.thumbnail"
                     alt="Preview"
                     class="mt-2 w-48 h-32 object-cover rounded-lg"
                   />
@@ -487,7 +566,7 @@
                       class="relative group"
                     >
                       <img
-                        :src="img"
+                        :src="typeof img === 'string' ? img : img.url"
                         alt="Preview"
                         class="w-full h-24 object-cover rounded-lg"
                       />
@@ -531,10 +610,32 @@
               </button>
               <button
                 @click="submitForm"
-                :disabled="submitting"
-                class="px-4 py-2 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-lg hover:from-pink-600 hover:to-pink-700 transition-all duration-200 disabled:opacity-50"
+                :disabled="submitting || uploadingImages"
+                class="px-4 py-2 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-lg hover:from-pink-600 hover:to-pink-700 transition-all duration-200 disabled:opacity-50 flex items-center space-x-2"
               >
-                <span v-if="submitting">Menyimpan...</span>
+                <svg
+                  v-if="submitting || uploadingImages"
+                  class="animate-spin h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                <span v-if="uploadingImages">Mengupload gambar...</span>
+                <span v-else-if="submitting">Menyimpan...</span>
                 <span v-else>{{ formData.id ? "Update" : "Simpan" }}</span>
               </button>
             </div>
@@ -587,13 +688,72 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed, watch } from "vue";
 import Toast from "./Toast.vue";
 import { useToast } from "~/composables/useToast";
+import { useAuth } from "~/composables/useAuth";
 
 const config = useRuntimeConfig();
 const API_BASE = config.public.apiBaseUrl || "";
 const { success: showSuccess, error: showError } = useToast();
+const { user, initAuth } = useAuth();
+
+// Local user state untuk memastikan reactive
+const currentUser = ref(null);
+
+// Initialize auth on mount
+onMounted(() => {
+  // Load from localStorage first (faster)
+  if (typeof window !== 'undefined') {
+    try {
+      const storedUser = localStorage.getItem('simantap_user');
+      if (storedUser) {
+        currentUser.value = JSON.parse(storedUser);
+      }
+    } catch (e) {
+      // Error parsing user from localStorage
+    }
+  }
+  
+  // Then init auth (will update if different)
+  initAuth();
+  
+  // Also set from useAuth if available
+  if (user.value) {
+    currentUser.value = user.value;
+  }
+});
+
+// Watch user changes from useAuth
+watch(() => user.value, (newUser) => {
+  if (newUser) {
+    currentUser.value = newUser;
+  }
+}, { immediate: true, deep: true });
+
+// Computed untuk check role - case insensitive dan support berbagai format
+const canEdit = computed(() => {
+  const userToCheck = currentUser.value || user.value;
+  
+  if (!userToCheck || !userToCheck.role) {
+    // Try localStorage as last resort
+    if (typeof window !== 'undefined') {
+      try {
+        const storedUser = localStorage.getItem('simantap_user');
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          const role = String(parsedUser.role || '').toUpperCase();
+          return role === 'ADMIN' || role === 'USER';
+        }
+      } catch (e) {
+        // Ignore
+      }
+    }
+    return false;
+  }
+  const role = String(userToCheck.role).toUpperCase();
+  return role === 'ADMIN' || role === 'USER';
+});
 
 // Data
 const loading = ref(false);
@@ -638,6 +798,11 @@ const formData = reactive({
   gambarLainnya: [],
 });
 
+// Store file references for upload
+const thumbnailFile = ref(null);
+const multipleImageFiles = ref([]);
+const uploadingImages = ref(false);
+
 // Helper function to generate slug
 const generateSlug = (text) => {
   return text
@@ -669,7 +834,6 @@ const loadDokumentasi = async () => {
       Object.assign(pagination, response.pagination);
     }
   } catch (error) {
-    console.error("Error loading dokumentasi:", error);
     showError("Gagal memuat data");
   } finally {
     loading.value = false;
@@ -690,6 +854,7 @@ const changePage = (page) => {
   loadDokumentasi();
 };
 
+
 const openFormModal = (item = null) => {
   if (item) {
     Object.assign(formData, {
@@ -702,8 +867,14 @@ const openFormModal = (item = null) => {
         ? new Date(item.tanggal).toISOString().split("T")[0]
         : "",
       thumbnail: item.thumbnail || "",
-      gambarLainnya: item.gambarLainnya || [],
+      gambarLainnya: (item.gambarLainnya || []).map((url) => ({
+        url,
+        isNew: false,
+      })),
     });
+    // Clear file references when editing (existing images are URLs)
+    thumbnailFile.value = null;
+    multipleImageFiles.value = [];
   } else {
     resetForm();
   }
@@ -726,88 +897,191 @@ const resetForm = () => {
     thumbnail: "",
     gambarLainnya: [],
   });
+  thumbnailFile.value = null;
+  multipleImageFiles.value = [];
 };
 
-const handleThumbnailUpload = async (event) => {
+const handleThumbnailUpload = (event) => {
   const file = event.target.files[0];
   if (!file) return;
 
-  // Validate judul first
-  if (!formData.judul || formData.judul.trim() === "") {
-    showError("Mohon isi judul terlebih dahulu sebelum upload gambar");
-    event.target.value = ""; // Reset file input
-    return;
-  }
+  // Store file reference for later upload
+  thumbnailFile.value = file;
 
-  try {
-    const formDataUpload = new FormData();
-    formDataUpload.append("image", file);
-    formDataUpload.append("folder", "dokumentasi-kegiatan");
-
-    // Generate slug dari judul untuk nama folder
-    const slug = generateSlug(formData.judul);
-    formDataUpload.append("slug", slug);
-
-    const response = await $fetch(`${API_BASE}/api/upload/image`, {
-      method: "POST",
-      body: formDataUpload,
-    });
-
-    if (response.success) {
-      formData.thumbnail = response.data.url;
-      showSuccess("Gambar berhasil diupload");
-    }
-  } catch (error) {
-    console.error("Error uploading image:", error);
-    showError("Gagal upload gambar");
-  }
+  // Create preview URL
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    formData.thumbnail = e.target.result;
+  };
+  reader.readAsDataURL(file);
 };
 
-const handleMultipleImagesUpload = async (event) => {
+const handleMultipleImagesUpload = (event) => {
   const files = Array.from(event.target.files);
   if (files.length === 0) return;
 
-  // Validate judul first
-  if (!formData.judul || formData.judul.trim() === "") {
-    showError("Mohon isi judul terlebih dahulu sebelum upload gambar");
-    event.target.value = ""; // Reset file input
-    return;
-  }
+  // Store file references for later upload
+  // Track which indices are new files
+  const startIndex = formData.gambarLainnya.length;
+  multipleImageFiles.value.push(...files.map((file, idx) => ({
+    file,
+    previewIndex: startIndex + idx,
+  })));
 
-  try {
-    const formDataUpload = new FormData();
-    files.forEach((file) => {
-      formDataUpload.append("images", file);
-    });
-    formDataUpload.append("folder", "dokumentasi-kegiatan");
-
-    // Generate slug dari judul untuk nama folder
-    const slug = generateSlug(formData.judul);
-    formDataUpload.append("slug", slug);
-
-    const response = await $fetch(`${API_BASE}/api/upload/images`, {
-      method: "POST",
-      body: formDataUpload,
-    });
-
-    if (response.success) {
-      const urls = response.data.map((img) => img.url);
-      formData.gambarLainnya.push(...urls);
-      showSuccess(`${urls.length} gambar berhasil diupload`);
-    }
-  } catch (error) {
-    console.error("Error uploading images:", error);
-    showError("Gagal upload gambar");
-  }
+  // Create preview URLs
+  files.forEach((file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      formData.gambarLainnya.push({
+        url: e.target.result,
+        isNew: true,
+      });
+    };
+    reader.readAsDataURL(file);
+  });
 };
 
 const removeImage = (index) => {
+  const item = formData.gambarLainnya[index];
+  
+  // Remove from file references if it's a new file
+  if (item && item.isNew) {
+    // Find and remove the corresponding file reference
+    const fileIndex = multipleImageFiles.value.findIndex(
+      (f) => f.previewIndex === index
+    );
+    if (fileIndex !== -1) {
+      multipleImageFiles.value.splice(fileIndex, 1);
+    }
+    // Update preview indices for remaining files
+    multipleImageFiles.value.forEach((f) => {
+      if (f.previewIndex > index) {
+        f.previewIndex--;
+      }
+    });
+  }
+  
   formData.gambarLainnya.splice(index, 1);
 };
 
+const uploadThumbnail = async () => {
+  if (!thumbnailFile.value) {
+    // If no file but thumbnail is base64, it means it was just selected but file ref is lost
+    // This shouldn't happen, but return existing thumbnail as fallback
+    return formData.thumbnail;
+  }
+
+  // Validate judul first
+  if (!formData.judul || formData.judul.trim() === "") {
+    throw new Error("Judul wajib diisi sebelum upload gambar");
+  }
+
+  const formDataUpload = new FormData();
+  formDataUpload.append("image", thumbnailFile.value);
+  formDataUpload.append("folder", "dokumentasi-kegiatan");
+
+  // Generate slug dari judul untuk nama folder
+  const slug = generateSlug(formData.judul);
+  formDataUpload.append("slug", slug);
+
+  const response = await $fetch(`${API_BASE}/api/upload/image`, {
+    method: "POST",
+    body: formDataUpload,
+  });
+
+  if (response.success) {
+    return response.data.url;
+  }
+  throw new Error("Gagal upload thumbnail");
+};
+
+const uploadMultipleImages = async () => {
+  if (multipleImageFiles.value.length === 0) return [];
+
+  // Validate judul first
+  if (!formData.judul || formData.judul.trim() === "") {
+    throw new Error("Judul wajib diisi sebelum upload gambar");
+  }
+
+  const formDataUpload = new FormData();
+  multipleImageFiles.value.forEach((fileRef) => {
+    formDataUpload.append("images", fileRef.file);
+  });
+  formDataUpload.append("folder", "dokumentasi-kegiatan");
+
+  // Generate slug dari judul untuk nama folder
+  const slug = generateSlug(formData.judul);
+  formDataUpload.append("slug", slug);
+
+  const response = await $fetch(`${API_BASE}/api/upload/images`, {
+    method: "POST",
+    body: formDataUpload,
+  });
+
+  if (response.success) {
+    return response.data.map((img) => img.url);
+  }
+  throw new Error("Gagal upload gambar");
+};
+
 const submitForm = async () => {
+  // Validate required fields
+  if (!formData.judul || !formData.tanggal) {
+    showError("Judul dan tanggal wajib diisi");
+    return;
+  }
+
   submitting.value = true;
+  uploadingImages.value = true;
+
   try {
+    // Upload images first if there are new files
+    let thumbnailUrl = formData.thumbnail;
+    let gambarLainnyaUrls = [];
+
+    // Check if thumbnail is a new file that needs to be uploaded
+    if (thumbnailFile.value) {
+      thumbnailUrl = await uploadThumbnail();
+    } else {
+      // Use existing thumbnail URL
+      thumbnailUrl = formData.thumbnail;
+    }
+
+    // Handle multiple images
+    if (multipleImageFiles.value.length > 0) {
+      // Upload new files
+      const uploadedUrls = await uploadMultipleImages();
+      
+      // Get existing URLs (those that are not new files)
+      const existingUrls = formData.gambarLainnya
+        .filter((img) => {
+          if (typeof img === "string") return true; // Legacy: string URLs
+          return !img.isNew; // Objects with isNew: false
+        })
+        .map((img) => (typeof img === "string" ? img : img.url));
+      
+      // Combine existing URLs with newly uploaded URLs
+      gambarLainnyaUrls = [...existingUrls, ...uploadedUrls];
+    } else {
+      // No new files to upload, just use existing URLs
+      gambarLainnyaUrls = formData.gambarLainnya.map((img) =>
+        typeof img === "string" ? img : img.url
+      );
+    }
+
+    uploadingImages.value = false;
+
+    // Prepare data for submission
+    const submitData = {
+      judul: formData.judul,
+      deskripsi: formData.deskripsi,
+      konten: formData.konten,
+      kategori: formData.kategori,
+      tanggal: formData.tanggal,
+      thumbnail: thumbnailUrl,
+      gambarLainnya: gambarLainnyaUrls,
+    };
+
     const url = formData.id
       ? `${API_BASE}/api/dokumentasi-kegiatan/admin/${formData.id}`
       : `${API_BASE}/api/dokumentasi-kegiatan/admin`;
@@ -816,7 +1090,7 @@ const submitForm = async () => {
 
     const response = await $fetch(url, {
       method,
-      body: JSON.stringify(formData),
+      body: JSON.stringify(submitData),
       headers: {
         "Content-Type": "application/json",
       },
@@ -832,10 +1106,10 @@ const submitForm = async () => {
       loadDokumentasi();
     }
   } catch (error) {
-    console.error("Error submitting form:", error);
-    showError("Gagal menyimpan data");
+    showError(error.message || "Gagal menyimpan data");
   } finally {
     submitting.value = false;
+    uploadingImages.value = false;
   }
 };
 
@@ -871,7 +1145,6 @@ const deleteDokumentasi = async () => {
     itemToDelete.value = null;
     loadDokumentasi();
   } catch (error) {
-    console.error("Error deleting dokumentasi:", error);
     showError("Gagal menghapus data");
   }
 };
@@ -888,8 +1161,10 @@ const formatDate = (dateString) => {
 
 // Select mode functions
 const toggleSelectMode = () => {
-  selectMode.value = true;
-  selectedItems.value.clear();
+  selectMode.value = !selectMode.value;
+  if (!selectMode.value) {
+    selectedItems.value.clear();
+  }
 };
 
 const cancelSelectMode = () => {

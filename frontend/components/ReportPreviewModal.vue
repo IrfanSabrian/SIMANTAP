@@ -2,13 +2,23 @@
   <transition name="fade">
     <div
       v-if="isOpen"
-      @click="closeModal"
-      class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-2 lg:p-4"
+      class="fixed inset-0 z-50 overflow-y-auto"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
     >
+      <!-- Background overlay -->
       <div
-        @click.stop
-        class="w-full max-w-7xl h-[95vh] lg:h-[90vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col"
-      >
+        class="fixed inset-0 bg-black bg-opacity-60 transition-opacity"
+        @click="closeModal"
+      ></div>
+
+      <!-- Modal panel -->
+      <div class="flex min-h-full items-center justify-center p-2 lg:p-4">
+        <div
+          @click.stop
+          class="relative w-full max-w-7xl h-[95vh] lg:h-[90vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col"
+        >
         <!-- Header -->
         <div
           class="bg-blue-600 text-white px-4 lg:px-6 py-3 lg:py-4 flex items-center justify-between"
@@ -153,6 +163,7 @@
               <p>Memuat preview laporan...</p>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

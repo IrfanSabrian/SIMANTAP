@@ -1,47 +1,66 @@
 <template>
-  <div
-    class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-200 dark:border-gray-700"
-  >
-    <div
-      class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6"
-    >
-      <div>
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-          Generator Laporan
-        </h3>
-        <p class="text-sm text-gray-600 dark:text-gray-400">
-          Pilih jenis laporan untuk melihat preview dan download
-        </p>
-      </div>
-    </div>
+  <div class="space-y-8">
+    <!-- Main Content: Optimized Layout -->
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+      <!-- Left: Report Type Selection (9 columns) -->
+      <div class="xl:col-span-8">
+        <!-- Report Type Cards -->
+        <div>
+          <div class="mb-6">
+            <h3
+              class="text-lg font-semibold text-gray-900 dark:text-white mb-1"
+            >
+              Pilih Jenis Laporan
+            </h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+              Pilih salah satu jenis laporan untuk melihat preview
+            </p>
+          </div>
 
-    <!-- Report Type Selection -->
-    <div class="space-y-6">
-      <div>
-        <label
-          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-4"
-        >
-          Pilih Jenis Laporan
-        </label>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <button
-            v-for="reportType in availableReportTypes"
-            :key="reportType.value"
-            @click="selectReportType(reportType.value)"
-            :class="[
-              'p-4 rounded-lg border-2 text-left transition-all duration-200 group hover:shadow-md',
-              selectedReportType === reportType.value
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 shadow-md'
-                : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-gray-50 dark:hover:bg-gray-600',
-            ]"
-          >
-            <div class="flex items-start gap-3">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <button
+              v-for="reportType in availableReportTypes"
+              :key="reportType.value"
+              @click="selectReportType(reportType.value)"
+              :class="[
+                'group relative p-4 rounded-xl border-2 transition-all duration-300 text-left',
+                'hover:shadow-lg hover:-translate-y-0.5',
+                selectedReportType === reportType.value
+                  ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 shadow-md'
+                  : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-blue-300 dark:hover:border-blue-600',
+              ]"
+            >
+              <!-- Selected Indicator -->
+              <div
+                v-if="selectedReportType === reportType.value"
+                class="absolute top-3 right-3"
+              >
+                <div
+                  class="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center"
+                >
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="3"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Icon -->
               <div
                 :class="[
-                  'p-2 rounded-lg transition-colors',
+                  'w-10 h-10 rounded-lg flex items-center justify-center mb-3 transition-colors',
                   selectedReportType === reportType.value
                     ? 'bg-blue-500 text-white'
-                    : 'bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-400 group-hover:bg-blue-100 group-hover:text-blue-600 dark:group-hover:bg-blue-900/30',
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 group-hover:text-blue-600 dark:group-hover:text-blue-400',
                 ]"
               >
                 <svg
@@ -58,167 +77,178 @@
                   ></path>
                 </svg>
               </div>
-              <div class="flex-1">
-                <div class="font-semibold text-sm mb-1">
+
+              <!-- Content -->
+              <div>
+                <h4
+                  :class="[
+                    'text-sm font-semibold mb-1.5',
+                    selectedReportType === reportType.value
+                      ? 'text-gray-900 dark:text-white'
+                      : 'text-gray-800 dark:text-gray-200',
+                  ]"
+                >
                   {{ reportType.label }}
-                </div>
-                <div
-                  class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed"
+                </h4>
+                <p
+                  class="text-xs leading-relaxed line-clamp-2"
+                  :class="
+                    selectedReportType === reportType.value
+                      ? 'text-gray-600 dark:text-gray-300'
+                      : 'text-gray-500 dark:text-gray-400'
+                  "
                 >
                   {{ reportType.description }}
-                </div>
+                </p>
               </div>
-            </div>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Location Selection for Jalan Lingkungan -->
-    <div v-if="selectedReportType === 'jalan-lingkungan'" class="mt-6">
-      <!-- Info Message -->
-      <div
-        class="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg"
-      >
-        <div class="flex items-start gap-3">
-          <svg
-            class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
-          <div>
-            <h4
-              class="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-1"
-            >
-              Pilih Lokasi untuk Laporan
-            </h4>
-            <p class="text-sm text-blue-700 dark:text-blue-300">
-              Untuk laporan jalan lingkungan, Anda harus memilih kecamatan dan
-              desa terlebih dahulu sebelum dapat melihat preview laporan.
-            </p>
+            </button>
           </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Pilih Kecamatan <span class="text-red-500">*</span>
-          </label>
-          <select
-            v-model="selectedKecamatan"
-            @change="onKecamatanChange"
-            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-          >
-            <option value="">Pilih Kecamatan</option>
-            <option
-              v-for="kecamatan in kecamatanList"
-              :key="kecamatan"
-              :value="kecamatan"
-            >
-              {{ kecamatan }}
-            </option>
-          </select>
-        </div>
+      <!-- Right: Filter & Actions (4 columns) -->
+      <div class="xl:col-span-4">
+        <div
+          class="sticky top-24 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 space-y-6"
+        >
+          <h4 class="text-lg font-bold text-gray-800 dark:text-white mb-4">
+            Filter & Aksi
+          </h4>
 
-        <div>
-          <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          <!-- Location Filters -->
+          <div class="space-y-4">
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
+                Kecamatan
+              </label>
+              <select
+                v-model="selectedKecamatan"
+                @change="onKecamatanChange"
+                class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 dark:text-white"
+              >
+                <option value="">Pilih Kecamatan</option>
+                <option
+                  v-for="kecamatan in kecamatanList"
+                  :key="kecamatan"
+                  :value="kecamatan"
+                >
+                  {{ kecamatan }}
+                </option>
+              </select>
+            </div>
+
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
+                Desa
+              </label>
+              <select
+                v-model="selectedDesa"
+                :disabled="!selectedKecamatan"
+                class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 dark:text-white disabled:bg-gray-50 dark:disabled:bg-gray-800 disabled:text-gray-400 disabled:cursor-not-allowed"
+              >
+                <option value="">Pilih Desa</option>
+                <option v-for="desa in availableDesa" :key="desa" :value="desa">
+                  {{ desa }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <div>
+            <button
+              @click="previewReport"
+              :disabled="isLoading"
+              class="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+            >
+              <svg
+                v-if="isLoading"
+                class="animate-spin h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              <svg
+                v-else
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                ></path>
+              </svg>
+              <span>
+                {{ isLoading ? "Memuat..." : "Buat Laporan" }}
+              </span>
+            </button>
+          </div>
+
+          <!-- Status Alert -->
+          <div
+            v-if="statusMessage"
+            class="p-4 rounded-xl text-sm"
+            :class="
+              statusMessage.type === 'error'
+                ? 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800'
+                : 'bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-800'
+            "
           >
-            Pilih Desa <span class="text-red-500">*</span>
-          </label>
-          <select
-            v-model="selectedDesa"
-            :disabled="!selectedKecamatan"
-            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-600"
-          >
-            <option value="">Pilih Desa</option>
-            <option v-for="desa in availableDesa" :key="desa" :value="desa">
-              {{ desa }}
-            </option>
-          </select>
+            <div class="flex items-start gap-3">
+              <svg
+                v-if="statusMessage.type === 'error'"
+                class="w-5 h-5 flex-shrink-0 mt-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <svg
+                v-else
+                class="w-5 h-5 flex-shrink-0 mt-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <p class="flex-1">{{ statusMessage.text }}</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Preview Button -->
-    <div class="mt-8">
-      <button
-        @click="previewReport"
-        :disabled="isPreviewDisabled || isLoading"
-        class="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-lg font-semibold transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5"
-      >
-        <svg
-          v-if="isLoading"
-          class="animate-spin h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            class="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            stroke-width="4"
-          ></circle>
-          <path
-            class="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          ></path>
-        </svg>
-        <svg
-          v-else
-          class="h-6 w-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          ></path>
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-          ></path>
-        </svg>
-        {{
-          isLoading
-            ? "Memuat Preview..."
-            : selectedReportType === "jalan-lingkungan" && isPreviewDisabled
-            ? "Pilih Kecamatan dan Desa Terlebih Dahulu"
-            : "Lihat Preview Laporan"
-        }}
-      </button>
-    </div>
-
-    <!-- Status Messages -->
-    <div
-      v-if="statusMessage"
-      class="mt-4 p-3 rounded-lg"
-      :class="
-        statusMessage.type === 'error'
-          ? 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300'
-          : 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
-      "
-    >
-      {{ statusMessage.text }}
     </div>
 
     <!-- Preview Modal -->
@@ -273,31 +303,31 @@ const availableReportTypes = [
     value: "jalan-lingkungan",
     label: "Jalan Lingkungan",
     description:
-      "Laporan kondisi dan data jalan lingkungan di wilayah terpilih",
+      "Laporan kondisi dan data jalan lingkungan Kabupaten Kubu Raya",
   },
   {
     value: "jembatan-lingkungan",
     label: "Jembatan Lingkungan",
     description:
-      "Laporan kondisi dan data jembatan lingkungan di wilayah terpilih",
+      "Laporan kondisi dan data jembatan lingkungan Kabupaten Kubu Raya",
   },
   {
     value: "drainase-lingkungan",
     label: "Drainase Lingkungan",
     description:
-      "Laporan kondisi dan data drainase lingkungan di wilayah terpilih",
+      "Laporan kondisi dan data drainase lingkungan Kabupaten Kubu Raya",
   },
   {
     value: "kawasan-permukiman",
     label: "Kawasan Permukiman",
     description:
-      "Laporan kondisi dan data kawasan permukiman di wilayah terpilih",
+      "Laporan kondisi dan data kawasan permukiman Kabupaten Kubu Raya",
   },
   {
     value: "rumah-layak-tidak-hunian",
     label: "Rumah Tidak Layak Huni",
     description:
-      "Laporan kondisi dan data rumah tidak layak huni di wilayah terpilih",
+      "Laporan kondisi dan data rumah tidak layak huni Kabupaten Kubu Raya",
   },
 ];
 
@@ -316,15 +346,8 @@ const availableDesa = computed(() => {
 });
 
 // Computed property untuk menentukan apakah tombol preview harus disabled
+// Sekarang tombol tidak pernah disabled, validasi dilakukan saat klik
 const isPreviewDisabled = computed(() => {
-  if (!selectedReportType.value) return true;
-
-  // Untuk laporan jalan lingkungan, kecamatan dan desa harus dipilih
-  if (selectedReportType.value === "jalan-lingkungan") {
-    return !selectedKecamatan.value || !selectedDesa.value;
-  }
-
-  // Untuk laporan jenis lain, hanya perlu jenis laporan
   return false;
 });
 
@@ -393,16 +416,39 @@ const fetchReportData = async () => {
 
 const onKecamatanChange = () => {
   selectedDesa.value = "";
-  clearStatus(); // Clear status message when kecamatan changes
+  clearStatus();
 };
 
 const previewReport = async () => {
+  // Clear previous status
+  clearStatus();
+
+  // Validasi: harus pilih jenis laporan
   if (!selectedReportType.value) {
     statusMessage.value = {
       type: "error",
       text: "Silakan pilih jenis laporan terlebih dahulu",
     };
     return;
+  }
+
+  // Validasi: harus pilih kecamatan dan desa untuk laporan jalan lingkungan
+  if (selectedReportType.value === "jalan-lingkungan") {
+    if (!selectedKecamatan.value) {
+      statusMessage.value = {
+        type: "error",
+        text: "Silakan pilih kecamatan terlebih dahulu",
+      };
+      return;
+    }
+
+    if (!selectedDesa.value) {
+      statusMessage.value = {
+        type: "error",
+        text: "Silakan pilih desa terlebih dahulu",
+      };
+      return;
+    }
   }
 
   // Check if selected report type is available (only jalan-lingkungan for now)
@@ -414,25 +460,6 @@ const previewReport = async () => {
       } akan segera tersedia. Saat ini hanya laporan Jalan Lingkungan yang tersedia.`,
     };
     return;
-  }
-
-  // Validasi khusus untuk laporan jalan lingkungan - harus pilih kecamatan dan desa
-  if (selectedReportType.value === "jalan-lingkungan") {
-    if (!selectedKecamatan.value) {
-      statusMessage.value = {
-        type: "error",
-        text: "Silakan pilih kecamatan terlebih dahulu untuk laporan jalan lingkungan",
-      };
-      return;
-    }
-
-    if (!selectedDesa.value) {
-      statusMessage.value = {
-        type: "error",
-        text: "Silakan pilih desa terlebih dahulu untuk laporan jalan lingkungan",
-      };
-      return;
-    }
   }
 
   // Set loading state

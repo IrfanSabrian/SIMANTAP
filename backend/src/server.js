@@ -12,6 +12,7 @@ const { prisma } = require("./prisma");
 const jalanRoutes = require("./routes/jalan");
 const authRoutes = require("./routes/auth");
 const aduanRoutes = require("./routes/aduan");
+const uploadRoutes = require("./routes/upload");
 
 let dokumentasiKegiatanRoutes, dokumentasiInfrastrukturRoutes, statsRoutes;
 
@@ -157,6 +158,7 @@ app.get("/api/test-routes", (req, res) => {
 app.use("/api/jalan", jalanRoutes);
 app.use("/api/aduan", aduanRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/upload", uploadRoutes);
 
 if (dokumentasiKegiatanRoutes) {
   app.use("/api/dokumentasi-kegiatan", dokumentasiKegiatanRoutes);

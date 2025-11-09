@@ -9,11 +9,11 @@
       <div class="px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <!-- Mobile Menu Button & Logo -->
-          <div class="flex items-center space-x-3">
+          <div class="flex items-center space-x-3 flex-1 min-w-0">
             <!-- Hamburger Button (Mobile) -->
             <button
               @click="sidebarOpen = !sidebarOpen"
-              class="lg:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              class="lg:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex-shrink-0"
             >
               <svg
                 class="w-6 h-6"
@@ -39,21 +39,26 @@
             </button>
 
             <!-- Logo & Title -->
-            <img
-              src="/simantap-logo.svg"
-              alt="SIMANTAP Logo"
-              class="h-10 w-10"
-            />
-            <div class="hidden sm:block">
-              <h1
-                class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-              >
-                Dashboard SIMANTAP
-              </h1>
-              <p class="text-xs text-gray-500 dark:text-gray-400">
-                Sistem Informasi Manajemen Tata Permukiman
-              </p>
-            </div>
+            <NuxtLink
+              to="/"
+              class="flex items-center space-x-3 hover:opacity-80 transition-opacity cursor-pointer flex-1 min-w-0"
+            >
+              <img
+                src="/simantap-logo.svg"
+                alt="SIMANTAP Logo"
+                class="h-10 w-10 flex-shrink-0"
+              />
+              <div class="hidden sm:block min-w-0">
+                <h1
+                  class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent truncate"
+                >
+                  Dashboard SIMANTAP
+                </h1>
+                <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
+                  Sistem Informasi Manajemen Tata Permukiman
+                </p>
+              </div>
+            </NuxtLink>
           </div>
 
           <!-- User Info Badge -->
@@ -281,7 +286,7 @@
 
           <!-- Menu Dokumentasi -->
           <div
-            v-if="user?.role === 'ADMIN'"
+            v-if="user?.role === 'ADMIN' || user?.role === 'USER'"
             class="pt-2 mt-2 mb-1 border-t border-gray-200 dark:border-gray-700"
           >
             <p
@@ -291,7 +296,7 @@
             </p>
           </div>
           <button
-            v-if="user?.role === 'ADMIN'"
+            v-if="user?.role === 'ADMIN' || user?.role === 'USER'"
             @click="
               activeTab = 'dokumentasi-infrastruktur';
               sidebarOpen = false;
@@ -319,7 +324,7 @@
             <span class="font-medium">Dokumentasi Infrastruktur</span>
           </button>
           <button
-            v-if="user?.role === 'ADMIN'"
+            v-if="user?.role === 'ADMIN' || user?.role === 'USER'"
             @click="
               activeTab = 'dokumentasi-kegiatan';
               sidebarOpen = false;
@@ -1310,26 +1315,221 @@
 
                     <!-- Action Buttons -->
                     <div class="space-y-3">
-                      <!-- Import GeoJSON Button -->
-                      <button
-                        @click="showGeoJSONImportModal = true"
-                        class="w-full px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700"
-                      >
-                        <svg
-                          class="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+                      <!-- Download GeoJSON Dropdown -->
+                      <div class="relative" ref="downloadMenuRef">
+                        <button
+                          @click.stop="showDownloadMenu = !showDownloadMenu"
+                          class="w-full px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 relative"
                         >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
-                          />
-                        </svg>
-                        <span>Import GeoJSON</span>
-                      </button>
+                          <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                            />
+                          </svg>
+                          <span>Download</span>
+                          <svg
+                            class="w-4 h-4 transition-transform absolute right-4"
+                            :class="{ 'rotate-180': showDownloadMenu }"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div
+                          v-if="showDownloadMenu"
+                          class="absolute z-50 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden"
+                          style="max-height: 400px"
+                        >
+                          <!-- Fixed Header -->
+                          <div
+                            class="p-3 border-b border-gray-100 flex-shrink-0"
+                          >
+                            <button
+                              @click="
+                                downloadDocument('all');
+                                showDownloadMenu = false;
+                              "
+                              :disabled="isDownloading"
+                              class="w-full px-4 py-2.5 text-left rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-between group disabled:opacity-50"
+                            >
+                              <div class="flex items-center gap-3">
+                                <div
+                                  class="p-1.5 bg-blue-100 rounded group-hover:bg-blue-200"
+                                >
+                                  <svg
+                                    class="w-4 h-4 text-blue-600"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                    />
+                                  </svg>
+                                </div>
+                                <div>
+                                  <div
+                                    class="text-sm font-semibold text-gray-800"
+                                  >
+                                    Semua Data
+                                  </div>
+                                  <div class="text-xs text-gray-500">
+                                    GeoJSON format
+                                  </div>
+                                </div>
+                              </div>
+                              <svg
+                                v-if="!isDownloading"
+                                class="w-4 h-4 text-gray-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M9 5l7 7-7 7"
+                                />
+                              </svg>
+                              <svg
+                                v-else
+                                class="animate-spin w-4 h-4 text-blue-600"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle
+                                  class="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  stroke-width="4"
+                                ></circle>
+                                <path
+                                  class="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
+                              </svg>
+                            </button>
+                          </div>
+
+                          <!-- Scrollable Content -->
+                          <div
+                            class="overflow-y-auto max-h-[320px] overscroll-contain"
+                          >
+                            <div class="p-2">
+                              <!-- Kecamatan Section -->
+                              <div v-if="kecamatanOptions.length > 0">
+                                <div
+                                  class="px-2 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wide sticky top-0 bg-white z-10"
+                                >
+                                  Kecamatan
+                                </div>
+                                <div class="space-y-1">
+                                  <button
+                                    v-for="kec in kecamatanOptions"
+                                    :key="`kec-${kec}`"
+                                    @click="
+                                      downloadDocument('kecamatan', kec);
+                                      showDownloadMenu = false;
+                                    "
+                                    :disabled="isDownloading"
+                                    class="w-full px-4 py-2 text-left rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-between group disabled:opacity-50"
+                                  >
+                                    <div
+                                      class="flex items-center gap-3 flex-1 min-w-0"
+                                    >
+                                      <div
+                                        class="p-1.5 bg-green-100 rounded group-hover:bg-green-200 flex-shrink-0"
+                                      >
+                                        <svg
+                                          class="w-4 h-4 text-green-600"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                          />
+                                          <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                          />
+                                        </svg>
+                                      </div>
+                                      <span
+                                        class="text-sm font-medium text-gray-800 truncate"
+                                        >{{ kec }}</span
+                                      >
+                                    </div>
+                                    <svg
+                                      v-if="!isDownloading"
+                                      class="w-4 h-4 text-gray-400 flex-shrink-0"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M9 5l7 7-7 7"
+                                      />
+                                    </svg>
+                                    <svg
+                                      v-else
+                                      class="animate-spin w-4 h-4 text-green-600 flex-shrink-0"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <circle
+                                        class="opacity-25"
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        stroke="currentColor"
+                                        stroke-width="4"
+                                      ></circle>
+                                      <path
+                                        class="opacity-75"
+                                        fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                      ></path>
+                                    </svg>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
                       <button
                         @click="toggleSelectMode"
@@ -2360,13 +2560,6 @@
       @update="handleRoadUpdate"
     />
 
-    <!-- GeoJSON Import Modal -->
-    <GeoJSONImportModal
-      :visible="showGeoJSONImportModal"
-      @close="showGeoJSONImportModal = false"
-      @import="handleGeoJSONImport"
-    />
-
     <!-- Toast Notifications -->
     <Toast />
 
@@ -2394,7 +2587,6 @@ import { useRouter, useRoute } from "vue-router";
 import AduanList from "~/components/AduanList.vue";
 import RoadDetailModal from "~/components/RoadDetailModal.vue";
 import UserDetailModal from "~/components/UserDetailModal.vue";
-import GeoJSONImportModal from "~/components/GeoJSONImportModal.vue";
 import AnalysisDashboard from "~/components/AnalysisDashboard.vue";
 import ReportGenerator from "~/components/ReportGenerator.vue";
 import DokumentasiKegiatanManagement from "~/components/DokumentasiKegiatanManagement.vue";
@@ -2499,10 +2691,16 @@ const showAddModal = ref(false);
 const showEditModal = ref(false);
 const showViewModal = ref(false);
 const showRoadDetailModal = ref(false);
-const showGeoJSONImportModal = ref(false);
 const showAddUserModal = ref(false);
 const showEditUserModal = ref(false);
 const showConfirmModal = ref(false);
+
+// Download state
+const showDownloadMenu = ref(false);
+const isDownloading = ref(false);
+const downloadMenuRef = ref(null);
+const kecamatanOptions = ref([]);
+const desaOptions = ref([]);
 const confirmModalData = ref({
   title: "",
   message: "",
@@ -3297,70 +3495,84 @@ const handleRoadUpdate = async (updatedRoad) => {
   }
 };
 
-const handleGeoJSONImport = async (importedData) => {
+const downloadDocument = async (type, kecamatan = null, desa = null) => {
+  isDownloading.value = true;
   try {
-    const config = useRuntimeConfig();
-    if (!config.public.apiBaseUrl) {
-      console.error("⚠️ NUXT_PUBLIC_API_BASE_URL is not set!");
-      return;
+    let url = `${API_BASE}/api/jalan/download/geojson?`;
+    const params = new URLSearchParams();
+
+    if (type === "kecamatan" && kecamatan) {
+      params.append("kecamatan", kecamatan);
+    } else if (type === "desa" && kecamatan && desa) {
+      params.append("kecamatan", kecamatan);
+      params.append("desa", desa);
     }
-    const API_BASE = config.public.apiBaseUrl;
-    const token = localStorage.getItem("token");
+    // type === 'all' doesn't need params
 
-    // Convert GeoJSON features to road data format
-    const roadsData = importedData.map((feature) => ({
-      No_Ruas: feature.No_Ruas || feature.noRuas || "",
-      Nama_Jalan:
-        feature.Nama_Jalan ||
-        feature.namaJalan ||
-        feature.Nama ||
-        feature.nama ||
-        "",
-      Kecamatan: feature.Kecamatan || feature.kecamatan || "",
-      Desa: feature.Desa || feature.desa || "",
-      Panjang_M: feature.Panjang_M || feature.panjangM || 0,
-      Lebar_m_: feature.Lebar_m_ || feature.lebarM || 0,
-      Kondisi: feature.Kondisi || feature.kondisi || "",
-      Keterangan: feature.Keterangan || feature.keterangan || "",
-      No_Jalan: feature.No_Jalan || feature.noJalan || "",
-      Tahun: feature.Tahun || feature.tahun || new Date().getFullYear(),
-      Nilai: feature.Nilai || feature.nilai || 0,
-      Bobot: feature.Bobot || feature.bobot || 0,
-      No_Prov: feature.No_Prov || feature.noProv || "",
-      No_Kab: feature.No_Kab || feature.noKab || "",
-      No_Kec: feature.No_Kec || feature.noKec || "",
-      No_Desa: feature.No_Desa || feature.noDesa || "",
-      FID: feature.FID || feature.fid || "",
-      Shape_Leng: feature.Shape_Leng || feature.shapeLeng || 0,
-      Pngnl_Awal: feature.Pngnl_Awal || feature.pngnlAwal || "",
-      Pngnl_Akhi: feature.Pngnl_Akhi || feature.pngnlAkhi || "",
-      geometry: feature.geometry,
-      coordinates: feature.coordinates,
-    }));
+    url += params.toString();
 
-    // Send to API
-    const response = await fetch(`${API_BASE}/api/jalan/bulk-import`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ roads: roadsData }),
-    });
+    console.log(`Downloading document: ${type}`, { kecamatan, desa });
+    console.log(`URL: ${url}`);
 
-    const data = await response.json();
+    const response = await fetch(url);
 
-    if (data.success) {
-      toast.success(`Berhasil mengimport ${importedData.length} data jalan!`);
-      showGeoJSONImportModal.value = false;
-      await fetchRoads();
-      await fetchStats();
+    if (!response.ok) {
+      throw new Error(`Failed to download: ${response.statusText}`);
+    }
+
+    const blob = await response.blob();
+    const downloadUrl = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = downloadUrl;
+
+    // Get filename from Content-Disposition header or generate one
+    const contentDisposition = response.headers.get("Content-Disposition");
+    let filename = "jalan_lingkungan.geojson";
+    if (contentDisposition) {
+      const filenameMatch = contentDisposition.match(/filename="?(.+)"?/i);
+      if (filenameMatch) {
+        filename = filenameMatch[1];
+      }
     } else {
-      toast.error("Gagal mengimport data: " + data.message);
+      // Generate filename
+      if (type === "kecamatan" && kecamatan) {
+        filename = `jalan_lingkungan_${kecamatan.replace(/\s+/g, "_")}.geojson`;
+      } else if (type === "desa" && kecamatan && desa) {
+        filename = `jalan_lingkungan_${kecamatan.replace(
+          /\s+/g,
+          "_"
+        )}_${desa.replace(/\s+/g, "_")}.geojson`;
+      } else {
+        filename = `jalan_lingkungan_all.geojson`;
+      }
+    }
+
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(downloadUrl);
+
+    toast.success(`Berhasil mendownload ${filename}`);
+    console.log(`Download completed: ${filename}`);
+  } catch (error) {
+    console.error("Error downloading document:", error);
+    toast.error(`Gagal mendownload dokumen: ${error.message}`);
+  } finally {
+    isDownloading.value = false;
+  }
+};
+
+const fetchKecamatanOptions = async () => {
+  try {
+    const response = await fetch(`${API_BASE}/api/jalan/filters/kecamatan`);
+    const result = await response.json();
+
+    if (result.success) {
+      kecamatanOptions.value = result.data;
     }
   } catch (error) {
-    console.error("Error importing GeoJSON:", error);
-    toast.error("Terjadi kesalahan saat mengimport data GeoJSON");
+    console.error("Error fetching kecamatan:", error);
   }
 };
 
@@ -3891,6 +4103,7 @@ onMounted(async () => {
 
   // Load filter options first, then other data
   await fetchFilterOptions();
+  await fetchKecamatanOptions();
   await Promise.all([fetchStats(), fetchRoads(), fetchAnalysisData()]);
 
   if (user.value?.role === "ADMIN") {
@@ -3900,9 +4113,26 @@ onMounted(async () => {
   loading.value = false;
 });
 
+// Close download menu when clicking outside
+const handleClickOutside = (event) => {
+  if (downloadMenuRef.value && !downloadMenuRef.value.contains(event.target)) {
+    showDownloadMenu.value = false;
+  }
+};
+
+watch(showDownloadMenu, (isOpen) => {
+  if (isOpen) {
+    nextTick(() => {
+      document.addEventListener("click", handleClickOutside);
+    });
+  } else {
+    document.removeEventListener("click", handleClickOutside);
+  }
+});
+
 // Cleanup on unmount
 onUnmounted(() => {
-  // Cleanup if needed
+  document.removeEventListener("click", handleClickOutside);
 });
 </script>
 

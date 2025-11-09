@@ -1,330 +1,409 @@
 <template>
-  <div class="p-3 sm:p-4 md:p-6 space-y-4 md:space-y-6">
-    <!-- Header -->
+  <div>
+    <!-- Header Banner -->
     <div
-      class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
+      class="bg-gradient-to-r from-orange-50 to-orange-100 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-orange-500 mb-6"
     >
       <div>
-        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+        <h2
+          class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
+        >
           Dokumentasi Infrastruktur
         </h2>
-        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
+        <p class="text-gray-600 dark:text-gray-400">
           Kelola dokumentasi infrastruktur perumahan
         </p>
       </div>
-      <div class="flex flex-wrap gap-2">
-        <button
-          v-if="!selectMode"
-          @click="openFormModal()"
-          class="inline-flex items-center px-3 sm:px-4 py-2 text-sm sm:text-base bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-        >
-          <svg
-            class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex flex-col lg:flex-row gap-6">
+      <!-- Table Area -->
+      <div class="flex-1 min-w-0">
+        <!-- Table -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-50 dark:bg-gray-900">
+                <tr>
+                  <th
+                    v-if="selectMode"
+                    class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
+                    style="width: 50px"
+                  >
+                    <input
+                      type="checkbox"
+                      :checked="isAllSelected"
+                      @change="toggleSelectAll"
+                      class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                    />
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
+                    Jenis Infrastruktur
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
+                    Link YouTube
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
+                    No Ruas
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
+                    Dibuat
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
+                    Diperbarui
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
+              >
+                <tr v-if="loading">
+                  <td :colspan="selectMode ? 6 : 5" class="px-6 py-12 text-center">
+                    <div class="flex justify-center items-center">
+                      <svg
+                        class="animate-spin h-8 w-8 text-orange-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          class="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          stroke-width="4"
+                        ></circle>
+                        <path
+                          class="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-else-if="dokumentasiList.length === 0">
+                  <td
+                    :colspan="selectMode ? 6 : 5"
+                    class="px-6 py-12 text-center text-gray-500 dark:text-gray-400"
+                  >
+                    Tidak ada dokumentasi
+                  </td>
+                </tr>
+                <tr
+                  v-else
+                  v-for="item in dokumentasiList"
+                  :key="item.id"
+                  @click="canEdit ? (selectMode ? toggleItemSelection(item.id) : openFormModal(item)) : null"
+                  :class="[
+                    canEdit
+                      ? 'hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer'
+                      : '',
+                    selectedItems.has(item.id)
+                      ? 'bg-blue-50 dark:bg-blue-900/20'
+                      : '',
+                  ]"
+                >
+                  <td
+                    v-if="selectMode"
+                    class="px-3 py-4 whitespace-nowrap"
+                    style="width: 50px"
+                    @click.stop
+                  >
+                    <input
+                      type="checkbox"
+                      :checked="selectedItems.has(item.id)"
+                      @click.stop="toggleItemSelection(item.id)"
+                      class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                    />
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span
+                      class="px-3 py-1.5 text-xs font-medium rounded-full bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200"
+                    >
+                      {{ formatJenisInfrastruktur(item.jenisInfrastruktur) }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4" @click.stop>
+                    <button
+                      @click.stop="
+                        openYouTubeFancybox(
+                          item.linkYoutube,
+                          item.jenisInfrastruktur,
+                          item.noRuas
+                        )
+                      "
+                      class="inline-flex items-center text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 hover:underline cursor-pointer"
+                    >
+                      <svg
+                        class="w-5 h-5 mr-1.5"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
+                        />
+                      </svg>
+                      <span class="max-w-xs truncate font-medium">
+                        Lihat Video
+                      </span>
+                    </button>
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    {{ item.noRuas || "-" }}
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400"
+                  >
+                    {{ formatDateTime(item.dibuatPada) }}
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400"
+                  >
+                    {{ formatDateTime(item.diperbaruiPada) }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div
+            v-if="pagination.pages > 1"
+            class="bg-gray-50 dark:bg-gray-900 px-6 py-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-700"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            />
-          </svg>
-          <span class="hidden sm:inline">Tambah Dokumentasi</span>
-          <span class="sm:hidden">Tambah</span>
-        </button>
-        <button
-          v-if="!selectMode"
-          @click="toggleSelectMode"
-          class="inline-flex items-center px-3 sm:px-4 py-2 text-sm sm:text-base bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200"
-        >
-          <svg
-            class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            />
-          </svg>
-          <span class="hidden sm:inline">Hapus</span>
-        </button>
-        <div v-else class="flex flex-wrap gap-2">
-          <button
-            @click="confirmDeleteSelected"
-            :disabled="selectedItems.size === 0"
-            class="inline-flex items-center px-3 sm:px-4 py-2 text-sm sm:text-base bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white rounded-lg transition-all duration-200"
-          >
-            <svg
-              class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
-            <span class="hidden sm:inline"
-              >Hapus ({{ selectedItems.size }})</span
-            >
-            <span class="sm:hidden">({{ selectedItems.size }})</span>
-          </button>
-          <button
-            @click="cancelSelectMode"
-            class="inline-flex items-center px-3 sm:px-4 py-2 text-sm sm:text-base bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-all duration-200"
-          >
-            <svg
-              class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-            <span class="hidden sm:inline">Batal</span>
-          </button>
+            <div class="text-sm text-gray-700 dark:text-gray-300">
+              Showing {{ (pagination.page - 1) * pagination.limit + 1 }} to
+              {{ Math.min(pagination.page * pagination.limit, pagination.total) }}
+              of {{ pagination.total }} entries
+            </div>
+            <div class="flex space-x-2">
+              <button
+                @click="changePage(pagination.page - 1)"
+                :disabled="pagination.page === 1"
+                class="px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Previous
+              </button>
+              <button
+                @click="changePage(pagination.page + 1)"
+                :disabled="pagination.page >= pagination.pages"
+                class="px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Filters -->
-    <div
-      class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow"
-    >
-      <div>
-        <label
-          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      <!-- Sidebar: Filters and Actions -->
+      <div class="w-full lg:w-80 flex-shrink-0">
+        <div
+          class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-5 sticky top-20"
         >
-          Cari No Ruas
-        </label>
-        <input
-          v-model="filters.search"
-          type="text"
-          placeholder="Cari nomor ruas..."
-          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white"
-          @input="debouncedSearch"
-        />
-      </div>
-      <div>
-        <label
-          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-        >
-          Jenis Infrastruktur
-        </label>
-        <select
-          v-model="filters.jenisInfrastruktur"
-          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white"
-          @change="loadDokumentasi"
-        >
-          <option value="">Semua Jenis</option>
-          <option value="Jalan_Lingkungan">Jalan Lingkungan</option>
-          <option value="Jembatan_Lingkungan">Jembatan Lingkungan</option>
-          <option value="Drainase_Lingkungan">Drainase Lingkungan</option>
-          <option value="Kawasan_Permukiman">Kawasan Permukiman</option>
-          <option value="Rumah_Tidak_Layak_Huni">Rumah Tidak Layak Huni</option>
-        </select>
-      </div>
-    </div>
+          <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Aksi & Filter</h2>
 
-    <!-- Table -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead class="bg-gray-50 dark:bg-gray-900">
-            <tr>
-              <th
-                v-if="selectMode"
-                class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                style="width: 50px"
+          <!-- Action Buttons -->
+          <div v-if="canEdit" class="space-y-3 mb-6">
+            <button
+              v-if="!selectMode"
+              @click="openFormModal()"
+              class="w-full px-4 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <input
-                  type="checkbox"
-                  :checked="isAllSelected"
-                  @change="toggleSelectAll"
-                  class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                 />
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-              >
-                Jenis Infrastruktur
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-              >
-                Link YouTube
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-              >
-                No Ruas
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-              >
-                Dibuat
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-              >
-                Diperbarui
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
-          >
-            <tr v-if="loading">
-              <td :colspan="selectMode ? 6 : 5" class="px-6 py-12 text-center">
-                <div class="flex justify-center items-center">
-                  <svg
-                    class="animate-spin h-8 w-8 text-orange-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      class="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      stroke-width="4"
-                    ></circle>
-                    <path
-                      class="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                </div>
-              </td>
-            </tr>
-            <tr v-else-if="dokumentasiList.length === 0">
-              <td
-                :colspan="selectMode ? 6 : 5"
-                class="px-6 py-12 text-center text-gray-500 dark:text-gray-400"
-              >
-                Tidak ada dokumentasi
-              </td>
-            </tr>
-            <tr
-              v-else
-              v-for="item in dokumentasiList"
-              :key="item.id"
-              @click="
-                selectMode ? toggleItemSelection(item.id) : openFormModal(item)
-              "
+              </svg>
+              Tambah Dokumentasi
+            </button>
+            <button
+              @click="toggleSelectMode"
               :class="[
-                'hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer',
-                selectedItems.has(item.id)
-                  ? 'bg-blue-50 dark:bg-blue-900/20'
-                  : '',
+                'w-full px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm font-semibold',
+                selectMode
+                  ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-600 hover:to-emerald-700'
+                  : 'bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700',
               ]"
             >
-              <td
-                v-if="selectMode"
-                class="px-3 py-4 whitespace-nowrap"
-                style="width: 50px"
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <input
-                  type="checkbox"
-                  :checked="selectedItems.has(item.id)"
-                  @click.stop="toggleItemSelection(item.id)"
-                  class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                 />
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span
-                  class="px-3 py-1.5 text-xs font-medium rounded-full bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200"
-                >
-                  {{ formatJenisInfrastruktur(item.jenisInfrastruktur) }}
-                </span>
-              </td>
-              <td class="px-6 py-4" @click.stop>
-                <button
-                  @click="
-                    openYouTubeFancybox(
-                      item.linkYoutube,
-                      item.jenisInfrastruktur,
-                      item.noRuas
-                    )
-                  "
-                  class="inline-flex items-center text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 hover:underline cursor-pointer"
-                >
+              </svg>
+              {{ selectMode ? "Kembali" : "Hapus Data" }}
+            </button>
+          </div>
+
+          <!-- Select Mode Actions -->
+          <div
+            v-if="selectMode && canEdit"
+            class="mb-6 p-4 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-gray-700 dark:to-gray-600 rounded-lg border-2 border-orange-200 dark:border-orange-600"
+          >
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="p-2 bg-orange-500 rounded-lg text-white">
                   <svg
-                    class="w-5 h-5 mr-1.5"
-                    fill="currentColor"
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
                     <path
-                      d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  <span class="max-w-xs truncate font-medium">
-                    Lihat Video
-                  </span>
-                </button>
-              </td>
-              <td
-                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white"
+                </div>
+                <div>
+                  <div class="text-sm font-semibold text-orange-900 dark:text-white">
+                    {{ selectedItems.size }} data dipilih
+                  </div>
+                  <div class="text-xs text-orange-700 dark:text-orange-200">
+                    Dari {{ dokumentasiList.length }} data
+                  </div>
+                </div>
+              </div>
+              <button
+                @click="confirmDeleteSelected"
+                :disabled="selectedItems.size === 0"
+                class="w-full px-4 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-semibold rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {{ item.noRuas || "-" }}
-              </td>
-              <td
-                class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400"
-              >
-                {{ formatDateTime(item.dibuatPada) }}
-              </td>
-              <td
-                class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400"
-              >
-                {{ formatDateTime(item.diperbaruiPada) }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+                Hapus ({{ selectedItems.size }})
+              </button>
+            </div>
+          </div>
 
-      <!-- Pagination -->
-      <div
-        v-if="pagination.pages > 1"
-        class="bg-gray-50 dark:bg-gray-900 px-6 py-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-700"
-      >
-        <div class="text-sm text-gray-700 dark:text-gray-300">
-          Showing {{ (pagination.page - 1) * pagination.limit + 1 }} to
-          {{ Math.min(pagination.page * pagination.limit, pagination.total) }}
-          of {{ pagination.total }} entries
-        </div>
-        <div class="flex space-x-2">
-          <button
-            @click="changePage(pagination.page - 1)"
-            :disabled="pagination.page === 1"
-            class="px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700"
-          >
-            Previous
-          </button>
-          <button
-            @click="changePage(pagination.page + 1)"
-            :disabled="pagination.page >= pagination.pages"
-            class="px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700"
-          >
-            Next
-          </button>
+          <!-- Filters -->
+          <div class="space-y-4">
+            <!-- Search -->
+            <div>
+              <label
+                class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide"
+              >
+                <div class="flex items-center gap-2">
+                  <svg
+                    class="w-4 h-4 text-orange-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  Cari No Ruas
+                </div>
+              </label>
+              <div class="relative">
+                <input
+                  v-model="filters.search"
+                  type="text"
+                  placeholder="Cari nomor ruas..."
+                  class="w-full px-3 py-2 pl-10 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:border-orange-500 focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-900 transition-all text-sm font-medium bg-white dark:bg-gray-700 dark:text-white hover:border-gray-300"
+                  @input="debouncedSearch"
+                />
+                <svg
+                  class="absolute left-3 top-2.5 w-4 h-4 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Jenis Infrastruktur Filter -->
+            <div>
+              <label
+                class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide"
+              >
+                <div class="flex items-center gap-2">
+                  <svg
+                    class="w-4 h-4 text-orange-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                    />
+                  </svg>
+                  Jenis Infrastruktur
+                </div>
+              </label>
+              <select
+                v-model="filters.jenisInfrastruktur"
+                class="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:border-orange-500 focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-900 transition-all text-sm font-medium bg-white dark:bg-gray-700 dark:text-white hover:border-gray-300"
+                @change="loadDokumentasi"
+              >
+                <option value="">Semua Jenis</option>
+                <option value="Jalan_Lingkungan">Jalan Lingkungan</option>
+                <option value="Jembatan_Lingkungan">Jembatan Lingkungan</option>
+                <option value="Drainase_Lingkungan">Drainase Lingkungan</option>
+                <option value="Kawasan_Permukiman">Kawasan Permukiman</option>
+                <option value="Rumah_Tidak_Layak_Huni">Rumah Tidak Layak Huni</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -515,13 +594,72 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
 import Toast from "./Toast.vue";
 import { useToast } from "~/composables/useToast";
+import { useAuth } from "~/composables/useAuth";
 
 const config = useRuntimeConfig();
 const API_BASE = config.public.apiBaseUrl || "";
 const { success: showSuccess, error: showError } = useToast();
+const { user, initAuth } = useAuth();
+
+// Local user state untuk memastikan reactive
+const currentUser = ref(null);
+
+// Initialize auth on mount
+onMounted(() => {
+  // Load from localStorage first (faster)
+  if (typeof window !== 'undefined') {
+    try {
+      const storedUser = localStorage.getItem('simantap_user');
+      if (storedUser) {
+        currentUser.value = JSON.parse(storedUser);
+      }
+    } catch (e) {
+      // Error parsing user from localStorage
+    }
+  }
+  
+  // Then init auth (will update if different)
+  initAuth();
+  
+  // Also set from useAuth if available
+  if (user.value) {
+    currentUser.value = user.value;
+  }
+});
+
+// Watch user changes from useAuth
+watch(() => user.value, (newUser) => {
+  if (newUser) {
+    currentUser.value = newUser;
+  }
+}, { immediate: true, deep: true });
+
+// Computed untuk check role - case insensitive dan support berbagai format
+const canEdit = computed(() => {
+  const userToCheck = currentUser.value || user.value;
+  
+  if (!userToCheck || !userToCheck.role) {
+    // Try localStorage as last resort
+    if (typeof window !== 'undefined') {
+      try {
+        const storedUser = localStorage.getItem('simantap_user');
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          const role = String(parsedUser.role || '').toUpperCase();
+          return role === 'ADMIN' || role === 'USER';
+        }
+      } catch (e) {
+        // Ignore
+      }
+    }
+    return false;
+  }
+  const role = String(userToCheck.role).toUpperCase();
+  return role === 'ADMIN' || role === 'USER';
+});
 
 // Data
 const loading = ref(false);
@@ -584,7 +722,6 @@ const loadDokumentasi = async () => {
       Object.assign(pagination, response.pagination);
     }
   } catch (error) {
-    console.error("Error loading dokumentasi:", error);
     showError("Gagal memuat data");
   } finally {
     loading.value = false;
@@ -604,6 +741,7 @@ const changePage = (page) => {
   pagination.page = page;
   loadDokumentasi();
 };
+
 
 const openFormModal = (item = null) => {
   if (item) {
@@ -662,7 +800,6 @@ const submitForm = async () => {
       loadDokumentasi();
     }
   } catch (error) {
-    console.error("Error submitting form:", error);
     showError("Gagal menyimpan data");
   } finally {
     submitting.value = false;
@@ -701,7 +838,6 @@ const deleteDokumentasi = async () => {
     itemToDelete.value = null;
     loadDokumentasi();
   } catch (error) {
-    console.error("Error deleting dokumentasi:", error);
     showError("Gagal menghapus data");
   }
 };
@@ -725,8 +861,10 @@ const formatDateTime = (dateString) => {
 
 // Select mode functions
 const toggleSelectMode = () => {
-  selectMode.value = true;
-  selectedItems.value.clear();
+  selectMode.value = !selectMode.value;
+  if (!selectMode.value) {
+    selectedItems.value.clear();
+  }
 };
 
 const cancelSelectMode = () => {
