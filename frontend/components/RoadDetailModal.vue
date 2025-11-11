@@ -561,7 +561,7 @@
                       </label>
                       <p class="text-gray-900 dark:text-white">
                         {{
-                          road.Lebar_m_?.toLocaleString() ||
+                          road.lebar_m?.toLocaleString() ||
                           road.lebarM?.toLocaleString() ||
                           "-"
                         }}
@@ -1516,7 +1516,7 @@ const populateEditForm = () => {
     kecamatan: props.road.Kecamatan || props.road.kecamatan || "",
     desa: props.road.Desa || props.road.desa || "",
     panjangM: props.road.Panjang_M || props.road.panjangM || "",
-    lebarM: props.road.Lebar_m_ || props.road.lebarM || "",
+    lebarM: props.road.lebar_m || props.road.lebarM || "",
     kondisi: props.road.Kondisi || props.road.kondisi || "",
     keterangan: props.road.Keterangan || props.road.keterangan || "",
     noJalan: props.road.No_Jalan || props.road.noJalan || "",

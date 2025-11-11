@@ -1006,7 +1006,7 @@
                               class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300 text-right"
                             >
                               {{
-                                road.Lebar_m_?.toFixed(2) ||
+                                road.lebar_m?.toFixed(2) ||
                                 road.lebarM?.toFixed(2) ||
                                 "-"
                               }}

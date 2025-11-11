@@ -190,7 +190,7 @@ router.get("/geojson", async (req, res) => {
     const query = `
       SELECT 
         id, fid, no_ruas, nama, nama_jalan,
-        panjang_m, lebar_m_, tahun, kondisi,
+        panjang_m, lebar_m, tahun, kondisi,
         nilai, bobot, keterangan, kecamatan, desa,
         ST_AsText(geom) as geom_wkt
       FROM jalan_lingkungan_kubu_raya
@@ -236,7 +236,7 @@ router.get("/geojson", async (req, res) => {
               nama: road.nama,
               namaJalan: road.nama_jalan,
               panjangM: road.panjang_m,
-              lebarM: road.lebar_m_,
+              lebarM: road.lebar_m,
               tahun: road.tahun,
               kondisi: road.kondisi,
               nilai: road.nilai,
@@ -1272,7 +1272,7 @@ router.get("/download/geojson", async (req, res) => {
     const query = `
       SELECT 
         id, fid, no_ruas, no_prov, no_kab, no_kec, no_desa,
-        no_jalan, nama, nama_jalan, panjang_m, lebar_m_, 
+        no_jalan, nama, nama_jalan, panjang_m, lebar_m, 
         tahun, kondisi, nilai, bobot, keterangan, 
         kecamatan, desa, utm_x_awal, utm_y_awal, 
         pngnl_awal, utm_x_akhi, utm_y_akhi, pngnl_akhi,
@@ -1329,7 +1329,7 @@ router.get("/download/geojson", async (req, res) => {
               nama: road.nama,
               nama_jalan: road.nama_jalan,
               panjang_m: road.panjang_m,
-              lebar_m_: road.lebar_m_,
+              lebar_m: road.lebar_m,
               tahun: road.tahun,
               kondisi: road.kondisi,
               nilai: road.nilai,
@@ -1418,7 +1418,7 @@ router.post("/export/geojson", async (req, res) => {
     const query = `
       SELECT 
         id, fid, no_ruas, no_prov, no_kab, no_kec, no_desa,
-        no_jalan, nama, nama_jalan, panjang_m, lebar_m_, 
+        no_jalan, nama, nama_jalan, panjang_m, lebar_m, 
         tahun, kondisi, nilai, bobot, keterangan, 
         kecamatan, desa, utm_x_awal, utm_y_awal, 
         pngnl_awal, utm_x_akhi, utm_y_akhi, pngnl_akhi,
@@ -1542,9 +1542,9 @@ router.post("/export/geojson", async (req, res) => {
                 road.panjang_m !== null && road.panjang_m !== undefined
                   ? road.panjang_m
                   : 0,
-              Lebar_m_:
-                road.lebar_m_ !== null && road.lebar_m_ !== undefined
-                  ? road.lebar_m_
+              lebar_m:
+                road.lebar_m !== null && road.lebar_m !== undefined
+                  ? road.lebar_m
                   : 0,
               Tahun: road.tahun || "",
               Kondisi: road.kondisi || "",
@@ -1671,7 +1671,7 @@ router.post("/export/shapefile", async (req, res) => {
     const query = `
       SELECT 
         id, fid, no_ruas, no_prov, no_kab, no_kec, no_desa,
-        no_jalan, nama, nama_jalan, panjang_m, lebar_m_, 
+        no_jalan, nama, nama_jalan, panjang_m, lebar_m, 
         tahun, kondisi, nilai, bobot, keterangan, 
         kecamatan, desa, utm_x_awal, utm_y_awal, 
         pngnl_awal, utm_x_akhi, utm_y_akhi, pngnl_akhi,
@@ -1699,7 +1699,7 @@ router.post("/export/shapefile", async (req, res) => {
       nama: "nama",
       nama_jalan: "nama_jln", // truncated to 10 chars
       panjang_m: "panjang_m",
-      lebar_m_: "lebar_m",
+      lebar_m: "lebar_m",
       tahun: "tahun",
       kondisi: "kondisi",
       nilai: "nilai",
@@ -1760,7 +1760,7 @@ router.post("/export/shapefile", async (req, res) => {
       fieldMapping.nama,
       fieldMapping.nama_jalan,
       fieldMapping.panjang_m,
-      fieldMapping.lebar_m_,
+      fieldMapping.lebar_m,
       fieldMapping.tahun,
       fieldMapping.kondisi,
       fieldMapping.nilai,

@@ -23,7 +23,7 @@ model JalanLingkunganKubuRaya {
   nama        String?
   namaJalan   String?  @map("nama_jalan")
   panjangM    Float?   @map("panjang_m")
-  lebarM      Float?   @map("lebar_m_")
+  lebarM      Float?   @map("lebar_m")
   tahun       String?
   kondisi     String?
   nilai       Float?

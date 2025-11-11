@@ -215,11 +215,11 @@
                           </div>
                           <div class="flex justify-between">
                             <span class="text-blue-700 dark:text-blue-300"
-                              >Lebar_m_:</span
+                              >lebar_m:</span
                             >
                             <span
                               class="text-blue-900 dark:text-blue-100 font-mono"
-                              >Lebar_m_</span
+                              >lebar_m</span
                             >
                           </div>
                           <div class="flex justify-between">
@@ -397,7 +397,7 @@
                             <td
                               class="px-2 py-1 text-gray-900 dark:text-white text-xs"
                             >
-                              {{ item.Lebar_m_ || "-" }}
+                              {{ item.lebar_m || "-" }}
                             </td>
                             <td
                               class="px-2 py-1 text-gray-900 dark:text-white text-xs"

@@ -3307,7 +3307,7 @@ const handleLayerLoaded = async (layerData) => {
             fieldInfos: [
               { fieldName: "Nama_Jalan", label: "Nama Jalan" },
               { fieldName: "Panjang_M", label: "Panjang (m)" },
-              { fieldName: "Lebar_m_", label: "Lebar (m)" },
+              { fieldName: "lebar_m", label: "Lebar (m)" },
               { fieldName: "Kondisi", label: "Kondisi" },
               { fieldName: "Keterangan", label: "Keterangan" },
               { fieldName: "Tahun", label: "Tahun" },

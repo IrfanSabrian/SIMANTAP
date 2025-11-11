@@ -443,7 +443,7 @@ CREATE TABLE public.jalan_lingkungan_kubu_raya (
     nama text,
     nama_jalan text,
     panjang_m double precision,
-    lebar_m_ double precision,
+    lebar_m double precision,
     tahun text,
     kondisi text,
     nilai double precision,
@@ -663,7 +663,7 @@ COPY public.dokumentasi_kegiatan (id, judul, slug, deskripsi, konten, kategori, 
 -- Data for Name: jalan_lingkungan_kubu_raya; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.jalan_lingkungan_kubu_raya (id, geom, fid, no_ruas, no_prov, no_kab, no_kec, no_desa, no_jalan, nama, nama_jalan, panjang_m, lebar_m_, tahun, kondisi, nilai, bobot, keterangan, kecamatan, desa, utm_x_awal, utm_y_awal, pngnl_awal, utm_x_akhi, utm_y_akhi, pngnl_akhi, shape_leng, shape_le_1, shape_le_2, shape_le_3, shape_le_4, shape_le_5) FROM stdin;
+COPY public.jalan_lingkungan_kubu_raya (id, geom, fid, no_ruas, no_prov, no_kab, no_kec, no_desa, no_jalan, nama, nama_jalan, panjang_m, lebar_m, tahun, kondisi, nilai, bobot, keterangan, kecamatan, desa, utm_x_awal, utm_y_awal, pngnl_awal, utm_x_akhi, utm_y_akhi, pngnl_akhi, shape_leng, shape_le_1, shape_le_2, shape_le_3, shape_le_4, shape_le_5) FROM stdin;
 1	0102000020E6100000020000002CB65389D15D5B4000F2B6129731E8BFA4E9A06FD45D5B400064BE2ACE2EE8BF	0	611252003001	61	12	5	2003	001	Jl. Hj Bujang Hatim Laut	Jl. Hj Bujang Hatim Laut	42.4379402891	1.8	2022	Beton	0.1	1	Baik	Batu Ampar	Telok Nibong	109.465914089	-0.756053482582	JL Padang Tikar - Batu Ampar	109.466091067	-0.755713542446	Pertanian	0.0003832501536	0.0003832501536	0	0	0	0.0003832501536
 2	0102000020E61000000700000044A700B5ED5C5B40008E4BF63D0BE9BF50B7A2731A5D5B4000ECA89749DCE8BF046386C5475D5B40003CE78E97B1E8BFA41C1C474C5D5B4000FEE6326FADE8BFC0664DF05A5D5B400094CB4BE89FE8BF20CCB4EAB95D5B40000245404648E8BF2CB65389D15D5B4000F2B6129731E8BF	1	611252003001	61	12	5	2003	001	Jl. Hj Bujang Hatim Laut	Jl. Hj Bujang Hatim Laut	3321.31929999	2.6	2022	Beton	0.1	1	Baik	Batu Ampar	Telok Nibong	109.452008486	-0.782622319265	JL Padang Tikar - Batu Ampar	109.465914089	-0.756053482582	Pertanian	0.0299939114322	0.0299939114322	0	0	0	0.0299939114322
 3	0102000020E610000002000000A8C2797F21605B40000212149021E9BF640CB24C35605B4000182796D831E9BF	2	611252003002	61	12	5	2003	002	Jl. Kemuning Buntu	Jl. Kemuning Buntu	257.691387132	1.3	2022	Beton	0.2	1	Baik	Batu Ampar	Telok Nibong	109.502044553	-0.785347022247	JL Padang Tikar - Batu Ampar	109.503253149	-0.78733472182	Kebun	0.00232629627635	0.00232629627635	0	0	0	0.00232629627635
