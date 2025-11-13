@@ -11,7 +11,7 @@ export const useReportGenerator = () => {
     // Ensure data structure exists
     if (!data) {
       console.error("No data provided for PDF generation");
-      return { success: false, error: "No data provided" };
+      throw new Error("Data laporan tidak ditemukan untuk membuat PDF");
     }
 
     if (!data.roads || data.roads.length === 0) {
@@ -497,12 +497,18 @@ export const useReportGenerator = () => {
         iframe.contentDocument.body.scrollHeight,
         30000
       );
-      await html2pdf
-        .default()
-        .set(fallbackOptions)
-        .from(iframe.contentDocument.body)
-        .save();
-      console.log("PDF generation completed with fallback settings");
+
+      try {
+        await html2pdf
+          .default()
+          .set(fallbackOptions)
+          .from(iframe.contentDocument.body)
+          .save();
+        console.log("PDF generation completed with fallback settings");
+      } catch (fallbackError) {
+        console.error("Fallback PDF generation failed:", fallbackError);
+        throw fallbackError;
+      }
     }
 
     // Clean up the iframe safely
@@ -2328,17 +2334,22 @@ export const useReportGenerator = () => {
       };
 
       switch (format) {
-        case "pdf":
-          await generatePDF(reportData);
+        case "pdf": {
+          const pdfResult = await generatePDF(reportData);
+          if (!pdfResult?.success) {
+            throw new Error(pdfResult?.error || "Gagal membuat PDF");
+          }
           filename = generateFilename("pdf");
           break;
+        }
 
-        case "xlsx":
+        case "xlsx": {
           file = await generateExcel(reportData);
           filename = generateFilename("xlsx");
           const XLSX = await import("xlsx");
           XLSX.writeFile(file, filename);
           break;
+        }
 
         default:
           throw new Error(`Format ${format} tidak didukung`);

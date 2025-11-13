@@ -19,6 +19,35 @@
           @click.stop
           class="relative w-full max-w-7xl h-[95vh] lg:h-[90vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col"
         >
+        <div
+          v-if="isProcessingDownload"
+          class="absolute inset-0 z-20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm flex flex-col items-center justify-center gap-4"
+          aria-live="assertive"
+        >
+          <svg class="animate-spin h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24">
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          <div class="text-center px-6">
+            <p class="text-base font-semibold text-gray-800 dark:text-gray-100">
+              Sedang memproses laporan...
+            </p>
+            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
+              Mohon tunggu sebentar, proses ini membutuhkan waktu beberapa detik.
+            </p>
+          </div>
+        </div>
         <!-- Header -->
         <div
           class="bg-blue-600 text-white px-4 lg:px-6 py-3 lg:py-4 flex items-center justify-between"
@@ -130,7 +159,15 @@
         </div>
 
         <!-- Content -->
-        <div class="flex-1 overflow-auto p-4 lg:p-6">
+        <div
+          class="flex-1 overflow-auto p-4 lg:p-6 transition duration-200"
+          :class="[
+            isProcessingDownload
+              ? 'pointer-events-none select-none opacity-40 blur-[1px]'
+              : '',
+          ]"
+          :aria-busy="isProcessingDownload"
+        >
           <div
             v-if="previewHTML"
             class="preview-container"
@@ -171,7 +208,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, nextTick } from "vue";
 import { useReportGenerator } from "~/composables/useReportGenerator.js";
 import { useToast } from "~/composables/useToast.js";
 
@@ -194,6 +231,7 @@ const toast = useToast();
 const previewHTML = ref(null);
 const isDownloadingPDF = ref(false);
 const isDownloadingExcel = ref(false);
+const isProcessingDownload = ref(false);
 
 // Generate preview when modal opens
 watch(
@@ -221,15 +259,27 @@ const downloadPDF = async () => {
   if (!props.reportData) return;
 
   isDownloadingPDF.value = true;
+  isProcessingDownload.value = true;
   try {
-    await downloadReport(props.reportData, "pdf");
+    await nextTick();
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    const result = await downloadReport(props.reportData, "pdf");
+    if (!result?.success) {
+      throw new Error(result?.error || "Gagal memproses PDF");
+    }
+
     emit("download-pdf");
     toast.success("PDF berhasil didownload!");
   } catch (error) {
     console.error("Error downloading PDF:", error);
-    toast.error("Gagal mendownload PDF");
+    toast.error(
+      error?.message || "Gagal mendownload PDF. Silakan coba lagi."
+    );
   } finally {
     isDownloadingPDF.value = false;
+    isProcessingDownload.value = false;
   }
 };
 
@@ -237,14 +287,27 @@ const downloadExcel = async () => {
   if (!props.reportData) return;
 
   isDownloadingExcel.value = true;
+  isProcessingDownload.value = true;
   try {
-    await downloadReport(props.reportData, "xlsx");
+    await nextTick();
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    const result = await downloadReport(props.reportData, "xlsx");
+    if (!result?.success) {
+      throw new Error(result?.error || "Gagal memproses Excel");
+    }
+
     emit("download-excel");
+    toast.success("Excel berhasil didownload!");
   } catch (error) {
     console.error("Error downloading Excel:", error);
-    toast.error("Gagal mendownload Excel");
+    toast.error(
+      error?.message || "Gagal mendownload Excel. Silakan coba lagi."
+    );
   } finally {
     isDownloadingExcel.value = false;
+    isProcessingDownload.value = false;
   }
 };
 </script>

@@ -1303,7 +1303,7 @@ const exportSelectedRoads = async () => {
 
     console.log("Download triggered successfully");
     toast.success(
-      `Berhasil mengexport ${selectedRoadsList.length} data jalan dengan geometry lengkap!`
+      `Berhasil mengexport ${selectedRoadsList.length} data`
     );
   } catch (error) {
     console.error("Error exporting roads:", error);

@@ -5,9 +5,7 @@
       class="bg-gradient-to-r from-pink-50 to-pink-100 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-6 border-l-4 border-pink-500 mb-6"
     >
       <div>
-        <h2
-          class="text-2xl font-bold text-gray-900 dark:text-white mb-2"
-        >
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
           Dokumentasi Kegiatan
         </h2>
         <p class="text-gray-600 dark:text-gray-400">
@@ -21,186 +19,201 @@
       <!-- Table Area -->
       <div class="flex-1 min-w-0">
         <!-- Table -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead class="bg-gray-50 dark:bg-gray-900">
-            <tr>
-              <th
-                v-if="selectMode"
-                class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
-                style="width: 50px"
-              >
-                <input
-                  type="checkbox"
-                  :checked="isAllSelected"
-                  @change="toggleSelectAll"
-                  class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
-                />
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-              >
-                Dokumentasi
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-              >
-                Kategori
-              </th>
-              <th
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-              >
-                Tanggal
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
-          >
-            <tr v-if="loading">
-              <td :colspan="selectMode ? 4 : 3" class="px-6 py-12 text-center">
-                <div class="flex justify-center items-center">
-                  <svg
-                    class="animate-spin h-8 w-8 text-pink-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      class="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      stroke-width="4"
-                    ></circle>
-                    <path
-                      class="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                </div>
-              </td>
-            </tr>
-            <tr v-else-if="dokumentasiList.length === 0">
-              <td
-                :colspan="selectMode ? 4 : 3"
-                class="px-6 py-12 text-center text-gray-500 dark:text-gray-400"
-              >
-                Tidak ada dokumentasi
-              </td>
-            </tr>
-            <tr
-              v-else
-              v-for="item in dokumentasiList"
-              :key="item.id"
-              @click="canEdit ? (selectMode ? toggleItemSelection(item.id) : openFormModal(item)) : null"
-              :class="[
-                canEdit
-                  ? 'hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer'
-                  : '',
-                selectedItems.has(item.id)
-                  ? 'bg-blue-50 dark:bg-blue-900/20'
-                  : '',
-              ]"
+        <div
+          class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden"
+        >
+          <div class="overflow-x-auto">
+            <table
+              class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
             >
-              <td
-                v-if="selectMode"
-                class="px-3 py-4 whitespace-nowrap"
-                style="width: 50px"
-                @click.stop
-              >
-                <input
-                  type="checkbox"
-                  :checked="selectedItems.has(item.id)"
-                  @click.stop="toggleItemSelection(item.id)"
-                  class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
-                />
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center">
-                  <img
-                    v-if="item.thumbnail"
-                    :src="item.thumbnail"
-                    :alt="item.judul"
-                    class="w-16 h-16 rounded-lg object-cover mr-3"
-                  />
-                  <div
-                    class="w-16 h-16 bg-gray-200 dark:bg-gray-600 rounded-lg mr-3 flex items-center justify-center"
-                    v-else
+              <thead class="bg-gray-50 dark:bg-gray-900">
+                <tr>
+                  <th
+                    v-if="selectMode"
+                    class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap"
+                    style="width: 50px"
                   >
-                    <svg
-                      class="w-8 h-8 text-gray-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <div class="max-w-md">
-                    <p
-                      class="font-semibold text-gray-900 dark:text-white truncate"
-                    >
-                      {{ item.judul }}
-                    </p>
-                    <p
-                      class="text-sm text-gray-500 dark:text-gray-400 truncate"
-                    >
-                      {{ item.deskripsi || "Tidak ada deskripsi" }}
-                    </p>
-                  </div>
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span
-                  class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-                >
-                  {{ item.kategori || "-" }}
-                </span>
-              </td>
-              <td
-                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"
+                    <input
+                      type="checkbox"
+                      :checked="isAllSelected"
+                      @change="toggleSelectAll"
+                      class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
+                    />
+                  </th>
+                  <th
+                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
+                    Dokumentasi
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
+                    Kategori
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
+                    Tanggal
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
               >
-                {{ formatDate(item.tanggal) }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                <tr v-if="loading">
+                  <td
+                    :colspan="selectMode ? 4 : 3"
+                    class="px-6 py-12 text-center"
+                  >
+                    <div class="flex justify-center items-center">
+                      <svg
+                        class="animate-spin h-8 w-8 text-pink-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          class="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          stroke-width="4"
+                        ></circle>
+                        <path
+                          class="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-else-if="dokumentasiList.length === 0">
+                  <td
+                    :colspan="selectMode ? 4 : 3"
+                    class="px-6 py-12 text-center text-gray-500 dark:text-gray-400"
+                  >
+                    Tidak ada dokumentasi
+                  </td>
+                </tr>
+                <tr
+                  v-else
+                  v-for="item in dokumentasiList"
+                  :key="item.id"
+                  @click="
+                    canEdit
+                      ? selectMode
+                        ? toggleItemSelection(item.id)
+                        : openFormModal(item)
+                      : null
+                  "
+                  :class="[
+                    canEdit
+                      ? 'hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer'
+                      : '',
+                    selectedItems.has(item.id)
+                      ? 'bg-blue-50 dark:bg-blue-900/20'
+                      : '',
+                  ]"
+                >
+                  <td
+                    v-if="selectMode"
+                    class="px-3 py-4 whitespace-nowrap"
+                    style="width: 50px"
+                    @click.stop
+                  >
+                    <input
+                      type="checkbox"
+                      :checked="selectedItems.has(item.id)"
+                      @click.stop="toggleItemSelection(item.id)"
+                      class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
+                    />
+                  </td>
+                  <td class="px-4 py-4">
+                    <div class="flex items-center gap-3">
+                      <img
+                        v-if="item.thumbnail"
+                        :src="item.thumbnail"
+                        :alt="item.judul"
+                        class="w-14 h-14 rounded-lg object-cover"
+                      />
+                      <div
+                        class="w-14 h-14 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center"
+                        v-else
+                      >
+                        <svg
+                          class="w-8 h-8 text-gray-400"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                      <div class="max-w-sm">
+                        <p
+                          class="font-semibold text-gray-900 dark:text-white truncate"
+                        >
+                          {{ item.judul }}
+                        </p>
+                        <p
+                          class="text-sm text-gray-500 dark:text-gray-400 truncate"
+                        >
+                          {{ item.deskripsi || "Tidak ada deskripsi" }}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span
+                      class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                    >
+                      {{ item.kategori || "-" }}
+                    </span>
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"
+                  >
+                    {{ formatDate(item.tanggal) }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-      <!-- Pagination -->
-      <div
-        v-if="pagination.pages > 1"
-        class="bg-gray-50 dark:bg-gray-900 px-6 py-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-700"
-      >
-        <div class="text-sm text-gray-700 dark:text-gray-300">
-          Showing {{ (pagination.page - 1) * pagination.limit + 1 }} to
-          {{ Math.min(pagination.page * pagination.limit, pagination.total) }}
-          of {{ pagination.total }} entries
-        </div>
-        <div class="flex space-x-2">
-          <button
-            @click="changePage(pagination.page - 1)"
-            :disabled="pagination.page === 1"
-            class="px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700"
+          <!-- Pagination -->
+          <div
+            v-if="pagination.pages > 1"
+            class="bg-gray-50 dark:bg-gray-900 px-6 py-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-700"
           >
-            Previous
-          </button>
-          <button
-            @click="changePage(pagination.page + 1)"
-            :disabled="pagination.page >= pagination.pages"
-            class="px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700"
-          >
-            Next
-          </button>
-        </div>
-      </div>
+            <div class="text-sm text-gray-700 dark:text-gray-300">
+              Showing {{ (pagination.page - 1) * pagination.limit + 1 }} to
+              {{
+                Math.min(pagination.page * pagination.limit, pagination.total)
+              }}
+              of {{ pagination.total }} entries
+            </div>
+            <div class="flex space-x-2">
+              <button
+                @click="changePage(pagination.page - 1)"
+                :disabled="pagination.page === 1"
+                class="px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Previous
+              </button>
+              <button
+                @click="changePage(pagination.page + 1)"
+                :disabled="pagination.page >= pagination.pages"
+                class="px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -209,7 +222,9 @@
         <div
           class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-5 sticky top-20"
         >
-          <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Aksi & Filter</h2>
+          <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4">
+            Aksi & Filter
+          </h2>
 
           <!-- Action Buttons -->
           <div v-if="canEdit" class="space-y-3 mb-6">
@@ -282,7 +297,9 @@
                   </svg>
                 </div>
                 <div>
-                  <div class="text-sm font-semibold text-pink-900 dark:text-white">
+                  <div
+                    class="text-sm font-semibold text-pink-900 dark:text-white"
+                  >
                     {{ selectedItems.size }} data dipilih
                   </div>
                   <div class="text-xs text-pink-700 dark:text-pink-200">
@@ -391,10 +408,14 @@
                 <option value="">Semua Kategori</option>
                 <option value="Rapat Koordinasi">Rapat Koordinasi</option>
                 <option value="Kunjungan Lapangan">Kunjungan Lapangan</option>
-                <option value="Monitoring & Evaluasi (Monev)">Monitoring & Evaluasi (Monev)</option>
+                <option value="Monitoring & Evaluasi (Monev)">
+                  Monitoring & Evaluasi (Monev)
+                </option>
                 <option value="Sosialisasi Program">Sosialisasi Program</option>
                 <option value="Pelatihan Teknis">Pelatihan Teknis</option>
-                <option value="Serah Terima / Peresmian">Serah Terima / Peresmian</option>
+                <option value="Serah Terima / Peresmian">
+                  Serah Terima / Peresmian
+                </option>
               </select>
             </div>
           </div>
@@ -484,7 +505,7 @@
                     v-model="formData.konten"
                     rows="8"
                     class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white font-mono text-sm"
-                    placeholder="Konten detail (HTML)"
+                    placeholder="Konten detail"
                   ></textarea>
                 </div>
 
@@ -500,11 +521,19 @@
                       class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white"
                     >
                       <option value="Rapat Koordinasi">Rapat Koordinasi</option>
-                      <option value="Kunjungan Lapangan">Kunjungan Lapangan</option>
-                      <option value="Monitoring & Evaluasi (Monev)">Monitoring & Evaluasi (Monev)</option>
-                      <option value="Sosialisasi Program">Sosialisasi Program</option>
+                      <option value="Kunjungan Lapangan">
+                        Kunjungan Lapangan
+                      </option>
+                      <option value="Monitoring & Evaluasi (Monev)">
+                        Monitoring & Evaluasi (Monev)
+                      </option>
+                      <option value="Sosialisasi Program">
+                        Sosialisasi Program
+                      </option>
                       <option value="Pelatihan Teknis">Pelatihan Teknis</option>
-                      <option value="Serah Terima / Peresmian">Serah Terima / Peresmian</option>
+                      <option value="Serah Terima / Peresmian">
+                        Serah Terima / Peresmian
+                      </option>
                     </select>
                   </div>
 
@@ -537,7 +566,11 @@
                   />
                   <img
                     v-if="formData.thumbnail"
-                    :src="typeof formData.thumbnail === 'string' ? formData.thumbnail : formData.thumbnail.url || formData.thumbnail"
+                    :src="
+                      typeof formData.thumbnail === 'string'
+                        ? formData.thumbnail
+                        : formData.thumbnail.url || formData.thumbnail
+                    "
                     alt="Preview"
                     class="mt-2 w-48 h-32 object-cover rounded-lg"
                   />
@@ -704,9 +737,9 @@ const currentUser = ref(null);
 // Initialize auth on mount
 onMounted(() => {
   // Load from localStorage first (faster)
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     try {
-      const storedUser = localStorage.getItem('simantap_user');
+      const storedUser = localStorage.getItem("simantap_user");
       if (storedUser) {
         currentUser.value = JSON.parse(storedUser);
       }
@@ -714,10 +747,10 @@ onMounted(() => {
       // Error parsing user from localStorage
     }
   }
-  
+
   // Then init auth (will update if different)
   initAuth();
-  
+
   // Also set from useAuth if available
   if (user.value) {
     currentUser.value = user.value;
@@ -725,25 +758,29 @@ onMounted(() => {
 });
 
 // Watch user changes from useAuth
-watch(() => user.value, (newUser) => {
-  if (newUser) {
-    currentUser.value = newUser;
-  }
-}, { immediate: true, deep: true });
+watch(
+  () => user.value,
+  (newUser) => {
+    if (newUser) {
+      currentUser.value = newUser;
+    }
+  },
+  { immediate: true, deep: true }
+);
 
 // Computed untuk check role - case insensitive dan support berbagai format
 const canEdit = computed(() => {
   const userToCheck = currentUser.value || user.value;
-  
+
   if (!userToCheck || !userToCheck.role) {
     // Try localStorage as last resort
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       try {
-        const storedUser = localStorage.getItem('simantap_user');
+        const storedUser = localStorage.getItem("simantap_user");
         if (storedUser) {
           const parsedUser = JSON.parse(storedUser);
-          const role = String(parsedUser.role || '').toUpperCase();
-          return role === 'ADMIN' || role === 'USER';
+          const role = String(parsedUser.role || "").toUpperCase();
+          return role === "ADMIN" || role === "USER";
         }
       } catch (e) {
         // Ignore
@@ -752,7 +789,7 @@ const canEdit = computed(() => {
     return false;
   }
   const role = String(userToCheck.role).toUpperCase();
-  return role === 'ADMIN' || role === 'USER';
+  return role === "ADMIN" || role === "USER";
 });
 
 // Data
@@ -854,7 +891,6 @@ const changePage = (page) => {
   loadDokumentasi();
 };
 
-
 const openFormModal = (item = null) => {
   if (item) {
     Object.assign(formData, {
@@ -923,10 +959,12 @@ const handleMultipleImagesUpload = (event) => {
   // Store file references for later upload
   // Track which indices are new files
   const startIndex = formData.gambarLainnya.length;
-  multipleImageFiles.value.push(...files.map((file, idx) => ({
-    file,
-    previewIndex: startIndex + idx,
-  })));
+  multipleImageFiles.value.push(
+    ...files.map((file, idx) => ({
+      file,
+      previewIndex: startIndex + idx,
+    }))
+  );
 
   // Create preview URLs
   files.forEach((file) => {
@@ -943,7 +981,7 @@ const handleMultipleImagesUpload = (event) => {
 
 const removeImage = (index) => {
   const item = formData.gambarLainnya[index];
-  
+
   // Remove from file references if it's a new file
   if (item && item.isNew) {
     // Find and remove the corresponding file reference
@@ -960,7 +998,7 @@ const removeImage = (index) => {
       }
     });
   }
-  
+
   formData.gambarLainnya.splice(index, 1);
 };
 
@@ -1051,7 +1089,7 @@ const submitForm = async () => {
     if (multipleImageFiles.value.length > 0) {
       // Upload new files
       const uploadedUrls = await uploadMultipleImages();
-      
+
       // Get existing URLs (those that are not new files)
       const existingUrls = formData.gambarLainnya
         .filter((img) => {
@@ -1059,7 +1097,7 @@ const submitForm = async () => {
           return !img.isNew; // Objects with isNew: false
         })
         .map((img) => (typeof img === "string" ? img : img.url));
-      
+
       // Combine existing URLs with newly uploaded URLs
       gambarLainnyaUrls = [...existingUrls, ...uploadedUrls];
     } else {
