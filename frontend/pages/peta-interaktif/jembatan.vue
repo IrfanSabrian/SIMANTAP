@@ -195,6 +195,30 @@
           Raya.
         </p>
       </div>
+      <div class="development-alert" data-aos="fade-up" data-aos-delay="50">
+        <div class="alert-icon">
+          <svg
+            class="w-6 h-6 text-amber-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01M5.165 19h13.67c1.054 0 1.72-1.14 1.197-2.053l-6.835-12.5a1.364 1.364 0 00-2.394 0l-6.835 12.5C3.445 17.86 4.111 19 5.165 19z"
+            ></path>
+          </svg>
+        </div>
+        <div>
+          <p class="alert-title">Sedang Dalam Pengembangan</p>
+          <p class="alert-description">
+            Statistik dan insight analisis jembatan sedang disiapkan. Pembaruan
+            akan hadir pada iterasi rilis berikutnya.
+          </p>
+        </div>
+      </div>
       <div class="analisis-content">
         <div class="analisis-grid">
           <!-- Material Analysis -->
@@ -1117,6 +1141,22 @@ useHead({
 
 .analisis-content {
   @apply container mx-auto px-8;
+}
+
+.development-alert {
+  @apply flex items-start gap-4 bg-amber-50 border border-amber-200 rounded-xl p-4 shadow-sm mb-10 max-w-4xl mx-auto;
+}
+
+.alert-icon {
+  @apply p-3 bg-white rounded-full border border-amber-100 shadow-sm;
+}
+
+.alert-title {
+  @apply text-base font-semibold text-amber-800;
+}
+
+.alert-description {
+  @apply text-sm text-amber-700;
 }
 
 .analisis-grid {
